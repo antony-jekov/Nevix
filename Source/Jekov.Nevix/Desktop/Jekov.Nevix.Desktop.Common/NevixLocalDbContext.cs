@@ -35,10 +35,7 @@
 
         public void SaveChanges()
         {
-            if (DatabaseExists())
-            {
-                WriteDataToDatabase();
-            }
+            WriteDataToDatabase();
         }
 
         private void WriteDataToDatabase()
