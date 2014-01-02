@@ -12,8 +12,18 @@
         private const string RootAddress = "http://localhost:50906/api/";
         private const string HttpPost = "POST";
         private const string HttpPut = "PUT";
+        private const string HttpGet = "GET";
+        private readonly static char[] trimCharsForRequest = { '"', '\\', ' ' };
 
         public string SessionKey { get; protected set; }
+
+        public DateTime LastMediaUpdate()
+        {
+            string time = GetRequest(RootAddress + "User/LastMediaUpdate");
+            return DateTime.Parse(time);
+        }
+
+
 
         public void Login(string email, string password)
         {
@@ -25,7 +35,7 @@
 
             string serializedRequestBody = JsonConvert.SerializeObject(loginData);
 
-            SessionKey = HttpRequest(RootAddress + "user/login", HttpPut, serializedRequestBody).Trim(new char[]{'"', '\\'});
+            SessionKey = HttpRequest(RootAddress + "user/login", HttpPut, serializedRequestBody).Trim(new char[] { '"', '\\' });
         }
 
         public void LogOff()
@@ -44,7 +54,7 @@
 
             string serializedRequestBody = JsonConvert.SerializeObject(registerData);
 
-            SessionKey = HttpRequest(RootAddress + "user/register", HttpPost, serializedRequestBody).Trim(new char[] { '"', '\\' });
+            SessionKey = HttpRequest(RootAddress + "user/register", HttpPost, serializedRequestBody);
         }
 
         public void SendMediaDatabase(MediaFolderViewModel rootFolder)
@@ -70,15 +80,16 @@
             if (resp == null) return null;
 
             StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
-            return sr.ReadToEnd().Trim();
+            return sr.ReadToEnd().Trim(trimCharsForRequest);
         }
 
         protected string GetRequest(string url)
         {
-            System.Net.WebRequest req = System.Net.WebRequest.Create(url);
-            System.Net.WebResponse resp = req.GetResponse();
-            System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
-            return sr.ReadToEnd().Trim();
+            WebRequest req = System.Net.WebRequest.Create(url);
+            req.Headers.Add(string.Format("X-SessionKey:{0}", SessionKey));
+            WebResponse resp = req.GetResponse();
+            StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
+            return sr.ReadToEnd().Trim(trimCharsForRequest);
         }
 
         protected string StringToSha1(string text)

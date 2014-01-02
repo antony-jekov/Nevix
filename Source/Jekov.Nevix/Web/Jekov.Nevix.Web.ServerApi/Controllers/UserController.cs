@@ -75,5 +75,18 @@
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
+
+        [HttpGet]
+        public HttpResponseMessage LastMediaUpdate()
+        {
+            NevixUser currentUser = GetCurrentUser();
+
+            if (currentUser == null)
+            {
+                return UnauthorizedErrorMessage();
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, currentUser.LastFilesUpdate);
+        }
     }
 }

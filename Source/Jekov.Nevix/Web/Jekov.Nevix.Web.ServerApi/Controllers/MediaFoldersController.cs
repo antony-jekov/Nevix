@@ -2,6 +2,7 @@
 {
     using Jekov.Nevix.Common.Models;
     using Jekov.Nevix.Common.ViewModels;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -40,6 +41,8 @@
             CreateSubFoldersAndFiles(model.Folders, rootFolder);
 
             currentUser.Folders.Add(rootFolder);
+
+            currentUser.LastFilesUpdate = DateTime.UtcNow;
 
             Data.SaveChanges();
 
