@@ -1,13 +1,12 @@
 ﻿namespace Jekov.Nevix.Web.ServerApi.Controllers
 {
+    using Jekov.Nevix.Common.Models;
+    using Jekov.Nevix.Common.ViewModels;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
-    using System;
-    using Jekov.Nevix.Common.ViewModels;
-    using Jekov.Nevix.Common.Models;
 
     public class MediaFoldersController : BaseController
     {
@@ -29,7 +28,8 @@
             MediaFolder rootFolder = new MediaFolder
             {
                 Name = model.Name,
-                User = currentUser
+                User = currentUser,
+                Location = model.Location
             };
 
             foreach (var mediaFile in model.Files)
@@ -65,7 +65,7 @@
             {
                 currentFolderEntity = ConvertMediaFolderViewModel(folder, parentFolder);
                 parentFolder.MediaFolders.Add(currentFolderEntity);
-                
+
                 foreach (var file in folder.Files)
                 {
                     currentFolderEntity.MediaFiles.Add(ConvertMediaFileViewModel(file));
@@ -73,7 +73,7 @@
 
                 foreach (var subFolder in folder.Folders)
                 {
-                    subFolderEntity = ConvertMediaFolderViewModel(subFolder,currentFolderEntity);
+                    subFolderEntity = ConvertMediaFolderViewModel(subFolder, currentFolderEntity);
                     currentFolderEntity.MediaFolders.Add(subFolderEntity);
 
                     CreateSubFoldersAndFiles(subFolder.Folders, subFolderEntity);
@@ -86,7 +86,8 @@
             return new MediaFolder
             {
                 Name = folder.Name,
-                User = parentFolder.User
+                User = parentFolder.User,
+                Location = folder.Location
             };
         }
 
@@ -108,7 +109,7 @@
             MediaFolderViewModel newFolder;
             MediaFolderViewModel currentFolderViewModel;
             MediaFileViewModel currentFileViewModel;
-            
+
             foreach (var currentRootFolder in rootMediaFolders)
             {
                 folders.Enqueue(currentRootFolder);
@@ -117,7 +118,7 @@
                 while (folders.Count > 0)
                 {
                     currentFolder = folders.Dequeue();
-                    
+
                     foreach (var folder in currentFolder.MediaFolders)
                     {
                         newFolder = ConvertFolderToViewModel(folder);
@@ -145,7 +146,7 @@
                 Length = file.Length,
                 Location = file.Location,
                 Name = file.Name,
-                ParentDirectoryId = file.ParentFolderId
+                ParentDirectoryId = file.ParentFolderId ?? 0
             };
         }
 
