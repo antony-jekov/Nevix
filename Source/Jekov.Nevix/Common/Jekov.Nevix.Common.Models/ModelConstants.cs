@@ -2,9 +2,9 @@
 {
     public static class ModelConstants
     {
-        public const int NameLength = 150;
+        public const int NameLength = 200;
 
-        public const int LocationLength = 255;
+        public const int LocationLength = 500;
 
         public const int EmailLength = 40;
 

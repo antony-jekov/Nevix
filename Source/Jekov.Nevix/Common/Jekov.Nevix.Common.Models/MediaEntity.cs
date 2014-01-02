@@ -8,10 +8,14 @@
         public int Id { get; set; }
 
         [Required]
+        [StringLength(ModelConstants.LocationLength)]
+        public string Location { get; set; }
+
+        [Required]
         [StringLength(ModelConstants.NameLength)]
         public string Name { get; set; }
 
-        public int ParentFolderId { get; set; }
+        public int? ParentFolderId { get; set; }
 
         public virtual MediaFolder ParentFolder { get; set; }
     }

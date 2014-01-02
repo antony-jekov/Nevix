@@ -4,9 +4,6 @@
 
     public class MediaFile : MediaEntity
     {
-        [StringLength(ModelConstants.LocationLength)]
-        public string Location { get; set; }
-
         [Required]
         public long Length { get; set; }
     }
