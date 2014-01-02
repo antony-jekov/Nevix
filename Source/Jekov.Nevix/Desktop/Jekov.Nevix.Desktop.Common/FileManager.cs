@@ -9,8 +9,15 @@
 
     public class FileManager
     {
-        private static HashSet< string> MediaTypes = new HashSet<string> { ".avi", ".mov", ".mpeg", ".mkv", ".mp3", ".mp4", ".wav" };
+        public FileManager()
+        {
+            directoriesWithMediaInside = new HashSet<string>();
+        }
+
+        private static HashSet<string> MediaTypes = new HashSet<string> { ".avi", ".mov", ".mpeg", ".mkv", ".mp3", ".mp4", ".wav" };
         private static string[] SkipDownloadDirs = { "appdata", "windows", "program files", "program files (x86)", "programdata", "all users" };
+
+        private readonly HashSet<string> directoriesWithMediaInside;
 
         public MediaFolderViewModel ConvertToMediaFolderViewModel(DirectoryInfo rootDirectory)
         {
@@ -33,24 +40,22 @@
             {
                 if (DirectoryHasMediaInside(subDir))
                 {
-                    
-                }
-
-                subFolder = new MediaFolderViewModel
-                {
-                    Location = subDir.FullName,
-                    Name = subDir.Name
-                };
-
-                foreach (var file in subDir.GetFiles())
-                {
-                    if (MediaTypes.Contains(file.Extension.ToLower()))
+                    subFolder = new MediaFolderViewModel
                     {
-                        subFolder.Files.Add(ConvertToMediaFileViewModel(file));
-                    }
-                }
+                        Location = subDir.FullName,
+                        Name = subDir.Name
+                    };
 
-                rootMediaFolder.Folders.Add(ConvertToMediaFolderViewModel(subDir));
+                    foreach (var file in subDir.GetFiles())
+                    {
+                        if (MediaTypes.Contains(file.Extension.ToLower()))
+                        {
+                            subFolder.Files.Add(ConvertToMediaFileViewModel(file));
+                        }
+                    }
+
+                    rootMediaFolder.Folders.Add(ConvertToMediaFolderViewModel(subDir));
+                }
             }
 
             return rootMediaFolder;
@@ -58,8 +63,11 @@
 
         private bool DirectoryHasMediaInside(DirectoryInfo subDir)
         {
+            bool hasFiles = false;
+
             if (subDir.GetFiles().Any(f => MediaTypes.Contains(f.Extension.ToLower())))
             {
+                directoriesWithMediaInside.Add(subDir.FullName);
                 return true;
             }
 
@@ -69,7 +77,13 @@
             {
                 foreach (var innerSubDir in subDirs)
                 {
-                    return DirectoryHasMediaInside(innerSubDir);
+                    hasFiles = DirectoryHasMediaInside(innerSubDir);
+                    if (hasFiles)
+                    {
+                        directoriesWithMediaInside.Add(subDir.FullName);
+                    }
+
+                    return hasFiles;
                 }
             }
 
