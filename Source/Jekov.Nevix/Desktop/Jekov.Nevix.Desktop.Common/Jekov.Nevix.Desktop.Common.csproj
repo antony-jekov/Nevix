@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="CommunicationsManager.cs" />
     <Compile Include="FileManager.cs" />
+    <Compile Include="NevixLocalDbContext.cs" />
+    <Compile Include="Models\UserConfigurationsModel.cs" />
     <Compile Include="PersisterManager.cs" />
     <Compile Include="PlayerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
