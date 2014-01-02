@@ -55,10 +55,6 @@
                         };
         }
 
-        private void CreateSubFoldersAndFiles()
-        {
-        }
-
         public IEnumerable<DirectoryInfo> GetAllDownloadDirectories(IEnumerable<DriveInfo> drives)
         {
             List<DirectoryInfo> downloadDirs = new List<DirectoryInfo>();
@@ -226,9 +222,7 @@
 
         public IEnumerable<DriveInfo> GetAllDrives()
         {
-            List<DriveInfo> drives = new List<DriveInfo>(DriveInfo.GetDrives());
-
-            return drives.Where(d => d.IsReady).ToList();
+            return DriveInfo.GetDrives().Where(d => d.IsReady).ToList();
         }
     }
 }
