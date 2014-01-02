@@ -10,6 +10,9 @@
         [STAThread]
         private static void Main()
         {
+            string userEmail = "troty@abv.bg";
+            string userPass = "pass";
+
             int width = Console.LargestWindowWidth >> 1;
             int height = Console.LargestWindowHeight >> 1;
 
@@ -25,8 +28,8 @@
 
             CommunicationsManager comManager = new CommunicationsManager("nevena");
             PersisterManager persister = new PersisterManager();
-            //persister.Register("troty@abv.bg", "mellon123", "mellon123");
-            persister.Login("troty@abv.bg", "mellon123");
+            persister.Register(userEmail, userPass, userPass);
+            persister.Login(userEmail, userPass);
             FileManager fileManager = new FileManager();
             var dd = fileManager.GetAllDownloadDirectories(fileManager.GetAllDrives());
 
