@@ -1,7 +1,10 @@
 ﻿namespace Jekov.Nevix.Desktop.TestClient
 {
+    using Jekov.Nevix.Common.ViewModels;
     using Jekov.Nevix.Desktop.Common;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     internal class Program
     {
@@ -13,6 +16,7 @@
 
             NevixLocalDbContext db = new NevixLocalDbContext();
             PersisterManager persister = new PersisterManager();
+            FileManager fileManager = new FileManager();
 
             if (!string.IsNullOrEmpty(db.LocalDb.SessionKey))
             {
@@ -28,10 +32,34 @@
 
             if (string.IsNullOrEmpty(channelName) || channelName != Environment.MachineName)
             {
+                var allDownloadFolders = fileManager.GetAllDownloadDirectories(fileManager.GetAllDrives());
+                List<MediaFolderViewModel> foldersConverted = new List<MediaFolderViewModel>();
+                MediaFolderViewModel rootFolder;
+                foreach (var folder in allDownloadFolders)
+                {
+                    rootFolder = fileManager.ConvertToMediaFolderViewModel(folder);
+
+                    if (rootFolder.Files.Any() || rootFolder.Folders.Any())
+                    {
+                        foldersConverted.Add(rootFolder);
+                    }
+                }
+
+                foreach (var convertedFolder in foldersConverted)
+                {
+                    persister.AddMediaFolderToDatabase(convertedFolder);
+                }
+
                 persister.UpdateChannelName(Environment.MachineName);
             }
-
-            FileManager fileManager = new FileManager();
+            else
+            {
+                DateTime lastDatabaseUpdate = persister.LastMediaUpdate();
+                if (fileManager.IsDatabaseOutdated(lastDatabaseUpdate))
+                {
+                    //// TODO: Add functionality for updating the database from local data without wiping everything up.
+                }
+            }
 
             if (string.IsNullOrEmpty(db.LocalDb.BsPlayerLocation))
             {

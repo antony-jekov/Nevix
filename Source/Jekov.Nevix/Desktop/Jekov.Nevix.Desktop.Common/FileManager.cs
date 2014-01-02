@@ -274,5 +274,10 @@
         {
             return DriveInfo.GetDrives().Where(d => d.IsReady).ToList();
         }
+
+        public bool IsDatabaseOutdated(DateTime lastDatabaseUpdate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

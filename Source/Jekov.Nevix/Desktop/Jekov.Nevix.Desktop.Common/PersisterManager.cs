@@ -57,7 +57,7 @@
             SessionKey = HttpRequest(RootAddress + "user/register", HttpPost, serializedRequestBody);
         }
 
-        public void SendMediaDatabase(MediaFolderViewModel rootFolder)
+        public void AddMediaFolderToDatabase(MediaFolderViewModel rootFolder)
         {
             string requestBody = JsonConvert.SerializeObject(rootFolder);
 
