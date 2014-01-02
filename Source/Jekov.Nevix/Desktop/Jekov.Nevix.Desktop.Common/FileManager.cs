@@ -14,8 +14,8 @@
             directoriesWithMediaInside = new HashSet<string>();
         }
 
-        private static HashSet<string> MediaTypes = new HashSet<string> { ".avi", ".mov", ".mpeg", ".mkv", ".mp3", ".mp4", ".wav" };
-        private static string[] SkipDownloadDirs = { "appdata", "windows", "program files", "program files (x86)", "programdata", "all users" };
+        private readonly static HashSet<string> MediaTypes = new HashSet<string> { ".avi", ".mov", ".mpeg", ".mkv", ".mp3", ".mp4", ".wav", ".wmv" };
+        private readonly static HashSet<string> SkipDownloadDirs = new HashSet<string> { "appdata", "windows", "program files", "program files (x86)", "programdata", "all users" };
 
         private readonly HashSet<string> directoriesWithMediaInside;
 
@@ -63,8 +63,13 @@
 
         private bool DirectoryHasMediaInside(DirectoryInfo subDir)
         {
-            bool hasFiles = false;
+            if (directoriesWithMediaInside.Contains(subDir.FullName))
+            {
+                return true;
+            }
 
+            bool hasFiles = false;
+            
             if (subDir.GetFiles().Any(f => MediaTypes.Contains(f.Extension.ToLower())))
             {
                 directoriesWithMediaInside.Add(subDir.FullName);
