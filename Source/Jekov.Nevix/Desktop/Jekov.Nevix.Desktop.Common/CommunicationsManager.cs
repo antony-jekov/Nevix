@@ -11,11 +11,11 @@
 
         public string ChannelName { get; protected set; }
 
-        public CommunicationsManager(string channelName)
+        public CommunicationsManager(string channelName, PlayerManager player)
         {
+            this.player = player;
             this.ChannelName = channelName;
             push = new Pubnub(PublishKey, SubscribeKey, SecretKey);
-            player = new PlayerManager();
             push.Subscribe<string>(this.ChannelName, HandleIncomingData, HandleConnection, HandleError);
         }
 

@@ -88,5 +88,37 @@
 
             return Request.CreateResponse(HttpStatusCode.OK, currentUser.LastFilesUpdate);
         }
+
+        [HttpPut]
+        public HttpResponseMessage UpdateChannel(ChannelViewModel model)
+        {
+            if (model == null)
+            {
+                return NullModelErrorMessage();
+            }
+
+            NevixUser currentUser = GetCurrentUser();
+
+            if (currentUser == null)
+            {
+                return UnauthorizedErrorMessage();
+            }
+
+            currentUser.ChannelName = model.Name;
+            Data.SaveChanges();
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage GetChannel()
+        {
+            NevixUser currentUser = GetCurrentUser();
+            if (currentUser == null)
+            {
+                return UnauthorizedErrorMessage();
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, currentUser.ChannelName);
+        }
     }
 }

@@ -15,7 +15,7 @@
         private const string HttpGet = "GET";
         private readonly static char[] trimCharsForRequest = { '"', '\\', ' ' };
 
-        public string SessionKey { get; protected set; }
+        public string SessionKey { get; set; }
 
         public DateTime LastMediaUpdate()
         {
@@ -23,9 +23,7 @@
             return DateTime.Parse(time);
         }
 
-
-
-        public void Login(string email, string password)
+        public string Login(string email, string password)
         {
             UserLoginViewModel loginData = new UserLoginViewModel
             {
@@ -35,7 +33,9 @@
 
             string serializedRequestBody = JsonConvert.SerializeObject(loginData);
 
-            SessionKey = HttpRequest(RootAddress + "user/login", HttpPut, serializedRequestBody).Trim(new char[] { '"', '\\' });
+            SessionKey = HttpRequest(RootAddress + "user/login", HttpPut, serializedRequestBody);
+
+            return SessionKey;
         }
 
         public void LogOff()
@@ -101,6 +101,16 @@
             string hash = BitConverter.ToString(cryptoTransformSHA1.ComputeHash(buffer)).Replace("-", "");
 
             return hash;
+        }
+
+        public void UpdateChannelName(string computerName)
+        {
+            HttpRequest(RootAddress + "User/UpdateChannel", HttpPut, JsonConvert.SerializeObject(new ChannelViewModel { Name = computerName }));
+        }
+
+        public string GetChannelName()
+        {
+            return GetRequest(RootAddress + "User/GetChannel");
         }
     }
 }

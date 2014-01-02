@@ -1,9 +1,7 @@
 ﻿namespace Jekov.Nevix.Desktop.TestClient
 {
-    using Jekov.Nevix.Common.ViewModels;
     using Jekov.Nevix.Desktop.Common;
     using System;
-    using System.Collections.Generic;
 
     internal class Program
     {
@@ -13,38 +11,48 @@
             string userEmail = "troty@abv.bg";
             string userPass = "pass";
 
-            int width = Console.LargestWindowWidth >> 1;
-            int height = Console.LargestWindowHeight >> 1;
-
-            Console.WindowHeight = height;
-            Console.BufferHeight = height;
-
-            Console.WindowWidth = width;
-            Console.BufferWidth = width;
-
-            Console.CursorVisible = false;
-
-            Console.WriteLine("Nevix Remote Application v 0.3");
-
-            CommunicationsManager comManager = new CommunicationsManager("nevena");
+            NevixLocalDbContext db = new NevixLocalDbContext();
             PersisterManager persister = new PersisterManager();
-            persister.Register(userEmail, userPass, userPass);
-            persister.Login(userEmail, userPass);
+
+            if (!string.IsNullOrEmpty(db.LocalDb.SessionKey))
+            {
+                persister.SessionKey = db.LocalDb.SessionKey;
+            }
+            else
+            {
+                db.LocalDb.SessionKey = persister.Login(userEmail, userPass);
+                db.SaveChanges();
+            }
+
+            string channelName = persister.GetChannelName();
+
+            if (string.IsNullOrEmpty(channelName) || channelName != Environment.MachineName)
+            {
+                persister.UpdateChannelName(Environment.MachineName);
+            }
+
             FileManager fileManager = new FileManager();
-            var dd = fileManager.GetAllDownloadDirectories(fileManager.GetAllDrives());
 
-            List<MediaFolderViewModel> folders = new List<MediaFolderViewModel>();
-
-            foreach (var folder in dd)
+            if (string.IsNullOrEmpty(db.LocalDb.BsPlayerLocation))
             {
-                folders.Add(fileManager.ConvertToMediaFolderViewModel(folder));
+                string playerLocation = fileManager.FindBsPlayerLocation();
+                if (string.IsNullOrEmpty(playerLocation))
+                {
+                    playerLocation = fileManager.AskBsPlayerLocation();
+                }
+
+                if (string.IsNullOrEmpty(playerLocation) || !playerLocation.EndsWith("bsplayer.exe"))
+                {
+                    throw new ArgumentNullException("bsplayer", "Make sure BSPlayer is installed on this system and restart the application!");
+                }
+
+                db.LocalDb.BsPlayerLocation = playerLocation;
+                db.SaveChanges();
             }
 
-            Console.WriteLine();
-            foreach (var folder in folders)
-            {
-                persister.SendMediaDatabase(folder);
-            }
+            PlayerManager player = new PlayerManager(db.LocalDb.BsPlayerLocation);
+
+            CommunicationsManager listener = new CommunicationsManager(Environment.MachineName, player);
 
             while (true)
             {
