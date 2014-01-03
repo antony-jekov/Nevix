@@ -19,7 +19,7 @@ import java.util.Formatter;
 
 public class PersisterManager {
     private String sessionKey;
-    private final String ROOT_ADDRESS = "http://10.0.2.2:50906/api/";
+    private final String ROOT_ADDRESS = "http://nevix.apphb.com/api/";
     private final String SESSION_KEY_HEADER = "X-SessionKey";
 
     public PersisterManager() {

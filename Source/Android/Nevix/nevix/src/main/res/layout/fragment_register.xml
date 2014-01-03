@@ -10,22 +10,30 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/login_email"
+        android:id="@+id/register_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="email:"
         />
 
     <EditText
-        android:id="@+id/login_pass"
+        android:id="@+id/register_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="pass:"
         android:password="true"
         />
 
+    <EditText
+        android:id="@+id/register_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="confirm:"
+        android:password="true"
+        />
+
     <Button
-        android:id="@+id/login_login_btn"
+        android:id="@+id/register_register_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"/>
