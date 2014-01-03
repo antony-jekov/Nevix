@@ -1,8 +1,7 @@
 package com.antonyjekov.nevix.common;
 
 import com.pubnub.api.Pubnub;
-
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
 public class PusherManager {
     private final String SUBSCRIBE_KEY = "sub-c-c7a22dee-6f0c-11e3-9291-02ee2ddab7fe";
@@ -16,7 +15,7 @@ public class PusherManager {
 
     public void SendCommand(String cmd)
     {
-
+        //new Gson().toJson();
         //pusher.publish();
     }
 }
