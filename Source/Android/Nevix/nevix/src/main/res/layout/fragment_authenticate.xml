@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/auth_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/auth_email"
+        android:layout_marginTop="@dimen/input_top_margin"/>
+
+    <EditText
+        android:id="@+id/auth_pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/auth_pass"
+        android:layout_marginTop="@dimen/input_top_margin"
+        android:password="true"/>
+
+    <EditText
+        android:id="@+id/auth_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/auth_confirm"
+        android:layout_marginTop="@dimen/input_top_margin"
+        android:password="true"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/auth_login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/auth_login_btn"
+        android:layout_marginTop="@dimen/btn_margin_top"
+        />
+
+    <Button
+        android:id="@+id/auth_register_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/auth_register_btn"
+        android:layout_marginTop="@dimen/btn_margin_top"
+        android:visibility="gone"
+        />
+
+    <Button
+        android:id="@+id/auth_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Toggle Register"
+        android:layout_marginTop="@dimen/toggle_margin_top"/>
+</LinearLayout>
