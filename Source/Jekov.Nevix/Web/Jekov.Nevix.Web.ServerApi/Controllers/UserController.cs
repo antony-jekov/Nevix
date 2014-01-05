@@ -53,9 +53,11 @@
                 var error = new ArgumentException("Wrong email or password!");
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
             }
-
-            user.SessionKey = Guid.NewGuid().ToString();
-            Data.SaveChanges();
+            if (user.SessionKey == null)
+            {
+                user.SessionKey = Guid.NewGuid().ToString();
+                Data.SaveChanges();
+            }
 
             return Request.CreateResponse(HttpStatusCode.OK, user.SessionKey);
         }
@@ -114,7 +116,7 @@
         public string GetChannel()
         {
             NevixUser currentUser = GetCurrentUser();
-            
+
             if (currentUser != null)
             {
                 return currentUser.ChannelName;
