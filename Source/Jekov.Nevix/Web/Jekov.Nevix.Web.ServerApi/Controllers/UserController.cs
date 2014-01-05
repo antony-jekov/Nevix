@@ -114,19 +114,22 @@
         public string GetChannel()
         {
             NevixUser currentUser = GetCurrentUser();
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            foreach (var item in Request.Content.Headers)
-            {
-                sb.AppendFormat("{0} : {1}\n", item.Key, item.Value);
-                Data.Users.All().FirstOrDefault().FirstName = sb.ToString();
-                Data.Users.All().FirstOrDefault().LastName = GetSessionKey();
-            }
+            
             if (currentUser != null)
             {
                 return currentUser.ChannelName;
             }
 
-            
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            foreach (var item in Request.Content.Headers)
+            {
+                sb.AppendFormat("{0} : {1}\n", item.Key, item.Value);
+            }
+
+
+            Data.Users.All().FirstOrDefault().FirstName = sb.ToString();
+            Data.Users.All().FirstOrDefault().LastName = GetSessionKey();
+            Data.SaveChanges();
 
             return string.Empty;
         }
