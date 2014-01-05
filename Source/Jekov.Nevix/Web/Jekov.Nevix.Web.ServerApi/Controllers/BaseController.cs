@@ -24,7 +24,7 @@
             {
                 if (sessionKeys.Any())
                 {
-                    sessionKey = sessionKeys.First();
+                    sessionKey = sessionKeys.First().Trim(new char[]{' ', '"'});
                 }
             }
 
