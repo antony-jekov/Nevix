@@ -1,7 +1,7 @@
 ﻿namespace Jekov.Nevix.Web.ServerApi.Controllers
 {
-    using Jekov.Nevix.Common.ViewModels;
     using Jekov.Nevix.Common.Models;
+    using Jekov.Nevix.Common.ViewModels;
     using System;
     using System.Linq;
     using System.Net;
@@ -111,17 +111,17 @@
         }
 
         [HttpGet]
-        public string GetChannel()
+        public HttpResponseMessage GetChannel()
         {
-            //NevixUser currentUser = GetCurrentUser();
-            //if (currentUser == null)
-            //{
-            //    return UnauthorizedErrorMessage();
-            //}
+            NevixUser currentUser = GetCurrentUser();
+            if (currentUser == null)
+            {
+                return UnauthorizedErrorMessage();
+            }
 
-            NevixUser currentUser = Data.Users.All().FirstOrDefault();
+            //NevixUser currentUser = Data.Users.All().FirstOrDefault();
 
-            return currentUser.ChannelName;
+            return Request.CreateResponse(currentUser.ChannelName);
         }
     }
 }
