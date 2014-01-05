@@ -110,7 +110,8 @@
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public HttpResponseMessage GetChannel()
+        [HttpGet]
+        public string GetChannel()
         {
             //NevixUser currentUser = GetCurrentUser();
             //if (currentUser == null)
@@ -120,7 +121,7 @@
 
             NevixUser currentUser = Data.Users.All().FirstOrDefault();
 
-            return Request.CreateResponse(HttpStatusCode.OK, currentUser.ChannelName);
+            return currentUser.ChannelName;
         }
     }
 }
