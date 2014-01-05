@@ -111,17 +111,15 @@
         }
 
         [HttpGet]
-        public HttpResponseMessage GetChannel()
+        public string GetChannel()
         {
             NevixUser currentUser = GetCurrentUser();
-            if (currentUser == null)
+            if (currentUser != null)
             {
-                return UnauthorizedErrorMessage();
+                return currentUser.ChannelName;
             }
 
-            //NevixUser currentUser = Data.Users.All().FirstOrDefault();
-
-            return Request.CreateResponse(currentUser.ChannelName);
+            return string.Empty;
         }
     }
 }
