@@ -53,7 +53,7 @@
             {
                 string keys = commands[cmd];
                 SendKeys.SendWait(keys);
-                Console.WriteLine("{0} - {1}", cmd, keys);                
+                Console.WriteLine("{0} - {1}", cmd, keys);
             }
             else
             {
