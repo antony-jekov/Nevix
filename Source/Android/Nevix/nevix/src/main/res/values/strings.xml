@@ -4,13 +4,12 @@
     <string name="app_name">Nevix</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_register">Register</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Nevix Remote Client</string>
     <string name="auth_email">email:</string>
     <string name="auth_pass">pass:</string>
     <string name="auth_confirm">confirm:</string>
     <string name="auth_login_btn">Login</string>
     <string name="auth_register_btn">Register</string>
+    <string name="title_activity_authenticate">Login</string>
 
 </resources>

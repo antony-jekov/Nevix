@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/auth_email"
-        android:layout_marginTop="@dimen/input_top_margin"/>
+        android:layout_marginTop="@dimen/input_top_margin"
+        android:inputType="textEmailAddress"/>
 
     <EditText
         android:id="@+id/auth_pass"

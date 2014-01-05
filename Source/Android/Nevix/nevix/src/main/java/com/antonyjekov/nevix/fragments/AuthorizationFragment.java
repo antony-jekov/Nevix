@@ -7,11 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
-import com.antonyjekov.nevix.common.PersisterManager;
+import com.antonyjekov.nevix.common.PersistentManager;
 
-public class LoginFragment extends Fragment {
+public class AuthorizationFragment extends Fragment {
     Button loginBtn;
     Button registerBtn;
     Button toggleBtn;
@@ -21,16 +22,19 @@ public class LoginFragment extends Fragment {
     EditText confirm;
 
     String sessionKey;
-    PersisterManager persister;
+    PersistentManager persistent;
     Boolean isLogin;
+
+    public AuthorizationFragment(PersistentManager persister) {
+        this.persistent = persister;
+        isLogin = true;
+    }
 
     public static final String SESSION_KEY = "com.antonyjekov.nevix.login.sessionKey";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isLogin = true;
-        persister = new PersisterManager();
     }
 
     @Override
@@ -40,9 +44,9 @@ public class LoginFragment extends Fragment {
         loginBtn = (Button) loginView.findViewById(R.id.auth_login_btn);
         registerBtn = (Button) loginView.findViewById(R.id.auth_register_btn);
 
-        email = (EditText)loginView.findViewById(R.id.auth_email);
-        pass = (EditText)loginView.findViewById(R.id.auth_pass);
-        confirm = (EditText)loginView.findViewById(R.id.auth_confirm);
+        email = (EditText) loginView.findViewById(R.id.auth_email);
+        pass = (EditText) loginView.findViewById(R.id.auth_pass);
+        confirm = (EditText) loginView.findViewById(R.id.auth_confirm);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +54,11 @@ public class LoginFragment extends Fragment {
                 String emailText = email.getText().toString();
                 String passwordText = pass.getText().toString();
 
-                sessionKey = persister.login(emailText, passwordText);
+                if (emailText.length() > 0 && passwordText.length() > 0) {
+                    persistent.login(emailText, passwordText);
+                } else {
+                    warnUser("Please fill in all fields!");
+                }
             }
         });
 
@@ -60,9 +68,11 @@ public class LoginFragment extends Fragment {
                 String emailText = email.getText().toString();
                 String passwordText = pass.getText().toString();
                 String confirmText = confirm.getText().toString();
-
-                if (passwordText.equals(confirmText)){
-                    sessionKey = persister.register(emailText, passwordText, confirmText);
+                if (emailText.length() == 0 || passwordText.length() == 0 || confirmText.length() == 0) {
+                    warnUser("Please fill in all fields!");
+                }
+                else if (passwordText.equals(confirmText)) {
+                    persistent.register(emailText, passwordText, confirmText);
                 } else {
                     warnUser("Passwords do not match!");
                 }
@@ -73,7 +83,7 @@ public class LoginFragment extends Fragment {
         toggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isLogin){
+                if (isLogin) {
                     isLogin = false;
                     loginBtn.setVisibility(View.GONE);
                     confirm.setVisibility(View.VISIBLE);
@@ -92,6 +102,6 @@ public class LoginFragment extends Fragment {
     }
 
     private void warnUser(String message) {
-
+        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 }

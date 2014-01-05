@@ -1,10 +1,10 @@
-package com.antonyjekov.nevix.models;
+package com.antonyjekov.nevix.viewmodels;
 
-public class UserLoginModel {
+public class UserLoginViewModel {
     private String email;
     private String password;
 
-    public UserLoginModel(String email, String pass){
+    public UserLoginViewModel(String email, String pass){
         this.email = email;
         this.password = pass;
     }

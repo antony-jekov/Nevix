@@ -1,6 +1,6 @@
-package com.antonyjekov.nevix.models;
+package com.antonyjekov.nevix.viewmodels;
 
-public class UserRegisterViewModel extends UserLoginModel {
+public class UserRegisterViewModel extends UserLoginViewModel {
     private String confirmPassword;
 
     public UserRegisterViewModel(String email, String pass, String confirmPass){
