@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.antonyjekov.nevix.common.contracts.IAsyncResponse;
 
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.util.ByteArrayBuffer;
@@ -48,24 +49,28 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
                 httpCon.addRequestProperty(PersistentManager.SESSION_KEY_HEADER, sessionKey);
             }
 
+            switch (requestType) {
+                case PUT:
+                    httpCon.setRequestMethod(HttpPut.METHOD_NAME);
+                    break;
+                case POST:
+                    httpCon.setRequestMethod(HttpPost.METHOD_NAME);
+                case GET:
+                    httpCon.setRequestMethod(HttpGet.METHOD_NAME);
+                    break;
+            }
+
+            //sending request to the server.
+            OutputStream outputStream = httpCon.getOutputStream();
+            Writer writer = new OutputStreamWriter(outputStream);
+
             if (requestType != HttpRequestType.GET) {
                 httpCon.addRequestProperty("Content-Length", "" + requestBody.length());
-                switch (requestType) {
-                    case PUT:
-                        httpCon.setRequestMethod(HttpPut.METHOD_NAME);
-                        break;
-                    case POST:
-                        httpCon.setRequestMethod(HttpPost.METHOD_NAME);
-                        break;
-                }
-
-                //sending request to the server.
-                OutputStream outputStream = httpCon.getOutputStream();
-                Writer writer = new OutputStreamWriter(outputStream);
                 writer.write(requestBody);
-                writer.flush();
-                writer.close();
             }
+
+            writer.flush();
+            writer.close();
 
             //getting the response from the server
             InputStream inputStream = httpCon.getInputStream();
@@ -91,8 +96,6 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
         requestAddress = url;
         this.sessionKey = sessionKey;
         requestType = HttpRequestType.GET;
-
-        doInBackground();
     }
 
     public void putRequest(String url, String json, String sessionKey) {
@@ -100,8 +103,6 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
         this.sessionKey = sessionKey;
         requestType = HttpRequestType.PUT;
         requestBody = json;
-
-        doInBackground();
     }
 
     public void postRequest(String url, String json, String sessionKey) {
@@ -109,8 +110,6 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
         this.sessionKey = sessionKey;
         requestType = HttpRequestType.POST;
         requestBody = json;
-
-        doInBackground();
     }
 
     @Override

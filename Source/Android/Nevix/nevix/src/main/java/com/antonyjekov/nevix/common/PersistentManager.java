@@ -48,6 +48,13 @@ public class PersistentManager {
         request.execute();
     }
 
+    public void getChannelName() {
+        HttpAsyncRequest request = new HttpAsyncRequest(delegate);
+        request.getRequest(ROOT_ADDRESS + "user/getchannel", sessionKey);
+
+        request.execute();
+    }
+
     private String stringToSha1(String password) {
         String sha1 = "";
         try {

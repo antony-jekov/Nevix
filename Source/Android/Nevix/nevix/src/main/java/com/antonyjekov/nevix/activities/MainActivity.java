@@ -10,13 +10,17 @@ import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.ContextManager;
+import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
+import com.antonyjekov.nevix.common.PusherManager;
 import com.antonyjekov.nevix.common.contracts.IAsyncResponse;
 
 public class MainActivity extends ActionBarActivity implements IAsyncResponse {
 
-    PersistentManager persistent;
-    ContextManager data;
+    private PersistentManager persistent;
+    private ContextManager data;
+    private PusherManager pusher;
+
     private final String NEVIX_DATA = "NevixData";
 
     public static final int AUTH_REQUEST_CODE = 1;
@@ -32,7 +36,7 @@ public class MainActivity extends ActionBarActivity implements IAsyncResponse {
             startActivityForResult(login, AUTH_REQUEST_CODE);
         } else {
             this.persistent = new PersistentManager(this, sessionKey);
-            Test(sessionKey);
+            persistent.getChannelName();
         }
     }
 
@@ -64,7 +68,6 @@ public class MainActivity extends ActionBarActivity implements IAsyncResponse {
         switch (requestCode) {
             case AUTH_REQUEST_CODE:
                 String sessionKey = data.getStringExtra(AuthenticateActivity.SESSION_KEY_EXTRA);
-                Test(sessionKey);
                 handleAuthorization(sessionKey);
                 break;
         }
@@ -73,11 +76,13 @@ public class MainActivity extends ActionBarActivity implements IAsyncResponse {
     private void handleAuthorization(String sessionKey) {
         this.persistent = new PersistentManager(this, sessionKey);
         storeSessionKey(sessionKey);
+        persistent.getChannelName();
     }
 
     @Override
     public void processFinish(String result) {
-
+        pusher = new PusherManager(result);
+        Test("Connected to channel: " + result);
     }
 
     private void Test(String text) {
