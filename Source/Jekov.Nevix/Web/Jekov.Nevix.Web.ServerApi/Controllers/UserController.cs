@@ -112,11 +112,13 @@
 
         public HttpResponseMessage GetChannel()
         {
-            NevixUser currentUser = GetCurrentUser();
-            if (currentUser == null)
-            {
-                return UnauthorizedErrorMessage();
-            }
+            //NevixUser currentUser = GetCurrentUser();
+            //if (currentUser == null)
+            //{
+            //    return UnauthorizedErrorMessage();
+            //}
+
+            NevixUser currentUser = Data.Users.All().FirstOrDefault();
 
             return Request.CreateResponse(HttpStatusCode.OK, currentUser.ChannelName);
         }
