@@ -21,7 +21,6 @@ public class AuthorizationFragment extends Fragment {
     EditText pass;
     EditText confirm;
 
-    String sessionKey;
     PersistentManager persistent;
     Boolean isLogin;
 

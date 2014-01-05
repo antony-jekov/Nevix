@@ -11,5 +11,16 @@
     <string name="auth_login_btn">Login</string>
     <string name="auth_register_btn">Register</string>
     <string name="title_activity_authenticate">Login</string>
+    <string name="play_btn">Play</string>
+    <string name="pause_btn">Pause</string>
+    <string name="next_btn">Next</string>
+    <string name="prev_btn">Prev</string>
+    <string name="volume_up_btn">Volume+</string>
+    <string name="volume_down_btn">Volume -</string>
+    <string name="rw_btn">RW</string>
+    <string name="ff_btn">FF</string>
+    <string name="full_btn">Full</string>
+    <string name="step_f_btn">Step+</string>
+    <string name="step_b_btn">Step-</string>
 
 </resources>

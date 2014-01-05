@@ -277,7 +277,7 @@
 
         public bool IsDatabaseOutdated(DateTime lastDatabaseUpdate)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

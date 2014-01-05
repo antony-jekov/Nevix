@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 
 import com.antonyjekov.nevix.common.contracts.IAsyncResponse;
 
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.util.ByteArrayBuffer;
@@ -31,7 +30,7 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... params) {
+    protected String doInBackground(Void... strings) {
         String responseStorage; //storage of the response
 
         try {
@@ -45,32 +44,26 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
 
             //properties of SOAPAction header
             httpCon.addRequestProperty("Content-Type", "application/json; charset=utf-8");
-            if (sessionKey != null && sessionKey.length() > 0) {
-                httpCon.addRequestProperty(PersistentManager.SESSION_KEY_HEADER, sessionKey);
-            }
-
-            switch (requestType) {
-                case PUT:
-                    httpCon.setRequestMethod(HttpPut.METHOD_NAME);
-                    break;
-                case POST:
-                    httpCon.setRequestMethod(HttpPost.METHOD_NAME);
-                case GET:
-                    httpCon.setRequestMethod(HttpGet.METHOD_NAME);
-                    break;
-            }
-
-            //sending request to the server.
-            OutputStream outputStream = httpCon.getOutputStream();
-            Writer writer = new OutputStreamWriter(outputStream);
+            httpCon.addRequestProperty(PersistentManager.SESSION_KEY_HEADER, "" + sessionKey);
 
             if (requestType != HttpRequestType.GET) {
                 httpCon.addRequestProperty("Content-Length", "" + requestBody.length());
-                writer.write(requestBody);
-            }
+                switch (requestType) {
+                    case PUT:
+                        httpCon.setRequestMethod(HttpPut.METHOD_NAME);
+                        break;
+                    case POST:
+                        httpCon.setRequestMethod(HttpPost.METHOD_NAME);
+                        break;
+                }
 
-            writer.flush();
-            writer.close();
+                //sending request to the server.
+                OutputStream outputStream = httpCon.getOutputStream();
+                Writer writer = new OutputStreamWriter(outputStream);
+                writer.write(requestBody);
+                writer.flush();
+                writer.close();
+            }
 
             //getting the response from the server
             InputStream inputStream = httpCon.getInputStream();
@@ -114,6 +107,16 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
+        result = trimString(result);
         delegate.processFinish(result);
+    }
+
+    private String trimString(String result) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 1, len = result.length() - 1; i < len; i++) {
+            stringBuilder.append(result.charAt(i));
+        }
+
+        return stringBuilder.toString();
     }
 }

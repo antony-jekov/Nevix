@@ -28,7 +28,7 @@ public class PusherManager {
         };
     }
 
-    public void SendCommand(String cmd)
+    public void pushCommand(String cmd)
     {
         pusher.publish(channel, cmd, callback );
     }
