@@ -44,14 +44,20 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsInput">
+      <HintPath>..\..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandExecutor.cs" />
     <Compile Include="CommunicationsManager.cs" />
+    <Compile Include="Contracts\IPlayer.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="NevixLocalDbContext.cs" />
     <Compile Include="Models\UserConfigurationsModel.cs" />
     <Compile Include="PersisterManager.cs" />
-    <Compile Include="PlayerManager.cs" />
+    <Compile Include="BsPlayer.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pubnub.cs" />
   </ItemGroup>

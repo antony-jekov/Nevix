@@ -26,12 +26,15 @@ public class MainActivity extends ActionBarActivity implements IAsyncResponse {
     private Button nextBtn;
     private Button prevBtn;
     private Button volumeUpBtn;
+    private Button sysVolumeUpBtn;
     private Button volumeDownBtn;
+    private Button sysVolumeDownBtn;
     private Button rwBtn;
     private Button ffBtn;
     private Button fullBtn;
     private Button stepFBtn;
     private Button stepBBtn;
+    private Button powerBtn;
 
     private final String NEVIX_DATA = "NevixData";
 
@@ -62,6 +65,9 @@ public class MainActivity extends ActionBarActivity implements IAsyncResponse {
         fullBtn = (Button) findViewById(R.id.full_btn);
         stepBBtn = (Button) findViewById(R.id.step_b_btn);
         stepFBtn = (Button) findViewById(R.id.step_f_btn);
+        sysVolumeDownBtn = (Button) findViewById(R.id.sys_volume_down_btn);
+        sysVolumeUpBtn = (Button) findViewById(R.id.sys_volume_up_btn);
+        powerBtn = (Button) findViewById(R.id.power_btn);
 
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +144,27 @@ public class MainActivity extends ActionBarActivity implements IAsyncResponse {
             @Override
             public void onClick(View view) {
                 pusher.pushCommand(PlayerCommand.STEP_B_CMD);
+            }
+        });
+
+        sysVolumeUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pusher.pushCommand(PlayerCommand.SYS_VOLUME_UP_CMD);
+            }
+        });
+
+        sysVolumeDownBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pusher.pushCommand(PlayerCommand.SYS_VOLUME_DOWN_CMD);
+            }
+        });
+
+        powerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pusher.pushCommand(PlayerCommand.POWER_CMD);
             }
         });
     }

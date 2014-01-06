@@ -1,5 +1,6 @@
 ﻿namespace Jekov.Nevix.Desktop.Common
 {
+    using Jekov.Nevix.Desktop.Common.Contracts;
     using PubNubMessaging.Core;
     using System;
 
@@ -11,9 +12,9 @@
 
         public string ChannelName { get; protected set; }
 
-        public CommunicationsManager(string channelName, PlayerManager player)
+        public CommunicationsManager(string channelName, CommandExecutor executor)
         {
-            this.player = player;
+            this.executor = executor;
             this.ChannelName = channelName;
             push = new Pubnub(PublishKey, SubscribeKey, SecretKey);
             push.Subscribe<string>(this.ChannelName, HandleIncomingData, HandleConnection, HandleError);
@@ -25,13 +26,13 @@
         }
 
         private readonly Pubnub push;
-        private readonly PlayerManager player;
+        private CommandExecutor executor;
 
         private void HandleIncomingData(string data)
         {
             string cmd = data.TrimStart('[').Substring(0, data.IndexOf(',') - 1).Trim('\\').Trim('"');
-
-            player.ExecuteCmd(cmd);
+            Console.WriteLine(cmd);
+            executor.ExecuteCommand(cmd);
         }
 
         private void HandleConnection(string data)

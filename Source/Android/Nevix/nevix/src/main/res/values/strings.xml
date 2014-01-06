@@ -22,5 +22,8 @@
     <string name="full_btn">Full</string>
     <string name="step_f_btn">Step+</string>
     <string name="step_b_btn">Step-</string>
+    <string name="sys_volume_down_btn">SYSVol-</string>
+    <string name="sys_volume_up_btn">SYSVol+</string>
+    <string name="power_btn">Power off</string>
 
 </resources>

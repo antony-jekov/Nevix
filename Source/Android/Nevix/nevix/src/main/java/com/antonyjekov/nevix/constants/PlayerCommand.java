@@ -12,4 +12,8 @@ public class PlayerCommand {
     public static final String FULL_CMD = "full";
     public static final String STEP_F_CMD = "step_f";
     public static final String STEP_B_CMD = "step_b";
+    public static final String SYS_VOLUME_DOWN_CMD = "sys_volume_down";
+    public static final String SYS_VOLUME_UP_CMD = "sys_volume_up";
+    public static final String POWER_CMD = "power";
+
 }

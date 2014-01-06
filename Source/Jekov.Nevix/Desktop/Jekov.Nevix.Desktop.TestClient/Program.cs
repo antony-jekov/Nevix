@@ -2,13 +2,13 @@
 {
     using Jekov.Nevix.Common.ViewModels;
     using Jekov.Nevix.Desktop.Common;
+    using Jekov.Nevix.Desktop.Common.Contracts;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
     internal class Program
     {
-        [STAThread]
         private static void Main()
         {
             string userEmail = "troty@abv.bg";
@@ -78,9 +78,9 @@
                 db.SaveChanges();
             }
 
-            PlayerManager player = new PlayerManager(db.LocalDb.BsPlayerLocation);
+            IPlayer player = new BsPlayer(db.LocalDb.BsPlayerLocation);
 
-            CommunicationsManager listener = new CommunicationsManager(Environment.MachineName, player);
+            CommunicationsManager listener = new CommunicationsManager(Environment.MachineName, new CommandExecutor(player));
 
             while (true)
             {

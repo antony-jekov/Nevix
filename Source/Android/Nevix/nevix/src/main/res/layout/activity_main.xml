@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,73 +6,113 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.antonyjekov.nevix.activities.MainActivity$PlaceholderFragment"
-    android:orientation="vertical">
+    tools:context="com.antonyjekov.nevix.activities.MainActivity$PlaceholderFragment">
 
     <Button
         android:id="@+id/play_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/play_btn"/>
+        android:text="@string/play_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/prime_btn_text_size" />
 
     <Button
         android:id="@+id/pause_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/pause_btn"/>
+        android:text="@string/pause_btn"
+        android:layout_below="@id/play_btn"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/prime_btn_text_size" />
 
     <Button
         android:id="@+id/next_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next_btn"/>
+        android:text="@string/next_btn"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true" />
 
     <Button
         android:id="@+id/prev_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/prev_btn"/>
+        android:text="@string/prev_btn"
+        android:layout_centerVertical="true" />
 
     <Button
         android:id="@+id/volume_up_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/volume_up_btn"/>
+        android:text="@string/volume_up_btn"
+        android:layout_alignParentRight="true" />
 
     <Button
         android:id="@+id/volume_down_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/volume_down_btn"/>
+        android:text="@string/volume_down_btn"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/volume_up_btn" />
 
     <Button
         android:id="@+id/rw_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/rw_btn"/>
+        android:text="@string/rw_btn"
+        android:layout_below="@id/prev_btn" />
 
     <Button
         android:id="@+id/ff_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ff_btn"/>
+        android:text="@string/ff_btn"
+        android:layout_below="@id/next_btn"
+        android:layout_alignParentRight="true" />
 
     <Button
         android:id="@+id/full_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/full_btn"/>
+        android:text="@string/full_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/play_btn"/>
 
     <Button
-    android:id="@+id/step_f_btn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/step_f_btn"/>
+        android:id="@+id/step_f_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/step_f_btn"
+        android:layout_below="@id/ff_btn"
+        android:layout_alignParentRight="true" />
 
     <Button
         android:id="@+id/step_b_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/step_b_btn"/>
+        android:text="@string/step_b_btn"
+        android:layout_below="@id/rw_btn" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/sys_volume_up_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sys_volume_up_btn"
+        android:layout_toLeftOf="@id/volume_up_btn" />
+
+    <Button
+        android:id="@+id/sys_volume_down_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sys_volume_down_btn"
+        android:layout_toLeftOf="@id/volume_down_btn"
+        android:layout_below="@id/sys_volume_up_btn" />
+
+    <Button
+        android:id="@+id/power_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/power_btn" />
+
+</RelativeLayout>
