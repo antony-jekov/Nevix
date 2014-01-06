@@ -73,7 +73,6 @@ public class MainActivity extends ActionBarActivity implements IAsyncResponse {
             @Override
             public void onClick(View view) {
                 pusher.pushCommand(PlayerCommand.PLAY_CMD);
-                test("PLAY");
             }
         });
 
