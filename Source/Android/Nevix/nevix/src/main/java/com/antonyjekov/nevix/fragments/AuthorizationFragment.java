@@ -15,7 +15,8 @@ import com.antonyjekov.nevix.common.PersistentManager;
 public class AuthorizationFragment extends Fragment {
     Button loginBtn;
     Button registerBtn;
-    Button toggleBtn;
+    Button gotoLoginBtn;
+    Button gotoRegisterBtn;
 
     EditText email;
     EditText pass;
@@ -40,13 +41,11 @@ public class AuthorizationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View loginView = inflater.inflate(R.layout.fragment_authenticate, container, false);
 
-        loginBtn = (Button) loginView.findViewById(R.id.auth_login_btn);
-        registerBtn = (Button) loginView.findViewById(R.id.auth_register_btn);
-
         email = (EditText) loginView.findViewById(R.id.auth_email);
         pass = (EditText) loginView.findViewById(R.id.auth_pass);
         confirm = (EditText) loginView.findViewById(R.id.auth_confirm);
 
+        loginBtn = (Button) loginView.findViewById(R.id.auth_login_btn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +60,7 @@ public class AuthorizationFragment extends Fragment {
             }
         });
 
+        registerBtn = (Button) loginView.findViewById(R.id.auth_register_btn);
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,8 +78,9 @@ public class AuthorizationFragment extends Fragment {
             }
         });
 
-        toggleBtn = (Button) loginView.findViewById(R.id.auth_toggle);
-        toggleBtn.setOnClickListener(new View.OnClickListener() {
+        gotoLoginBtn = (Button) loginView.findViewById(R.id.auth_goto_login);
+
+        View.OnClickListener toggleListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isLogin) {
@@ -87,15 +88,24 @@ public class AuthorizationFragment extends Fragment {
                     loginBtn.setVisibility(View.GONE);
                     confirm.setVisibility(View.VISIBLE);
                     registerBtn.setVisibility(View.VISIBLE);
+                    gotoLoginBtn.setVisibility(View.VISIBLE);
+                    gotoRegisterBtn.setVisibility(View.GONE);
 
                 } else {
                     isLogin = true;
                     loginBtn.setVisibility(View.VISIBLE);
                     confirm.setVisibility(View.GONE);
                     registerBtn.setVisibility(View.GONE);
+                    gotoLoginBtn.setVisibility(View.GONE);
+                    gotoRegisterBtn.setVisibility(View.VISIBLE);
                 }
             }
-        });
+        };
+
+        gotoLoginBtn.setOnClickListener(toggleListener);
+
+        gotoRegisterBtn = (Button) loginView.findViewById(R.id.auth_goto_register);
+        gotoRegisterBtn.setOnClickListener(toggleListener);
 
         return loginView;
     }

@@ -6,5 +6,7 @@
     <dimen name="btn_margin_top">25dp</dimen>
     <dimen name="toggle_margin_top">50dp</dimen>
     <dimen name="prime_btn_text_size">35dp</dimen>
+    <dimen name="btn_width">200dp</dimen>
+    <dimen name="activity_padding">20dp</dimen>
 
 </resources>
