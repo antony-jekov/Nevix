@@ -2,6 +2,7 @@ package com.antonyjekov.nevix.common;
 
 import android.os.AsyncTask;
 
+import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.util.ByteArrayBuffer;
@@ -75,6 +76,12 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
 
             int intResponse = httpCon.getResponseCode();
 
+            if (intResponse == 401){
+                throw new AuthenticationException("User is not logged in.");
+            } else if (intResponse >= 400) {
+                throw new IllegalArgumentException("Bad request.");
+            }
+
             while ((intResponse = bufferedReader.read()) != -1) {
                 byteArrayBuffer.append(intResponse);
             }
@@ -111,7 +118,6 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         result = trimString(result);
-        //delegate.processFinish(result);
         callBack.onResult(result);
     }
 

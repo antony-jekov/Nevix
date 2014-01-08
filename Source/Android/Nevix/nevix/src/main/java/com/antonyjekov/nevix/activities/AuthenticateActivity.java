@@ -14,7 +14,10 @@ public class AuthenticateActivity extends ActionBarActivity {
 
     private PersistentManager persistant;
     public static final String SESSION_KEY_EXTRA = "com.antonyjekov.nevix.auth.sessionKey";
+    public static final String CHANNEL_NAME_EXTRA = "com.antonyjekov.nevix.auth.channelName";
     private ContextManager data;
+    private String channelName;
+    private String sessionKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +26,8 @@ public class AuthenticateActivity extends ActionBarActivity {
 
         data = new ContextManager(this);
         String sessionKey = data.getSessionKey();
-        if (sessionKey != ContextManager.EMPTY_SESSION_KEY) {
+
+        if (sessionKey != null && !sessionKey.equals(ContextManager.EMPTY_SESSION_KEY)) {
 
         }
 
@@ -33,10 +37,36 @@ public class AuthenticateActivity extends ActionBarActivity {
                     .add(R.id.container_auth, new AuthorizationFragment(new HttpAsyncRequest.OnResultCallBack() {
                         @Override
                         public void onResult(String result) {
-                            // TODO handle registration/login
+                            handleLogin(result);
                         }
                     }))
                     .commit();
         }
+    }
+
+    private void handleLogin(String result) {
+        this.sessionKey = result;
+        data.setSessionKey(result);
+        this.persistant.setSessionKey(result);
+        getChanelName();
+    }
+
+    private void getChanelName() {
+        HttpAsyncRequest request = new HttpAsyncRequest(new HttpAsyncRequest.OnResultCallBack() {
+            @Override
+            public void onResult(String result) {
+                channelName = result;
+                finishLogin();
+            }
+        });
+    }
+
+    private void finishLogin() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(SESSION_KEY_EXTRA, this.sessionKey);
+        intent.putExtra(CHANNEL_NAME_EXTRA, this.channelName);
+
+        startActivity(intent);
+        finish();
     }
 }

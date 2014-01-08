@@ -41,6 +41,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         String sessionKey = getIntent().getStringExtra(AuthenticateActivity.SESSION_KEY_EXTRA);
+        String channelName = getIntent().getStringExtra(AuthenticateActivity.CHANNEL_NAME_EXTRA);
 
         if (sessionKey == null || sessionKey.equals("") || sessionKey.length() == 0) {
             throw new IllegalArgumentException("invalid session key.");

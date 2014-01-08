@@ -77,4 +77,8 @@ public class PersistentManager {
 
         return result;
     }
+
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
+    }
 }
