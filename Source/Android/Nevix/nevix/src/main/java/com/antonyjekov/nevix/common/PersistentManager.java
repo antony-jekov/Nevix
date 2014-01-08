@@ -1,6 +1,5 @@
 package com.antonyjekov.nevix.common;
 
-import com.antonyjekov.nevix.common.contracts.IAsyncResponse;
 import com.antonyjekov.nevix.viewmodels.UserLoginViewModel;
 import com.antonyjekov.nevix.viewmodels.UserRegisterViewModel;
 import com.google.gson.Gson;
@@ -15,41 +14,38 @@ public class PersistentManager {
     private final String ROOT_ADDRESS = "http://nevix.apphb.com/api/";
     public static final String SESSION_KEY_HEADER = "X-SessionKey";
 
-    private IAsyncResponse delegate;
-
-    public PersistentManager(IAsyncResponse delegate) {
-        this(delegate, null);
+    public PersistentManager() {
+        this(ContextManager.EMPTY_SESSION_KEY);
     }
 
-    public PersistentManager(IAsyncResponse delegate, String sessionKey) {
+    public PersistentManager(String sessionKey) {
         this.sessionKey = sessionKey;
-        this.delegate = delegate;
     }
 
     public boolean isUserLoggedIn() {
-        return sessionKey != null;
+        return !sessionKey.equals(ContextManager.EMPTY_SESSION_KEY);
     }
 
-    public void login(String email, String pass) {
+    public void login(String email, String pass, HttpAsyncRequest.OnResultCallBack callBack) {
         UserLoginViewModel model = new UserLoginViewModel(email.toLowerCase(), stringToSha1(pass));
         String json = new Gson().toJson(model, UserLoginViewModel.class);
-        HttpAsyncRequest request = new HttpAsyncRequest(delegate);
+        HttpAsyncRequest request = new HttpAsyncRequest(callBack);
         request.putRequest(ROOT_ADDRESS + "user/login", json, null);
 
         request.execute();
     }
 
-    public void register(String email, String password, String confirm) {
+    public void register(String email, String password, String confirm, HttpAsyncRequest.OnResultCallBack callBack) {
         UserRegisterViewModel model = new UserRegisterViewModel(email, stringToSha1(password), stringToSha1(confirm));
         String json = new Gson().toJson(model, UserRegisterViewModel.class);
-        HttpAsyncRequest request = new HttpAsyncRequest(delegate);
+        HttpAsyncRequest request = new HttpAsyncRequest(callBack);
         request.postRequest(ROOT_ADDRESS + "user/register", json, null);
 
         request.execute();
     }
 
-    public void getChannelName() {
-        HttpAsyncRequest request = new HttpAsyncRequest(delegate);
+    public void getChannelName(HttpAsyncRequest.OnResultCallBack callBack) {
+        HttpAsyncRequest request = new HttpAsyncRequest(callBack);
         request.getRequest(ROOT_ADDRESS + "user/getchannel", sessionKey);
 
         request.execute();

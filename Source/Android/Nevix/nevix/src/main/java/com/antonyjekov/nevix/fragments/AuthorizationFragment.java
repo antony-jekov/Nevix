@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
+import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
 
 public class AuthorizationFragment extends Fragment {
@@ -22,12 +23,12 @@ public class AuthorizationFragment extends Fragment {
     EditText pass;
     EditText confirm;
 
-    PersistentManager persistent;
+    HttpAsyncRequest.OnResultCallBack callBack;
     Boolean isLogin;
 
-    public AuthorizationFragment(PersistentManager persister) {
-        this.persistent = persister;
-        isLogin = true;
+    public AuthorizationFragment(HttpAsyncRequest.OnResultCallBack callBack) {
+        this.isLogin = true;
+        this.callBack = callBack;
     }
 
     public static final String SESSION_KEY = "com.antonyjekov.nevix.login.sessionKey";
@@ -41,6 +42,8 @@ public class AuthorizationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View loginView = inflater.inflate(R.layout.fragment_authenticate, container, false);
 
+        final PersistentManager persistent = new PersistentManager();
+
         email = (EditText) loginView.findViewById(R.id.auth_email);
         pass = (EditText) loginView.findViewById(R.id.auth_pass);
         confirm = (EditText) loginView.findViewById(R.id.auth_confirm);
@@ -53,7 +56,7 @@ public class AuthorizationFragment extends Fragment {
                 String passwordText = pass.getText().toString();
 
                 if (emailText.length() > 0 && passwordText.length() > 0) {
-                    persistent.login(emailText, passwordText);
+                    persistent.login(emailText, passwordText, callBack);
                 } else {
                     warnUser("Please fill in all fields!");
                 }
@@ -71,7 +74,7 @@ public class AuthorizationFragment extends Fragment {
                     warnUser("Please fill in all fields!");
                 }
                 else if (passwordText.equals(confirmText)) {
-                    persistent.register(emailText, passwordText, confirmText);
+                    persistent.register(emailText, passwordText, confirmText, callBack);
                 } else {
                     warnUser("Passwords do not match!");
                 }

@@ -9,12 +9,12 @@ import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.ContextManager;
+import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
 import com.antonyjekov.nevix.common.PusherManager;
-import com.antonyjekov.nevix.common.contracts.IAsyncResponse;
 import com.antonyjekov.nevix.constants.PlayerCommand;
 
-public class MainActivity extends ActionBarActivity implements IAsyncResponse {
+public class MainActivity extends ActionBarActivity {
 
     private PersistentManager persistent;
     private ContextManager data;
@@ -46,8 +46,13 @@ public class MainActivity extends ActionBarActivity implements IAsyncResponse {
             throw new IllegalArgumentException("invalid session key.");
         }
 
-        this.persistent = new PersistentManager(this, sessionKey);
-        persistent.getChannelName();
+        this.persistent = new PersistentManager(sessionKey);
+        persistent.getChannelName(new HttpAsyncRequest.OnResultCallBack() {
+            @Override
+            public void onResult(String result) {
+                // TODO handle result
+            }
+        });
 
         data = new ContextManager(this);
 
@@ -169,12 +174,6 @@ public class MainActivity extends ActionBarActivity implements IAsyncResponse {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.test, menu);
         return true;
-    }
-
-    @Override
-    public void processFinish(String result) {
-        pusher = new PusherManager(result);
-        test("Connected to channel: " + result);
     }
 
     private void test(String text) {

@@ -6,11 +6,11 @@ import android.support.v7.app.ActionBarActivity;
 
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.ContextManager;
+import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
-import com.antonyjekov.nevix.common.contracts.IAsyncResponse;
 import com.antonyjekov.nevix.fragments.AuthorizationFragment;
 
-public class AuthenticateActivity extends ActionBarActivity implements IAsyncResponse {
+public class AuthenticateActivity extends ActionBarActivity {
 
     private PersistentManager persistant;
     public static final String SESSION_KEY_EXTRA = "com.antonyjekov.nevix.auth.sessionKey";
@@ -28,19 +28,15 @@ public class AuthenticateActivity extends ActionBarActivity implements IAsyncRes
         }
 
         if (savedInstanceState == null) {
-            this.persistant = new PersistentManager(this);
+            this.persistant = new PersistentManager();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_auth, new AuthorizationFragment(persistant))
+                    .add(R.id.container_auth, new AuthorizationFragment(new HttpAsyncRequest.OnResultCallBack() {
+                        @Override
+                        public void onResult(String result) {
+                            // TODO handle registration/login
+                        }
+                    }))
                     .commit();
         }
-    }
-
-    @Override
-    public void processFinish(String result) {
-        Intent intent = new Intent();
-        intent.putExtra(SESSION_KEY_EXTRA, result);
-
-        setResult(RESULT_OK, intent);
-        finish();
     }
 }

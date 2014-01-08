@@ -2,8 +2,6 @@ package com.antonyjekov.nevix.common;
 
 import android.os.AsyncTask;
 
-import com.antonyjekov.nevix.common.contracts.IAsyncResponse;
-
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.util.ByteArrayBuffer;
@@ -18,15 +16,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
-    public IAsyncResponse delegate;
+
+    private OnResultCallBack callBack;
+
+    public static interface OnResultCallBack {
+        void onResult(String result);
+    }
 
     private HttpRequestType requestType;
     private String sessionKey;
     private String requestAddress;
     private String requestBody;
 
-    public HttpAsyncRequest(IAsyncResponse delegateCallBack) {
-        delegate = delegateCallBack;
+    public HttpAsyncRequest(OnResultCallBack callBack) {
+        this.callBack = callBack;
     }
 
     @Override
@@ -108,7 +111,8 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         result = trimString(result);
-        delegate.processFinish(result);
+        //delegate.processFinish(result);
+        callBack.onResult(result);
     }
 
     private String trimString(String result) {
