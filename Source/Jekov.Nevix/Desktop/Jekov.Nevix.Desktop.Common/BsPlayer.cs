@@ -44,9 +44,11 @@
 
         public override void OpenFile(string location)
         {
+            SetForegroundWindow(player.MainWindowHandle);
             input.Keyboard.KeyPress(VirtualKeyCode.VK_L);
-            Thread.Sleep(300);
+            Thread.Sleep(1000);
             input.Keyboard.TextEntry(location);
+            Thread.Sleep(1000);
             input.Keyboard.KeyPress(VirtualKeyCode.RETURN);
         }
 

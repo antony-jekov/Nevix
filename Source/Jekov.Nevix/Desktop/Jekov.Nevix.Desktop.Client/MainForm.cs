@@ -4,6 +4,7 @@ using Jekov.Nevix.Desktop.Common.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -65,11 +66,12 @@ namespace Jekov.Nevix.Desktop.Client
         private void SyncMedia()
         {
             string serverFolders = persister.GetAllFolders();
+            serverFolders = RemoveIdFromFiles(serverFolders);
 
-            var locals = LoadMediaFolders(serverFolders);
+            var locals = LoadMediaFolders();
 
             string localFolders = fileManager.Serialize(locals);//.Replace("\\\\", "\\");
-            
+
             if (serverFolders.Length > 2 && serverFolders.Equals(localFolders))
             {
                 mediaDirectories.Items.Clear();
@@ -96,6 +98,7 @@ namespace Jekov.Nevix.Desktop.Client
                     mediaDirectories.Items.Clear();
 
                     MediaFolderViewModel createdFolder;
+
                     foreach (var folder in locals)
                     {
                         createdFolder = persister.AddMediaFolderToDatabase(folder);
@@ -112,6 +115,27 @@ namespace Jekov.Nevix.Desktop.Client
             }
         }
 
+        private string RemoveIdFromFiles(string serverFolders)
+        {
+            StringBuilder sb = new StringBuilder();
+            bool inId = false;
+            for (int i = 0, len = serverFolders.Length; i < len; i++)
+            {
+                if (serverFolders[i] == 'I' && serverFolders[i + 1] == 'd' &&
+                    serverFolders[i + 2] == '"' && serverFolders[i + 3] == ':')
+                {
+                    i = serverFolders.IndexOf(',', i + 3) + 1;
+                    sb.Append("Id\":0,\"");
+                }
+                else
+                {
+                    sb.Append(serverFolders[i]);
+                }
+            }
+
+            return sb.ToString();
+        }
+
         private void AddFilesToLocalDb(MediaFolderViewModel createdFolder)
         {
             foreach (var file in createdFolder.Files)
@@ -125,7 +149,7 @@ namespace Jekov.Nevix.Desktop.Client
             }
         }
 
-        private IEnumerable<MediaFolderViewModel> LoadMediaFolders(string serverFolders)
+        private IEnumerable<MediaFolderViewModel> LoadMediaFolders()
         {
             List<MediaFolderViewModel> locals = new List<MediaFolderViewModel>();
             foreach (var folder in db.LocalDb.MediaFolderLocations)
@@ -156,12 +180,15 @@ namespace Jekov.Nevix.Desktop.Client
             persister.ClearAllMedia();
             db.LocalDb.ClearMedia();
 
+            MediaFolderViewModel createdFolder;
+
             foreach (var folder in foldersConverted)
             {
-                persister.AddMediaFolderToDatabase(folder);
-                db.LocalDb.MediaFolderLocations.Add(folder.Location);
-                db.LocalDb.MediaFolders.Add(folder);
-                mediaDirectories.Items.Add(folder.Location);
+                createdFolder = persister.AddMediaFolderToDatabase(folder);
+                db.LocalDb.MediaFolderLocations.Add(createdFolder.Location);
+                db.LocalDb.MediaFolders.Add(createdFolder);
+                AddFilesToLocalDb(createdFolder);
+                mediaDirectories.Items.Add(createdFolder.Location);
             }
 
             db.SaveChanges();
