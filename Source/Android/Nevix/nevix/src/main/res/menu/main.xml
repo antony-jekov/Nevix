@@ -1,6 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:nevix="http://schemas.android.com/apk/res-auto" >
-    <item android:id="@+id/logoff"
-        android:title="@string/log_off"
-        nevix:showAsAction="never"  />
+    xmlns:nevix="http://schemas.android.com/apk/res-auto" >>
+    <!-- Search, should appear as action button -->
+    <item android:id="@+id/open_file_btn"
+        nevix:title="@string/Open"
+        android:icon="@android:drawable/ic_menu_search"
+        nevix:showAsAction="always" />
 </menu>

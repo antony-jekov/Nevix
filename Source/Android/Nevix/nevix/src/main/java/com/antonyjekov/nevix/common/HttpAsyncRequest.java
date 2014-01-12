@@ -122,6 +122,10 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
     }
 
     private String trimString(String result) {
+        if (result == null || result.length() == 0) {
+            return "";
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1, len = result.length() - 1; i < len; i++) {
             stringBuilder.append(result.charAt(i));

@@ -25,22 +25,30 @@ public class AuthenticateActivity extends ActionBarActivity {
         setContentView(R.layout.activity_authenticate);
 
         data = new ContextManager(this);
-        String sessionKey = data.getSessionKey();
-
-        if (sessionKey != null && !sessionKey.equals(ContextManager.EMPTY_SESSION_KEY)) {
-
-        }
 
         if (savedInstanceState == null) {
             this.persistant = new PersistentManager();
+
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container_auth, new AuthorizationFragment(new HttpAsyncRequest.OnResultCallBack() {
                         @Override
                         public void onResult(String result) {
                             handleLogin(result);
+                            data.setSessionKey(result);
                         }
                     }))
                     .commit();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String sessionKey = data.getSessionKey();
+
+        if (sessionKey != null && !sessionKey.equals(ContextManager.EMPTY_SESSION_KEY)) {
+            handleLogin(sessionKey);
         }
     }
 
@@ -52,13 +60,16 @@ public class AuthenticateActivity extends ActionBarActivity {
     }
 
     private void getChanelName() {
-        HttpAsyncRequest request = new HttpAsyncRequest(new HttpAsyncRequest.OnResultCallBack() {
+        HttpAsyncRequest.OnResultCallBack callBack = new HttpAsyncRequest.OnResultCallBack() {
             @Override
             public void onResult(String result) {
+
                 channelName = result;
                 finishLogin();
             }
-        });
+        };
+
+        persistant.getChannelName(callBack);
     }
 
     private void finishLogin() {

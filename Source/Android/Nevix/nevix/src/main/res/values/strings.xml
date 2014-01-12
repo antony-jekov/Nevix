@@ -27,5 +27,7 @@
     <string name="step_b_btn"><![CDATA[|<]]></string>
     <string name="log_off">Log Off</string>
     <string name="title_activity_test">TestActivity</string>
+    <string name="Open">Open</string>
+    <string name="title_activity_browse">Browse Media</string>
 
 </resources>

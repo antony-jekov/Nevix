@@ -1,8 +1,11 @@
 package com.antonyjekov.nevix.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,8 +16,11 @@ import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
 import com.antonyjekov.nevix.common.PusherManager;
 import com.antonyjekov.nevix.constants.PlayerCommand;
+import com.antonyjekov.nevix.viewmodels.MediaFileAndroidViewModel;
 
 public class MainActivity extends ActionBarActivity {
+
+    public static final int BROWSE_RESULT = 1001;
 
     private PersistentManager persistent;
     private ContextManager data;
@@ -43,17 +49,14 @@ public class MainActivity extends ActionBarActivity {
         String sessionKey = getIntent().getStringExtra(AuthenticateActivity.SESSION_KEY_EXTRA);
         String channelName = getIntent().getStringExtra(AuthenticateActivity.CHANNEL_NAME_EXTRA);
 
+        test(sessionKey + "\n" + channelName);
+
         if (sessionKey == null || sessionKey.equals("") || sessionKey.length() == 0) {
             throw new IllegalArgumentException("invalid session key.");
         }
 
         this.persistent = new PersistentManager(sessionKey);
-        persistent.getChannelName(new HttpAsyncRequest.OnResultCallBack() {
-            @Override
-            public void onResult(String result) {
-                // TODO handle result
-            }
-        });
+        this.pusher = new PusherManager(channelName);
 
         data = new ContextManager(this);
 
@@ -173,8 +176,28 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.test, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent browse = new Intent(this, BrowseActivity.class);
+        startActivityForResult(browse, BROWSE_RESULT);
+
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == BROWSE_RESULT) {
+                int requestedFile = data.getIntExtra(BrowseActivity.BROWSED_FILE, 0);
+                if (requestedFile != 0) {
+                    pusher.pushCommand("open" + requestedFile);
+                }
+            }
+        }
     }
 
     private void test(String text) {
