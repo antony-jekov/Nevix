@@ -35,11 +35,9 @@ public class PersistentManager {
         request.execute();
     }
 
-    public void register(String email, String password, String confirm, HttpAsyncRequest.OnResultCallBack callBack) {
-        UserRegisterViewModel model = new UserRegisterViewModel(email, stringToSha1(password), stringToSha1(confirm));
-        String json = new Gson().toJson(model, UserRegisterViewModel.class);
-        HttpAsyncRequest request = new HttpAsyncRequest(callBack);
-        request.postRequest(ROOT_ADDRESS + "user/register", json, null);
+    public void getLastMediaUpdateTime(HttpAsyncRequest.OnResultCallBack callback) {
+        HttpAsyncRequest request = new HttpAsyncRequest(callback);
+        request.getRequest(ROOT_ADDRESS + "User/LastMediaUpdate", sessionKey);
 
         request.execute();
     }

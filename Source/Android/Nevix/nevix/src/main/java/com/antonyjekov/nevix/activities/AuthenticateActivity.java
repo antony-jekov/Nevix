@@ -68,9 +68,9 @@ public class AuthenticateActivity extends ActionBarActivity {
             @Override
             public void onResult(String result) {
 
-                if (channelName != null && channelName.length() > 0) {
+                if (result != null && result.length() > 0) {
                     channelName = result;
-                    finishLogin();
+                    getLatestUpdateTime();
                 } else {
                     Toast.makeText(thisContext, "No channel!\nMake sure you have started the Nevix Desktop Client.", Toast.LENGTH_LONG);
                 }
@@ -79,6 +79,20 @@ public class AuthenticateActivity extends ActionBarActivity {
         };
 
         persistant.getChannelName(callBack);
+    }
+
+    private void getLatestUpdateTime() {
+        persistant.getLastMediaUpdateTime(new HttpAsyncRequest.OnResultCallBack() {
+            @Override
+            public void onResult(String result) {
+                String lastUpdate = data.getLastDatabaseUpdate();
+                if (!lastUpdate.equals(result)) {
+                    // TODO: request media from server and store it.
+                    data.setLastDatabaseUpdate(result);
+                }
+                // TODO: finish auth.
+            }
+        });
     }
 
     private void finishLogin() {

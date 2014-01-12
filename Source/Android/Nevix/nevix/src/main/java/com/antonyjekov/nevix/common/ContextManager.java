@@ -12,6 +12,7 @@ public class ContextManager {
     public static final String EMPTY_SESSION_KEY = "";
     private static final String SESSION_KEY = "SessionKey";
     private static final String MEDIA_DATA = "MediaData";
+    private static final String LAST_UPDATE = "LastUpdate";
 
     public ContextManager (Context context) {
         this.localData = context.getSharedPreferences(NEVIX_DATA, 0);
@@ -34,5 +35,13 @@ public class ContextManager {
 
     public String getMediaDatabase() {
         return localData.getString(MEDIA_DATA, "");
+    }
+
+    public String getLastDatabaseUpdate() {
+        return localData.getString(LAST_UPDATE, "");
+    }
+
+    public void setLastDatabaseUpdate(String time) {
+        localEditor.putString(LAST_UPDATE, time);
     }
 }
