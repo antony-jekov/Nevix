@@ -55,10 +55,6 @@
             else
             {
                 DateTime lastDatabaseUpdate = persister.LastMediaUpdate();
-                if (fileManager.IsDatabaseOutdated(lastDatabaseUpdate))
-                {
-                    //// TODO: Add functionality for updating the database from local data without wiping everything up.
-                }
             }
 
             if (string.IsNullOrEmpty(db.LocalDb.BsPlayerLocation))
@@ -66,7 +62,6 @@
                 string playerLocation = fileManager.FindBsPlayerLocation();
                 if (string.IsNullOrEmpty(playerLocation))
                 {
-                    playerLocation = fileManager.AskBsPlayerLocation();
                 }
 
                 if (string.IsNullOrEmpty(playerLocation) || !playerLocation.EndsWith("bsplayer.exe"))

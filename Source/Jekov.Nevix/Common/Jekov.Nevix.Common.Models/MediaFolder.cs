@@ -14,7 +14,7 @@
 
         public virtual ICollection<MediaFile> MediaFiles { get; set; }
 
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
         public virtual NevixUser User { get; set; }
     }

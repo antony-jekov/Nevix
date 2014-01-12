@@ -3,20 +3,30 @@
     using Jekov.Nevix.Common.ViewModels;
     using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Security.Cryptography;
 
     public class PersisterManager
     {
-        //private const string RootAddress = "http://localhost:50906/api/";
-        private const string RootAddress = "http://nevix.apphb.com/api/";
+        private const string RootAddress = "http://localhost:50906/api/";
+        //private const string RootAddress = "http://nevix.apphb.com/api/";
         private const string HttpPost = "POST";
         private const string HttpPut = "PUT";
         private const string HttpGet = "GET";
         private readonly static char[] trimCharsForRequest = { '"', '\\', ' ' };
 
         public string SessionKey { get; set; }
+
+        public PersisterManager () : this (string.Empty)
+        {
+        }
+
+        public PersisterManager(string sessionKey)
+        {
+            this.SessionKey = sessionKey;
+        }
 
         public DateTime LastMediaUpdate()
         {
@@ -44,7 +54,7 @@
             HttpRequest(RootAddress + "user/logoff", HttpPut);
         }
 
-        public void Register(string email, string password, string confirmPassword)
+        public string Register(string email, string password, string confirmPassword)
         {
             UserRegisterViewModel registerData = new UserRegisterViewModel
             {
@@ -56,6 +66,7 @@
             string serializedRequestBody = JsonConvert.SerializeObject(registerData);
 
             SessionKey = HttpRequest(RootAddress + "user/register", HttpPost, serializedRequestBody);
+            return SessionKey;
         }
 
         public void AddMediaFolderToDatabase(MediaFolderViewModel rootFolder)
@@ -76,7 +87,27 @@
             Stream os = req.GetRequestStream();
             os.Write(bytes, 0, bytes.Length);
             os.Close();
-            WebResponse resp = req.GetResponse();
+            WebResponse resp = null;
+            try
+            {
+                resp = req.GetResponse();
+            }
+            catch (WebException e)
+            {
+                string err = e.Message;
+                if (err.EndsWith("Bad Request."))
+                {
+                    throw new ArgumentException();
+                }
+                else if (err.EndsWith("Conflict."))
+                {
+                    throw new InvalidOperationException("There is already an user with that email.");
+                }
+                else if (err.EndsWith("Unauthorized."))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
 
             if (resp == null) return null;
 
@@ -112,6 +143,21 @@
         public string GetChannelName()
         {
             return GetRequest(RootAddress + "User/GetChannel");
+        }
+
+        public void ClearAllMedia()
+        {
+            HttpRequest(RootAddress + "mediafolders/clear", HttpPut);
+        }
+
+        public void DeleteFolder(string folderName)
+        {
+            HttpRequest(RootAddress + "mediafolders/remove?location=" + folderName, HttpPut);
+        }
+
+        public string GetAllFolders()
+        {
+            return GetRequest(RootAddress + "mediafolders/getfolders");
         }
     }
 }

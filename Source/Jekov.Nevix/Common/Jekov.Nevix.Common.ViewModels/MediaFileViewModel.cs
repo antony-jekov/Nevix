@@ -16,9 +16,6 @@
         [StringLength(ModelConstants.LocationLength)]
         public string Location { get; set; }
 
-        [DataMember(Name = "parentDirectoryId")]
-        public int ParentDirectoryId { get; set; }
-
         [Required]
         [DataMember(Name = "length")]
         public long Length { get; set; }

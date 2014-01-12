@@ -1,6 +1,7 @@
 ﻿namespace Jekov.Nevix.Desktop.Common
 {
     using Jekov.Nevix.Common.ViewModels;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -107,8 +108,6 @@
 
         public IEnumerable<DirectoryInfo> GetAllDownloadDirectories(IEnumerable<DriveInfo> drives)
         {
-            List<DirectoryInfo> downloadDirs = new List<DirectoryInfo>();
-            HashSet<string> visitedDirs = new HashSet<string>();
             Queue<DirectoryInfo> dirs = new Queue<DirectoryInfo>();
 
             foreach (var drive in drives)
@@ -124,18 +123,22 @@
                 }
             }
 
+
+            List<DirectoryInfo> downloadDirs = GetDirecory(dirs);
+
+            return downloadDirs;
+        }
+
+        private List<DirectoryInfo> GetDirecory(Queue<DirectoryInfo> dirs)
+        {
+            List<DirectoryInfo> folders = new List<DirectoryInfo>();
+
             DirectoryInfo[] subDirs;
             string nameToLower;
 
             while (dirs.Count > 0)
             {
                 DirectoryInfo currentDir = dirs.Dequeue();
-                if (visitedDirs.Contains(currentDir.FullName))
-                {
-                    continue;
-                }
-
-                visitedDirs.Add(currentDir.FullName);
                 nameToLower = currentDir.Name.ToLower();
 
                 if (SkipDownloadDirs.Contains(nameToLower))
@@ -145,7 +148,7 @@
 
                 if (nameToLower.Contains("download"))
                 {
-                    downloadDirs.Add(currentDir);
+                    folders.Add(currentDir);
                 }
                 else
                 {
@@ -170,7 +173,7 @@
                 }
             }
 
-            return downloadDirs;
+            return folders;
         }
 
         public IEnumerable<FileInfo> GetMediaFiles(IEnumerable<DirectoryInfo> downloadDirectories)
@@ -209,17 +212,6 @@
             }
 
             return mediaFiles.OrderBy(f => f.Name);
-        }
-
-        public string AskBsPlayerLocation()
-        {
-            string location = string.Empty;
-
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.ShowDialog();
-            location = dialog.FileName;
-
-            return location;
         }
 
         public string FindBsPlayerLocation()
@@ -275,9 +267,18 @@
             return DriveInfo.GetDrives().Where(d => d.IsReady).ToList();
         }
 
-        public bool IsDatabaseOutdated(DateTime lastDatabaseUpdate)
+        public MediaFolderViewModel GetFolder(string path)
         {
-            return false;
+            DirectoryInfo dir = new DirectoryInfo(path);
+
+            MediaFolderViewModel folder = ConvertToMediaFolderViewModel(dir);
+
+            return folder;
+        }
+
+        public string Serialize(object obj)
+        {
+            return JsonConvert.SerializeObject(obj);
         }
     }
 }

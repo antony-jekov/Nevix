@@ -26,22 +26,8 @@
                 return NullModelErrorMessage();
             }
 
-            MediaFolder rootFolder = new MediaFolder
-            {
-                Name = model.Name,
-                User = currentUser,
-                Location = model.Location
-            };
-
-            foreach (var mediaFile in model.Files)
-            {
-                rootFolder.MediaFiles.Add(ConvertMediaFileViewModel(mediaFile));
-            }
-
-            CreateSubFoldersAndFiles(model.Folders, rootFolder);
-
+            MediaFolder rootFolder = ConvertMediaFolderViewModel(model, currentUser.Id);
             currentUser.Folders.Add(rootFolder);
-
             currentUser.LastFilesUpdate = DateTime.UtcNow;
 
             Data.SaveChanges();
@@ -59,39 +45,74 @@
             };
         }
 
-        private void CreateSubFoldersAndFiles(IEnumerable<MediaFolderViewModel> folders, MediaFolder parentFolder)
+        private MediaFolder ConvertMediaFolderViewModel(MediaFolderViewModel folder, int userId)
         {
-            MediaFolder currentFolderEntity;
-            MediaFolder subFolderEntity;
-
-            foreach (var folder in folders)
-            {
-                currentFolderEntity = ConvertMediaFolderViewModel(folder, parentFolder);
-                parentFolder.MediaFolders.Add(currentFolderEntity);
-
-                foreach (var file in folder.Files)
-                {
-                    currentFolderEntity.MediaFiles.Add(ConvertMediaFileViewModel(file));
-                }
-
-                foreach (var subFolder in folder.Folders)
-                {
-                    subFolderEntity = ConvertMediaFolderViewModel(subFolder, currentFolderEntity);
-                    currentFolderEntity.MediaFolders.Add(subFolderEntity);
-
-                    CreateSubFoldersAndFiles(subFolder.Folders, subFolderEntity);
-                }
-            }
-        }
-
-        private MediaFolder ConvertMediaFolderViewModel(MediaFolderViewModel folder, MediaFolder parentFolder)
-        {
-            return new MediaFolder
+            MediaFolder model = new MediaFolder
             {
                 Name = folder.Name,
-                User = parentFolder.User,
+                UserId = userId,
                 Location = folder.Location
             };
+
+            foreach (var file in folder.Files)
+            {
+                model.MediaFiles.Add(ConvertMediaFileViewModel(file));
+            }
+
+            foreach (var subFolder in folder.Folders)
+            {
+                model.MediaFolders.Add(ConvertMediaFolderViewModel(subFolder, userId));
+            }
+
+            return model;
+        }
+
+        [HttpPut]
+        public HttpResponseMessage Remove(string location)
+        {
+            NevixUser user = GetCurrentUser();
+
+            if (user == null)
+            {
+                return UnauthorizedErrorMessage();
+            }
+
+            MediaFolder requestedFolder = user.Folders.FirstOrDefault(f => f.Location == location);
+            if (requestedFolder != null)
+            {
+                List<MediaFolder> foldersToRemove = new List<MediaFolder>();
+                GetChildrenFolders(foldersToRemove, requestedFolder);
+
+                foreach (var folder in foldersToRemove)
+                {
+                    List<MediaFile> files = new List<MediaFile>(folder.MediaFiles);
+
+                    foreach (var file in files)
+                    {
+                        Data.Files.Delete(file.Id);
+                    }
+                }
+
+                foreach (var folder in foldersToRemove)
+                {
+                    Data.Folders.Delete(folder.Id);
+                }
+
+                user.LastFilesUpdate = DateTime.UtcNow;
+                Data.SaveChanges();
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        private void GetChildrenFolders(ICollection<MediaFolder> folders, MediaFolder root)
+        {
+            folders.Add(root);
+
+            foreach (var subFolder in root.MediaFolders)
+            {
+                GetChildrenFolders(folders, subFolder);
+            }
         }
 
         [HttpGet]
@@ -104,39 +125,13 @@
                 return UnauthorizedErrorMessage();
             }
 
-            IEnumerable<MediaFolder> rootMediaFolders = Data.Folders.All().Where(f => f.UserId == currentUser.Id && f.ParentFolderId == 0).ToList();
+            IEnumerable<MediaFolder> rootMediaFolders = Data.Folders.All().Where(f => f.UserId == currentUser.Id && f.ParentFolderId == null).ToList();
 
             List<MediaFolderViewModel> userFolders = new List<MediaFolderViewModel>();
-            Queue<MediaFolder> folders = new Queue<MediaFolder>();
-            MediaFolder currentFolder;
-            MediaFolderViewModel newFolder;
-            MediaFolderViewModel currentFolderViewModel;
-            MediaFileViewModel currentFileViewModel;
 
             foreach (var currentRootFolder in rootMediaFolders)
             {
-                folders.Enqueue(currentRootFolder);
-                currentFolderViewModel = ConvertFolderToViewModel(currentRootFolder);
-
-                while (folders.Count > 0)
-                {
-                    currentFolder = folders.Dequeue();
-
-                    foreach (var folder in currentFolder.MediaFolders)
-                    {
-                        newFolder = ConvertFolderToViewModel(folder);
-                        currentFolderViewModel.Folders.Add(newFolder);
-                        folders.Enqueue(folder);
-                    }
-
-                    foreach (var file in currentFolder.MediaFiles)
-                    {
-                        currentFileViewModel = ConvertFileToViewModel(file);
-                        currentFolderViewModel.Files.Add(currentFileViewModel);
-                    }
-                }
-
-                userFolders.Add(currentFolderViewModel);
+                userFolders.Add(ConvertFolderToViewModel(currentRootFolder));
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, userFolders);
@@ -148,17 +143,46 @@
             {
                 Length = file.Length,
                 Location = file.Location,
-                Name = file.Name,
-                ParentDirectoryId = file.ParentFolderId ?? 0
+                Name = file.Name
             };
         }
 
         private MediaFolderViewModel ConvertFolderToViewModel(MediaFolder folder)
         {
-            return new MediaFolderViewModel
+            MediaFolderViewModel model = new MediaFolderViewModel
             {
-                Name = folder.Name
+                Name = folder.Name,
+                Location = folder.Location
             };
+
+            foreach (var file in folder.MediaFiles)
+            {
+                model.Files.Add(ConvertFileToViewModel(file));
+            }
+
+            foreach (var subFolder in folder.MediaFolders)
+            {
+                model.Folders.Add(ConvertFolderToViewModel(subFolder));
+            }
+
+            return model;
+        }
+
+        [HttpPut]
+        public HttpResponseMessage Clear()
+        {
+            NevixUser user = GetCurrentUser();
+            if (user == null)
+            {
+                return UnauthorizedErrorMessage();
+            }
+
+            foreach (var folder in user.Folders.Where(f => f.ParentFolderId == null).ToList())
+            {
+                Remove(folder.Location);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }
