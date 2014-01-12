@@ -24,21 +24,6 @@
         android:layout_marginTop="@dimen/input_top_margin"
         android:password="true"/>
 
-    <EditText
-        android:id="@+id/auth_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/auth_confirm"
-        android:layout_marginTop="@dimen/input_top_margin"
-        android:password="true"
-        android:visibility="gone"/>
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Remember Me"
-        android:layout_marginTop="30dp"/>
-
     <Button
         android:id="@+id/auth_login_btn"
         android:layout_width="fill_parent"
@@ -46,34 +31,5 @@
         android:text="@string/auth_login_btn"
         android:layout_marginTop="@dimen/btn_margin_top"
         android:layout_gravity="center_horizontal"
-        />
-
-    <Button
-        android:id="@+id/auth_register_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/auth_register_btn"
-        android:layout_marginTop="@dimen/btn_margin_top"
-        android:visibility="gone"
-        android:layout_gravity="clip_horizontal"
-        />
-
-    <Button
-        android:id="@+id/auth_goto_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to Register"
-        android:layout_marginTop="@dimen/toggle_margin_top"
-        android:layout_gravity="center_horizontal"
-        />
-
-    <Button
-        android:id="@+id/auth_goto_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to Login"
-        android:layout_marginTop="@dimen/toggle_margin_top"
-        android:layout_gravity="center_horizontal"
-        android:visibility="gone"
         />
 </LinearLayout>

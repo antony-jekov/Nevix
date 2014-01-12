@@ -1,8 +1,10 @@
 package com.antonyjekov.nevix.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.ContextManager;
@@ -19,11 +21,13 @@ public class AuthenticateActivity extends ActionBarActivity {
     private String channelName;
     private String sessionKey;
 
+    Context thisContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authenticate);
-
+        thisContext = this;
         data = new ContextManager(this);
 
         if (savedInstanceState == null) {
@@ -64,8 +68,13 @@ public class AuthenticateActivity extends ActionBarActivity {
             @Override
             public void onResult(String result) {
 
-                channelName = result;
-                finishLogin();
+                if (channelName != null && channelName.length() > 0) {
+                    channelName = result;
+                    finishLogin();
+                } else {
+                    Toast.makeText(thisContext, "No channel!\nMake sure you have started the Nevix Desktop Client.", Toast.LENGTH_LONG);
+                }
+
             }
         };
 
