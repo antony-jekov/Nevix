@@ -24,6 +24,7 @@
         private const string FULL_CMD = "full";
         private const string FF_CMD = "ff";
         private const string RW_CMD = "rw";
+        private const string OPEN_CMD = "open";
 
         public CommandExecutor(IPlayer player)
         {
@@ -100,7 +101,13 @@
                     break;
 
                 default:
-                    throw new ArgumentException("cmd", "Unknown command type!");
+                    if (cmd.Length > 4 && cmd.StartsWith(OPEN_CMD))
+                    {
+                        string location = cmd.Substring(4);
+                        player.OpenFile(location);
+                    }
+
+                    break;
             }
         }
 
