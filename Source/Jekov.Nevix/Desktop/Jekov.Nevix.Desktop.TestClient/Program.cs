@@ -75,7 +75,7 @@
 
             IPlayer player = new BsPlayer(db.LocalDb.BsPlayerLocation);
 
-            CommunicationsManager listener = new CommunicationsManager(Environment.MachineName, new CommandExecutor(player));
+            CommunicationsManager listener = new CommunicationsManager(Environment.MachineName, new CommandExecutor(player, db.LocalDb.Files));
 
             while (true)
             {

@@ -95,16 +95,33 @@ namespace Jekov.Nevix.Desktop.Client
                     db.LocalDb.ClearMedia();
                     mediaDirectories.Items.Clear();
 
+                    MediaFolderViewModel createdFolder;
                     foreach (var folder in locals)
                     {
-                        persister.AddMediaFolderToDatabase(folder);
-                        db.LocalDb.MediaFolderLocations.Add(folder.Location);
-                        db.LocalDb.MediaFolders.Add(folder);
-                        mediaDirectories.Items.Add(folder.Location);
+                        createdFolder = persister.AddMediaFolderToDatabase(folder);
+
+                        db.LocalDb.MediaFolderLocations.Add(createdFolder.Location);
+                        db.LocalDb.MediaFolders.Add(createdFolder);
+                        mediaDirectories.Items.Add(createdFolder.Location);
+
+                        AddFilesToLocalDb(createdFolder);
                     }
 
                     db.SaveChanges();
                 }
+            }
+        }
+
+        private void AddFilesToLocalDb(MediaFolderViewModel createdFolder)
+        {
+            foreach (var file in createdFolder.Files)
+            {
+                db.LocalDb.Files.Add(file.Id, file.Location);
+            }
+
+            foreach (var subFolder in createdFolder.Folders)
+            {
+                AddFilesToLocalDb(subFolder);
             }
         }
 
@@ -226,7 +243,7 @@ namespace Jekov.Nevix.Desktop.Client
         {
             IPlayer player = new BsPlayer(bsPlayerLocation);
 
-            CommandExecutor cmdExec = new CommandExecutor(player);
+            CommandExecutor cmdExec = new CommandExecutor(player, db.LocalDb.Files);
             listener = new CommunicationsManager(Environment.MachineName, cmdExec);
         }
     }

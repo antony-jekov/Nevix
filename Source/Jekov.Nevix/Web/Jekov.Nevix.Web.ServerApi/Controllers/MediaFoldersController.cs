@@ -33,7 +33,7 @@
             Data.SaveChanges();
 
 
-            return Request.CreateResponse(HttpStatusCode.Created);
+            return Request.CreateResponse(HttpStatusCode.Created, ConvertFolderToViewModel(rootFolder));
         }
 
         private MediaFile ConvertMediaFileViewModel(MediaFileViewModel mediaFile)
@@ -142,6 +142,7 @@
         {
             return new MediaFileViewModel
             {
+                Id = file.Id,
                 Length = file.Length,
                 Location = file.Location,
                 Name = file.Name

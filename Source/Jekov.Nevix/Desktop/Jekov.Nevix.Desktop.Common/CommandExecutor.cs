@@ -1,12 +1,13 @@
 ﻿namespace Jekov.Nevix.Desktop.Common
 {
     using Jekov.Nevix.Desktop.Common.Contracts;
-    using System;
+    using System.Collections.Generic;
     using System.Threading;
 
     public class CommandExecutor
     {
-        private IPlayer player;
+        private readonly IPlayer player;
+        private readonly IDictionary<int, string> files;
 
         private const string PLAY_CMD = "play";
         private const string PAUSE_CMD = "pause";
@@ -26,11 +27,11 @@
         private const string RW_CMD = "rw";
         private const string OPEN_CMD = "open";
 
-        public CommandExecutor(IPlayer player)
+        public CommandExecutor(IPlayer player, IDictionary<int, string> files)
         {
             this.player = player;
+            this.files = files;
         }
-
 
         private void ExexuteCmd(string cmd)
         {
@@ -103,7 +104,8 @@
                 default:
                     if (cmd.Length > 4 && cmd.StartsWith(OPEN_CMD))
                     {
-                        string location = cmd.Substring(4);
+                        string locationStr = cmd.Substring(4);
+                        string location = files[int.Parse(locationStr)];
                         player.OpenFile(location);
                     }
 

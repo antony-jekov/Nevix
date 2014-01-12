@@ -6,6 +6,9 @@
 
     public class MediaFileViewModel
     {
+        [DataMember(Name = "id")]
+        public int Id { get; set; }
+
         [Required]
         [DataMember(Name = "name")]
         [StringLength(ModelConstants.NameLength)]

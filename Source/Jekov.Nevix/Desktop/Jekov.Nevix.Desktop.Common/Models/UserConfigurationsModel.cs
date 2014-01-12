@@ -22,6 +22,8 @@
 
         public ICollection<String> MediaFolderLocations { get; set; }
 
+        public IDictionary<int, string> Files { get; set; }
+
         public UserConfigurationsModel()
         {
             ClearMedia();
@@ -31,6 +33,7 @@
         {
             this.MediaFolderLocations = new HashSet<String>();
             this.MediaFolders = new HashSet<MediaFolderViewModel>();
+            this.Files = new Dictionary<int, string>();
         }
     }
 }

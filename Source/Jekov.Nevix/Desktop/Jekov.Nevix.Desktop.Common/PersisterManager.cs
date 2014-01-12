@@ -10,8 +10,8 @@
 
     public class PersisterManager
     {
-        private const string RootAddress = "http://localhost:50906/api/";
-        //private const string RootAddress = "http://nevix.apphb.com/api/";
+        //private const string RootAddress = "http://localhost:50906/api/";
+        private const string RootAddress = "http://nevix.apphb.com/api/";
         private const string HttpPost = "POST";
         private const string HttpPut = "PUT";
         private const string HttpGet = "GET";
@@ -69,11 +69,13 @@
             return SessionKey;
         }
 
-        public void AddMediaFolderToDatabase(MediaFolderViewModel rootFolder)
+        public MediaFolderViewModel AddMediaFolderToDatabase(MediaFolderViewModel rootFolder)
         {
             string requestBody = JsonConvert.SerializeObject(rootFolder);
 
             string result = HttpRequest(RootAddress + "mediafolders/addfolder", HttpPost, requestBody);
+
+            return JsonConvert.DeserializeObject<MediaFolderViewModel>(result);
         }
 
         protected string HttpRequest(string url, string method, string Parameters = "")
