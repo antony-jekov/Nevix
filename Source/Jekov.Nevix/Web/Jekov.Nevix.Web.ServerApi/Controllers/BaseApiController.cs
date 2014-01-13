@@ -8,6 +8,8 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Security.Cryptography;
+    using System.Text;
     using System.Web.Http;
 
     public class BaseApiController : ApiController
@@ -58,6 +60,21 @@
         public BaseApiController(INevixData data)
         {
             Data = data;
+        }
+
+        protected string CalculateMd5HashCode(string text)
+        {
+            MD5 md5 = MD5.Create();
+            byte[] inputBytes = Encoding.ASCII.GetBytes(text);
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0, len = hash.Length; i < len; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+
+            return sb.ToString();
         }
 
         protected HttpResponseMessage UnauthorizedErrorMessage()

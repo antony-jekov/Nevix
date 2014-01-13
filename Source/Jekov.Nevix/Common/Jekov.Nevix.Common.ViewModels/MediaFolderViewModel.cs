@@ -30,28 +30,8 @@
 
         [DataMember(Name = "files")]
         public ICollection<MediaFileViewModel> Files { get; set; }
-
-        public string GetMd5HashCode()
-        {
-            return CalculateMd5HashCode(GetAllLocations());
-        }
-
-        private string CalculateMd5HashCode(string text)
-        {
-            MD5 md5 = MD5.Create();
-            byte[] inputBytes = Encoding.ASCII.GetBytes(text);
-            byte[] hash = md5.ComputeHash(inputBytes);
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0, len = hash.Length; i < len; i++)
-            {
-                sb.Append(hash[i].ToString("X2"));
-            }
-
-            return sb.ToString();
-        }
-
-        private string GetAllLocations()
+        
+        public string GetAllLocations()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(this.Location);

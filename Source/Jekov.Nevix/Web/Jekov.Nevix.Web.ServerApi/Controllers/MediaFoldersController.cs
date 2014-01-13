@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Text;
     using System.Web.Http;
 
     public class MediaFoldersController : BaseApiController
@@ -56,12 +57,12 @@
 
             foreach (var file in folder.Files)
             {
-                model.MediaFiles.Add(ConvertMediaFileViewModel(file));
+                model.Files.Add(ConvertMediaFileViewModel(file));
             }
 
             foreach (var subFolder in folder.Folders)
             {
-                model.MediaFolders.Add(ConvertMediaFolderViewModel(subFolder, userId));
+                model.Folders.Add(ConvertMediaFolderViewModel(subFolder, userId));
             }
 
             return model;
@@ -85,7 +86,7 @@
 
                 foreach (var folder in foldersToRemove)
                 {
-                    List<MediaFile> files = new List<MediaFile>(folder.MediaFiles);
+                    List<MediaFile> files = new List<MediaFile>(folder.Files);
 
                     foreach (var file in files)
                     {
@@ -109,10 +110,44 @@
         {
             folders.Add(root);
 
-            foreach (var subFolder in root.MediaFolders)
+            foreach (var subFolder in root.Folders)
             {
                 GetChildrenFolders(folders, subFolder);
             }
+        }
+
+        public HttpResponseMessage GetMediaHash()
+        {
+            var currentUser = GetCurrentUser();
+
+            if (currentUser == null)
+            {
+                return UnauthorizedErrorMessage();
+            }
+
+            var folders = currentUser.Folders.ToList();
+
+            StringBuilder sb = new StringBuilder();
+            foreach (var folder in folders)
+            {
+                sb.Append(folder.GetAllLocations());
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, CalculateMd5HashCode(sb.ToString()));
+        }
+
+        private IEnumerable<MediaFolderViewModel> GetUserFolders(int currentUserId)
+        {
+            IEnumerable<MediaFolder> rootMediaFolders = Data.Folders.All().Where(f => f.UserId == currentUserId && f.ParentFolderId == null).ToList();
+
+            List<MediaFolderViewModel> userFolders = new List<MediaFolderViewModel>();
+
+            foreach (var currentRootFolder in rootMediaFolders)
+            {
+                userFolders.Add(ConvertFolderToViewModel(currentRootFolder));
+            }
+
+            return userFolders;
         }
 
         [HttpGet]
@@ -125,16 +160,7 @@
                 return UnauthorizedErrorMessage();
             }
 
-            IEnumerable<MediaFolder> rootMediaFolders = Data.Folders.All().Where(f => f.UserId == currentUser.Id && f.ParentFolderId == null).ToList();
-
-            List<MediaFolderViewModel> userFolders = new List<MediaFolderViewModel>();
-
-            foreach (var currentRootFolder in rootMediaFolders)
-            {
-                userFolders.Add(ConvertFolderToViewModel(currentRootFolder));
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, userFolders);
+            return Request.CreateResponse(HttpStatusCode.OK, GetUserFolders(currentUser.Id));
         }
 
         private MediaFileViewModel ConvertFileToViewModel(MediaFile file)
@@ -156,12 +182,12 @@
                 Location = folder.Location
             };
 
-            foreach (var file in folder.MediaFiles)
+            foreach (var file in folder.Files)
             {
                 model.Files.Add(ConvertFileToViewModel(file));
             }
 
-            foreach (var subFolder in folder.MediaFolders)
+            foreach (var subFolder in folder.Folders)
             {
                 model.Folders.Add(ConvertFolderToViewModel(subFolder));
             }
