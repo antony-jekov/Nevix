@@ -10,7 +10,7 @@
     using System.Net.Http;
     using System.Web.Http;
 
-    public class BaseController : ApiController
+    public class BaseApiController : ApiController
     {
         private const string SessionKeyName = "X-SessionKey";
 
@@ -50,12 +50,12 @@
 
         protected INevixData Data { get; set; }
 
-        public BaseController()
+        public BaseApiController()
             : this(new NevixData())
         {
         }
 
-        public BaseController(INevixData data)
+        public BaseApiController(INevixData data)
         {
             Data = data;
         }

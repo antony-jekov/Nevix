@@ -9,7 +9,7 @@
     using System.Net.Http;
     using System.Web.Http;
 
-    public class MediaFoldersController : BaseController
+    public class MediaFoldersController : BaseApiController
     {
         [HttpPost]
         public HttpResponseMessage AddFolder(MediaFolderViewModel model)

@@ -8,7 +8,7 @@
     using System.Net.Http;
     using System.Web.Http;
 
-    public class UserController : BaseController
+    public class UserController : BaseApiController
     {
         /// <summary>
         /// Registers a new user account with the values passed in the model.

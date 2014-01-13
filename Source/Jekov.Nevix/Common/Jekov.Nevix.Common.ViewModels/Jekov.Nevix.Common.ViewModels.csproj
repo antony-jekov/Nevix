@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChannelViewModel.cs" />
+    <Compile Include="MediaFileMobileViewModel.cs" />
     <Compile Include="MediaFileViewModel.cs" />
+    <Compile Include="MediaFolderMobileViewModel.cs" />
     <Compile Include="MediaFolderViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserLoginViewModel.cs" />

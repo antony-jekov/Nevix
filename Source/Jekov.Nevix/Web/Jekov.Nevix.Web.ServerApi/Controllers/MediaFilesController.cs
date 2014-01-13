@@ -7,7 +7,7 @@
     using System.Net.Http;
     using System.Web.Http;
 
-    public class MediaFilesController : BaseController
+    public class MediaFilesController : BaseApiController
     {
         
     }
