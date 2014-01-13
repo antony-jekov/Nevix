@@ -12,17 +12,12 @@
         [Required]
         [StringLength(ModelConstants.EmailLength)]
         public string Email { get; set; }
-
-        [StringLength(ModelConstants.FirstNameLength)]
-        public string FirstName { get; set; }
-
-        [StringLength(ModelConstants.LastNameLength)]
-        public string LastName { get; set; }
-
+        
         [Required]
         [StringLength(ModelConstants.PasswordLength)]
         public string Password { get; set; }
 
+        [StringLength(40)]
         public string SessionKey { get; set; }
 
         [StringLength(ModelConstants.ChannelNameLength)]

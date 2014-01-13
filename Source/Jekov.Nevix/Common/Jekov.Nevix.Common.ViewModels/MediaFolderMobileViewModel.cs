@@ -14,5 +14,11 @@
 
         [DataMember(Name = "files")]
         public ICollection<MediaFileMobileViewModel> Files { get; set; }
+
+        public MediaFolderMobileViewModel()
+        {
+            this.Folders = new HashSet<MediaFolderMobileViewModel>();
+            this.Files = new HashSet<MediaFileMobileViewModel>();
+        }
     }
 }

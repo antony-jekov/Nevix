@@ -40,7 +40,6 @@
         {
             return new MediaFile
             {
-                Length = mediaFile.Length,
                 Location = mediaFile.Location,
                 Name = mediaFile.Name
             };
@@ -175,7 +174,6 @@
             return new MediaFileViewModel
             {
                 Id = file.Id,
-                Length = file.Length,
                 Location = file.Location,
                 Name = file.Name
             };

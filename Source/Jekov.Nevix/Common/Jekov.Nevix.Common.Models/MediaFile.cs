@@ -4,7 +4,6 @@
 
     public class MediaFile : MediaEntity
     {
-        [Required]
-        public long Length { get; set; }
+        // TODO:
     }
 }
