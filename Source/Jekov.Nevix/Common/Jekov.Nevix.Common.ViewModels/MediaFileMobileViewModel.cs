@@ -3,7 +3,7 @@
     using System.Runtime.Serialization;
 
     [DataContract]
-    internal class MediaFileMobileViewModel
+    public class MediaFileMobileViewModel
     {
         [DataMember(Name = "id")]
         public int Id { get; set; }
