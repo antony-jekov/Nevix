@@ -161,5 +161,10 @@
         {
             return GetRequest(RootAddress + "mediafolders/getfolders");
         }
+
+        public string GetMediaHash()
+        {
+            return GetRequest(RootAddress + "mediafolders/GetMediaHash");
+        }
     }
 }

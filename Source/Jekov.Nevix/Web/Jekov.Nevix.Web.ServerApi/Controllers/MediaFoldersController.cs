@@ -125,15 +125,22 @@
                 return UnauthorizedErrorMessage();
             }
 
+            string hash = string.Empty;
+
             var folders = currentUser.Folders.ToList();
 
-            StringBuilder sb = new StringBuilder();
-            foreach (var folder in folders)
+            if (folders.Any())
             {
-                sb.Append(folder.GetAllLocations());
+                StringBuilder sb = new StringBuilder();
+                foreach (var folder in folders)
+                {
+                    sb.Append(folder.GetAllLocations());
+                }
+
+                hash = CalculateMd5HashCode(sb.ToString());
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, CalculateMd5HashCode(sb.ToString()));
+            return Request.CreateResponse(HttpStatusCode.OK, hash);
         }
 
         private IEnumerable<MediaFolderViewModel> GetUserFolders(int currentUserId)

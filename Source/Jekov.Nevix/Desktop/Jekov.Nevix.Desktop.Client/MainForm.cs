@@ -1,15 +1,16 @@
-﻿using Jekov.Nevix.Common.ViewModels;
-using Jekov.Nevix.Desktop.Common;
-using Jekov.Nevix.Desktop.Common.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
-
-namespace Jekov.Nevix.Desktop.Client
+﻿namespace Jekov.Nevix.Desktop.Client
 {
+    using Jekov.Nevix.Common.ViewModels;
+    using Jekov.Nevix.Desktop.Common;
+    using Jekov.Nevix.Desktop.Common.Contracts;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Threading;
+    using System.Windows.Forms;
+
     public partial class MainForm : Form
     {
         private readonly string userEmail;
@@ -19,8 +20,6 @@ namespace Jekov.Nevix.Desktop.Client
         private CommunicationsManager listener;
         private FileManager fileManager;
         private string bsPlayerLocation;
-
-        private IEnumerable<MediaFolderViewModel> serverFolders;
 
         public MainForm(string email, string sessionKey)
         {
@@ -63,16 +62,34 @@ namespace Jekov.Nevix.Desktop.Client
             SyncMedia();
         }
 
+        protected string CalculateMd5HashCode(string text)
+        {
+            MD5 md5 = MD5.Create();
+            byte[] inputBytes = Encoding.ASCII.GetBytes(text);
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0, len = hash.Length; i < len; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+
+            return sb.ToString();
+        }
+
         private void SyncMedia()
         {
-            string serverFolders = persister.GetAllFolders();
-            serverFolders = RemoveIdFromFiles(serverFolders);
+            string serverHash = persister.GetMediaHash();
 
-            var locals = LoadMediaFolders();
+            StringBuilder sb = new StringBuilder();
+            foreach (var folder in db.LocalDb.MediaFolders)
+            {
+                sb.Append(folder.GetAllLocations());
+            }
 
-            string localFolders = fileManager.Serialize(locals);//.Replace("\\\\", "\\");
+            string localMediaHash = CalculateMd5HashCode(sb.ToString());
 
-            if (serverFolders.Length > 2 && serverFolders.Equals(localFolders))
+            if (serverHash.Length > 0 && serverHash.Equals(localMediaHash))
             {
                 mediaDirectories.Items.Clear();
                 mediaDirectories.Items.AddRange(db.LocalDb.MediaFolderLocations.ToArray());
@@ -98,6 +115,8 @@ namespace Jekov.Nevix.Desktop.Client
                     mediaDirectories.Items.Clear();
 
                     MediaFolderViewModel createdFolder;
+
+                    IEnumerable<MediaFolderViewModel> locals = LoadMediaFolders();
 
                     foreach (var folder in locals)
                     {
