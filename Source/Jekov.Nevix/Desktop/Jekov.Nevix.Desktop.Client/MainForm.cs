@@ -80,9 +80,10 @@
         private void SyncMedia()
         {
             string serverHash = persister.GetMediaHash();
+            var localFolders = LoadMediaFolders();
 
             StringBuilder sb = new StringBuilder();
-            foreach (var folder in db.LocalDb.MediaFolders)
+            foreach (var folder in localFolders)
             {
                 sb.Append(folder.GetAllLocations());
             }
@@ -110,13 +111,13 @@
                 }
                 else
                 {
+                    IEnumerable<MediaFolderViewModel> locals = LoadMediaFolders();
+
                     persister.ClearAllMedia();
                     db.LocalDb.ClearMedia();
                     mediaDirectories.Items.Clear();
 
                     MediaFolderViewModel createdFolder;
-
-                    IEnumerable<MediaFolderViewModel> locals = LoadMediaFolders();
 
                     foreach (var folder in locals)
                     {

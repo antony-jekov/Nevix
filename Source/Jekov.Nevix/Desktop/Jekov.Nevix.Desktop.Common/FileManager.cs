@@ -100,7 +100,6 @@
         {
             return new MediaFileViewModel
                         {
-                            Length = file.Length,
                             Location = file.FullName,
                             Name = file.Name
                         };

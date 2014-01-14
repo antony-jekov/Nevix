@@ -10,8 +10,8 @@
 
     public class PersisterManager
     {
-        //private const string RootAddress = "http://localhost:50906/api/";
-        private const string RootAddress = "http://nevix.apphb.com/api/";
+        private const string RootAddress = "http://localhost:50906/api/";
+        //private const string RootAddress = "http://nevix.apphb.com/api/";
         private const string HttpPost = "POST";
         private const string HttpPut = "PUT";
         private const string HttpGet = "GET";

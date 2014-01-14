@@ -126,7 +126,7 @@
 
             string hash = string.Empty;
 
-            var folders = currentUser.Folders.ToList();
+            var folders = currentUser.Folders.Where(f => f.ParentFolderId == null).ToList();
 
             if (folders.Any())
             {
