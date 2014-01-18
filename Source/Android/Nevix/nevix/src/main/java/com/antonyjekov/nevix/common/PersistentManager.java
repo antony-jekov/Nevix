@@ -79,4 +79,11 @@ public class PersistentManager {
     public void setSessionKey(String sessionKey) {
         this.sessionKey = sessionKey;
     }
+
+    public void getMedia(HttpAsyncRequest.OnResultCallBack callback) {
+        HttpAsyncRequest request = new HttpAsyncRequest(callback);
+        request.getRequest(ROOT_ADDRESS + "mediafoldersmobile/getfolders", sessionKey);
+
+        request.execute();
+    }
 }

@@ -10,10 +10,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
+import com.antonyjekov.nevix.common.ContextManager;
+import com.antonyjekov.nevix.common.HttpAsyncRequest;
+import com.antonyjekov.nevix.common.PersistentManager;
 
 public class BrowseActivity extends ActionBarActivity {
+
+    ContextManager db;
+    PersistentManager persistentManager;
 
     public static final String BROWSED_FILE = "com.antonyjekov.nevix.browse.browsedFile";
 
@@ -22,13 +29,20 @@ public class BrowseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
-    }
+        db = new ContextManager(this);
+        String sessionKey = db.getSessionKey();
+        persistentManager = new PersistentManager(sessionKey);
 
+        final String lastLocalUpdate = db.getLastDatabaseUpdate();
+        persistentManager.getLastMediaUpdateTime(new HttpAsyncRequest.OnResultCallBack() {
+            @Override
+            public void onResult(String result) {
+                if (result == null || !result.equals(lastLocalUpdate) ) {
+                    pringMessage(getResources().getString(R.string.media_is_outdated));
+                }
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -40,30 +54,23 @@ public class BrowseActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        syncMedia();
+        return true;
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
+    private void syncMedia() {
+        pringMessage(getResources().getString(R.string.beginning_media_sync));
 
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_browse, container, false);
-            return rootView;
-        }
+        persistentManager.getMedia(new HttpAsyncRequest.OnResultCallBack() {
+            @Override
+            public void onResult(String result) {
+                db.storeMediaDatabase(result);
+                // TODO: Update UI.
+            }
+        });
     }
 
+    private void pringMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
 }

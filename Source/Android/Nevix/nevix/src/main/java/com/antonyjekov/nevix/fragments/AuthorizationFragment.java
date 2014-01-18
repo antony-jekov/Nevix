@@ -45,6 +45,7 @@ public class AuthorizationFragment extends Fragment {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((Button) view).setEnabled(false);
                 String emailText = email.getText().toString();
                 String passwordText = pass.getText().toString();
 
