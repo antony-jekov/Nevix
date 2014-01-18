@@ -7,9 +7,11 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Web.Http;
 
     public class MediaFoldersMobileController : BaseApiController
     {
+        [HttpGet]
         public HttpResponseMessage GetFolders()
         {
             var currentUser = GetCurrentUser();
