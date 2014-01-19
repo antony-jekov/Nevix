@@ -46,7 +46,7 @@
                 Name = folder.Name
             };
 
-            foreach (var file in folder.Folders)
+            foreach (var file in folder.Files)
             {
                 root.Files.Add(new MediaFileMobileViewModel
                     {
