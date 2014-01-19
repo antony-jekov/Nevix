@@ -20,9 +20,7 @@ public class ContextManager {
     }
 
     public void setSessionKey(String sessionKey) {
-        localEditor.putString(SESSION_KEY, sessionKey);
-
-        localEditor.commit();
+        storeData(SESSION_KEY, sessionKey);
     }
 
     public String getSessionKey() {
@@ -30,7 +28,7 @@ public class ContextManager {
     }
 
     public void storeMediaDatabase(String data) {
-        localEditor.putString(MEDIA_DATA, data);
+        storeData(MEDIA_DATA, data);
     }
 
     public String getMediaDatabase() {
@@ -42,6 +40,12 @@ public class ContextManager {
     }
 
     public void setLastDatabaseUpdate(String time) {
-        localEditor.putString(LAST_UPDATE, time);
+        storeData(LAST_UPDATE, time);
+    }
+
+    private void storeData (String key, String data) {
+        localEditor.putString(key, data);
+
+        localEditor.commit();
     }
 }

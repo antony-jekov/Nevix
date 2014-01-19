@@ -1,24 +1,26 @@
 package com.antonyjekov.nevix.activities;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.ContextManager;
 import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
+import com.antonyjekov.nevix.common.contracts.OnFileSelected;
+import com.antonyjekov.nevix.viewmodels.MediaFolderViewModel;
+import com.google.gson.Gson;
 
-public class BrowseActivity extends ActionBarActivity {
+import java.util.ArrayList;
 
+public class BrowseActivity extends ActionBarActivity implements OnFileSelected {
+
+    String lastServerUpdate;
     ContextManager db;
     PersistentManager persistentManager;
 
@@ -29,6 +31,8 @@ public class BrowseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
 
+        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
         db = new ContextManager(this);
         String sessionKey = db.getSessionKey();
         persistentManager = new PersistentManager(sessionKey);
@@ -37,8 +41,12 @@ public class BrowseActivity extends ActionBarActivity {
         persistentManager.getLastMediaUpdateTime(new HttpAsyncRequest.OnResultCallBack() {
             @Override
             public void onResult(String result) {
+                lastServerUpdate = result;
                 if (result == null || !result.equals(lastLocalUpdate) ) {
                     pringMessage(getResources().getString(R.string.media_is_outdated));
+                }
+                else{
+
                 }
             }
         });
@@ -54,17 +62,18 @@ public class BrowseActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        syncMedia();
+        beginMediaSync();
         return true;
     }
 
-    private void syncMedia() {
+    private void beginMediaSync() {
         pringMessage(getResources().getString(R.string.beginning_media_sync));
 
         persistentManager.getMedia(new HttpAsyncRequest.OnResultCallBack() {
             @Override
             public void onResult(String result) {
                 db.storeMediaDatabase(result);
+                db.setLastDatabaseUpdate(lastServerUpdate);
                 // TODO: Update UI.
             }
         });
@@ -72,5 +81,13 @@ public class BrowseActivity extends ActionBarActivity {
 
     private void pringMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onFileSelected(int fileId) {
+        Intent data = new Intent();
+        data.putExtra(BROWSED_FILE, fileId);
+        setResult(RESULT_OK, data);
+        finish();
     }
 }

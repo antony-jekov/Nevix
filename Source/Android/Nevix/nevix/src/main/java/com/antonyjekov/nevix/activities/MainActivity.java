@@ -1,7 +1,7 @@
 package com.antonyjekov.nevix.activities;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -12,11 +12,9 @@ import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.ContextManager;
-import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
 import com.antonyjekov.nevix.common.PusherManager;
 import com.antonyjekov.nevix.constants.PlayerCommand;
-import com.antonyjekov.nevix.viewmodels.MediaFileAndroidViewModel;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -45,6 +43,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         String sessionKey = getIntent().getStringExtra(AuthenticateActivity.SESSION_KEY_EXTRA);
         String channelName = getIntent().getStringExtra(AuthenticateActivity.CHANNEL_NAME_EXTRA);
@@ -193,6 +193,7 @@ public class MainActivity extends ActionBarActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == BROWSE_RESULT) {
                 int requestedFile = data.getIntExtra(BrowseActivity.BROWSED_FILE, 0);
+                test(requestedFile + "");
                 if (requestedFile != 0) {
                     pusher.pushCommand("open" + requestedFile);
                 }
