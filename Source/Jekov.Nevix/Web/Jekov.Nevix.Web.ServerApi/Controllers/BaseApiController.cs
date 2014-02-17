@@ -64,6 +64,9 @@
 
         protected string CalculateMd5HashCode(string text)
         {
+            if (string.IsNullOrEmpty(text))
+                return string.Empty;
+
             MD5 md5 = MD5.Create();
             byte[] inputBytes = Encoding.ASCII.GetBytes(text);
             byte[] hash = md5.ComputeHash(inputBytes);
