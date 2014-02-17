@@ -53,6 +53,7 @@
                 var error = new ArgumentException("Wrong email or password!");
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
             }
+
             if (user.SessionKey == null)
             {
                 user.SessionKey = Guid.NewGuid().ToString();

@@ -1,5 +1,7 @@
 ﻿using Jekov.Nevix.Desktop.Common;
 using System;
+using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Jekov.Nevix.Desktop.Client
@@ -46,6 +48,10 @@ namespace Jekov.Nevix.Desktop.Client
                 MessageBox.Show("Password is empty!");
                 return false;
             }
+
+            Match match = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*@((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$").Match(email);
+            if (!match.Success)
+                MessageBox.Show("Invalid email!");
 
             return true;
         }

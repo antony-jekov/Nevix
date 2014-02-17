@@ -76,21 +76,8 @@
                 return UnauthorizedErrorMessage();
             }
 
-            string hash = string.Empty;
-
-            var folders = JsonConvert.DeserializeObject<IList<MediaFolderViewModel>>(currentUser.Media);
-
-            if (folders.Any())
-            {
-                StringBuilder sb = new StringBuilder();
-                foreach (var folder in folders)
-                {
-                    sb.Append(folder.GetAllLocations());
-                }
-
-                hash = CalculateMd5HashCode(sb.ToString());
-            }
-
+            string hash = CalculateMd5HashCode(currentUser.Media);
+            
             return Request.CreateResponse(HttpStatusCode.OK, hash);
         }
 
