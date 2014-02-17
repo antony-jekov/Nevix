@@ -24,9 +24,13 @@ namespace Jekov.Nevix.Desktop.Client
                 return;
             }
 
-
-            login.Enabled = false;
             Login(email, pass);
+        }
+
+        private void ToggleControlsEnabled(bool enabled)
+        {
+            login.Enabled = enabled;
+            register.Enabled = enabled;
         }
 
         private bool ValidateLoginData(string email, string pass)
@@ -78,12 +82,13 @@ namespace Jekov.Nevix.Desktop.Client
             string sessionKey = string.Empty;
             try
             {
+                ToggleControlsEnabled(false);
                 sessionKey = persister.Login(email, pass);
             }
             catch (ArgumentException)
             {
                 MessageBox.Show("Wrong email or password.");
-                login.Enabled = true;
+                ToggleControlsEnabled(true);
                 return;
             }
 
@@ -103,12 +108,13 @@ namespace Jekov.Nevix.Desktop.Client
             string sessionKey = string.Empty;
             try
             {
+                ToggleControlsEnabled(false);
                 sessionKey = persister.Register(email, pass, confirm);
             }
             catch (InvalidOperationException)
             {
                 MessageBox.Show("There is already an user with that email.");
-                register.Enabled = true;
+                ToggleControlsEnabled(true);
                 return;
             }
 
