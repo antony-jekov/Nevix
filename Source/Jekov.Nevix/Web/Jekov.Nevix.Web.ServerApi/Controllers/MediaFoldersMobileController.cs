@@ -21,15 +21,15 @@
                 return UnauthorizedErrorMessage();
             }
 
-            IEnumerable<MediaFolderMobileViewModel> folders = GetUserFoldersToMobile(currentUser.Id);
+            IEnumerable<MediaFolderMobileViewModel> folders = GetUserFoldersToMobile(currentUser.Media);
 
             return Request.CreateResponse(HttpStatusCode.OK, folders);
         }
 
-        private IEnumerable<MediaFolderMobileViewModel> GetUserFoldersToMobile(int userId)
+        private IEnumerable<MediaFolderMobileViewModel> GetUserFoldersToMobile(string media)
         {
             List<MediaFolderMobileViewModel> foldersConverted = new List<MediaFolderMobileViewModel>();
-            var folders = Data.Folders.All().Where(f => f.ParentFolderId == null && f.UserId == userId).ToList();
+            var folders = MediaFoldersController.MediaToList(media);
 
             foreach (var folder in folders)
             {
@@ -39,7 +39,7 @@
             return foldersConverted;
         }
 
-        private MediaFolderMobileViewModel FolderToMobileViewModel(MediaFolder folder)
+        private MediaFolderMobileViewModel FolderToMobileViewModel(MediaFolderViewModel folder)
         {
             MediaFolderMobileViewModel root = new MediaFolderMobileViewModel
             {

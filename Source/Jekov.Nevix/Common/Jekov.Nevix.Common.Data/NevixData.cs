@@ -23,16 +23,6 @@
             this.context = context;
         }
 
-        public IRepository<MediaFile> Files
-        {
-            get { return this.GetRepository<MediaFile>(); }
-        }
-
-        public IRepository<MediaFolder> Folders
-        {
-            get { return this.GetRepository<MediaFolder>(); }
-        }
-
         public IRepository<NevixUser> Users
         {
             get { return this.GetRepository<NevixUser>(); }

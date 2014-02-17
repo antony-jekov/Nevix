@@ -16,10 +16,6 @@
         {
         }
 
-        public IDbSet<MediaFile> Files { get; set; }
-
-        public IDbSet<MediaFolder> Folders { get; set; }
-
         public IDbSet<NevixUser> Users { get; set; }
 
         public DbContext DbContext

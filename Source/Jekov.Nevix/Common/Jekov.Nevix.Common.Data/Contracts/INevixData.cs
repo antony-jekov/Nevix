@@ -6,10 +6,6 @@
 
     public interface INevixData : IDisposable
     {
-        IRepository<MediaFolder> Folders { get; }
-
-        IRepository<MediaFile> Files { get; }
-
         IRepository<NevixUser> Users { get; }
 
         int SaveChanges();

@@ -11,10 +11,6 @@
 
     public interface INevixDbContext : IDisposable
     {
-        IDbSet<MediaFile> Files { get; set; }
-
-        IDbSet<MediaFolder> Folders { get; set; }
-
         IDbSet<NevixUser> Users { get; set; }
 
         DbContext DbContext { get; }

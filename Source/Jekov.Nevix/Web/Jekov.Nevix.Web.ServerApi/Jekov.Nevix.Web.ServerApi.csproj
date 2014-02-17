@@ -145,7 +145,6 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MediaFilesController.cs" />
     <Compile Include="Controllers\MediaFoldersController.cs" />
     <Compile Include="Controllers\MediaFoldersMobileController.cs" />
     <Compile Include="Controllers\UserController.cs" />

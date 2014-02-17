@@ -25,6 +25,6 @@
 
         public DateTime? LastFilesUpdate { get; set; }
 
-        public virtual ICollection<MediaFolder> Folders { get; set; }
+        public string Media { get; set; }
     }
 }
