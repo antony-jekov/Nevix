@@ -116,18 +116,14 @@
                     persister.ClearAllMedia();
                     db.LocalDb.ClearMedia();
                     mediaDirectories.Items.Clear();
-
-                    MediaFolderViewModel createdFolder;
-
+                    
                     foreach (var folder in locals)
                     {
-                        createdFolder = persister.AddMediaFolderToDatabase(folder);
+                        persister.AddMediaFolderToDatabase(folder);
 
-                        db.LocalDb.MediaFolderLocations.Add(createdFolder.Location);
-                        db.LocalDb.MediaFolders.Add(createdFolder);
-                        mediaDirectories.Items.Add(createdFolder.Location);
-
-                        AddFilesToLocalDb(createdFolder);
+                        db.LocalDb.MediaFolderLocations.Add(folder.Location);
+                        db.LocalDb.MediaFolders.Add(folder);
+                        mediaDirectories.Items.Add(folder.Location);
                     }
 
                     db.SaveChanges();
@@ -154,19 +150,6 @@
             }
 
             return sb.ToString();
-        }
-
-        private void AddFilesToLocalDb(MediaFolderViewModel createdFolder)
-        {
-            foreach (var file in createdFolder.Files)
-            {
-                db.LocalDb.Files.Add(file.Id, file.Location);
-            }
-
-            foreach (var subFolder in createdFolder.Folders)
-            {
-                AddFilesToLocalDb(subFolder);
-            }
         }
 
         private IEnumerable<MediaFolderViewModel> LoadMediaFolders()
@@ -199,16 +182,13 @@
 
             persister.ClearAllMedia();
             db.LocalDb.ClearMedia();
-
-            MediaFolderViewModel createdFolder;
-
+            
             foreach (var folder in foldersConverted)
             {
-                createdFolder = persister.AddMediaFolderToDatabase(folder);
-                db.LocalDb.MediaFolderLocations.Add(createdFolder.Location);
-                db.LocalDb.MediaFolders.Add(createdFolder);
-                AddFilesToLocalDb(createdFolder);
-                mediaDirectories.Items.Add(createdFolder.Location);
+                persister.AddMediaFolderToDatabase(folder);
+                db.LocalDb.MediaFolderLocations.Add(folder.Location);
+                db.LocalDb.MediaFolders.Add(folder);
+                mediaDirectories.Items.Add(folder.Location);
             }
 
             db.SaveChanges();

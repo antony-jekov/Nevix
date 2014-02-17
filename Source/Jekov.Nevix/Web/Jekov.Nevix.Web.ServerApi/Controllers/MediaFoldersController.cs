@@ -15,6 +15,9 @@
     {
         public static IList<MediaFolderViewModel> MediaToList(string media)
         {
+            if (string.IsNullOrEmpty(media))
+                return new List<MediaFolderViewModel>();
+
             return JsonConvert.DeserializeObject<IList<MediaFolderViewModel>>(media);
         }
 

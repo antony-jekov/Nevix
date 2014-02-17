@@ -69,13 +69,10 @@
             return SessionKey;
         }
 
-        public MediaFolderViewModel AddMediaFolderToDatabase(MediaFolderViewModel rootFolder)
+        public void AddMediaFolderToDatabase(MediaFolderViewModel rootFolder)
         {
             string requestBody = JsonConvert.SerializeObject(rootFolder);
-
-            string result = HttpRequest(RootAddress + "mediafolders/addfolder", HttpPost, requestBody);
-
-            return JsonConvert.DeserializeObject<MediaFolderViewModel>(result);
+            HttpRequest(RootAddress + "mediafolders/addfolder", HttpPost, requestBody);
         }
 
         protected string HttpRequest(string url, string method, string Parameters = "")
