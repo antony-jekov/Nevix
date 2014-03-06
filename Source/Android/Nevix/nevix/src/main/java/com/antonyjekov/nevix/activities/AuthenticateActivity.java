@@ -51,7 +51,7 @@ public class AuthenticateActivity extends ActionBarActivity {
 
         String sessionKey = data.getSessionKey();
 
-        if (sessionKey != null && !sessionKey.equals(ContextManager.EMPTY_SESSION_KEY)) {
+        if (false && sessionKey != null && !sessionKey.equals(ContextManager.EMPTY_SESSION_KEY)) {
             handleLogin(sessionKey);
         }
     }
