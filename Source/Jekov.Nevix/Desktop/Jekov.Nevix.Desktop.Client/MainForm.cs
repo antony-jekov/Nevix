@@ -118,12 +118,12 @@
                 }
                 else
                 {
-                    IEnumerable<MediaFolderViewModel> locals = LoadMediaFolders();
-
                     persister.ClearAllMedia();
                     db.LocalDb.ClearMedia();
                     mediaDirectories.Items.Clear();
-                    
+
+                    IEnumerable<MediaFolderViewModel> locals = LoadMediaFolders();
+                                        
                     foreach (var folder in locals)
                     {
                         persister.AddMediaFolderToDatabase(folder);
@@ -135,6 +135,22 @@
 
                     db.SaveChanges();
                 }
+            }
+        }
+
+        private void updateFileIndexes(MediaFolderViewModel folder)
+        {
+            int id;
+            foreach (var file in folder.Files)
+            {
+                id = db.LocalDb.Files.Count;
+                file.Id = id;
+                db.LocalDb.Files.Add(id, file.Location);
+            }
+
+            foreach (var subFolder in folder.Folders)
+            {
+                updateFileIndexes(subFolder);
             }
         }
 
@@ -236,6 +252,7 @@
             else
             {
                 MediaFolderViewModel folder = fileManager.GetFolder(path);
+                updateFileIndexes(folder);
                 persister.AddMediaFolderToDatabase(folder);
                 db.LocalDb.MediaFolderLocations.Add(folder.Location);
                 db.LocalDb.MediaFolders.Add(folder);

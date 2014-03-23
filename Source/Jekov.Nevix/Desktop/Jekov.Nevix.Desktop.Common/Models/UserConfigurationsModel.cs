@@ -29,8 +29,8 @@
 
         public void ClearMedia()
         {
-            this.MediaFolderLocations = new HashSet<String>();
-            this.MediaFolders = new HashSet<MediaFolderViewModel>();
+            this.MediaFolderLocations = new List<String>();
+            this.MediaFolders = new List<MediaFolderViewModel>();
             this.Files = new Dictionary<int, string>();
         }
     }

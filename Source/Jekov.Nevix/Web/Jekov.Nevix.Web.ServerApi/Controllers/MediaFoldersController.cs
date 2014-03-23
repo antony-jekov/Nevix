@@ -81,7 +81,15 @@
                 return UnauthorizedErrorMessage();
             }
 
-            string hash = CalculateMd5HashCode(currentUser.Media);
+            var media = MediaToList(currentUser.Media);
+
+            StringBuilder sb = new StringBuilder();
+            foreach (var folder in media)
+            {
+                sb.Append(folder.GetAllLocations());
+            }
+
+            string hash = CalculateMd5HashCode(sb.ToString());
             
             return Request.CreateResponse(HttpStatusCode.OK, hash);
         }
