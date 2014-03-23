@@ -99,7 +99,6 @@ namespace Jekov.Nevix.Desktop.Client
             }
 
             db.LocalDb.SessionKey = sessionKey;
-            db.LocalDb.SessionKey = persister.Login(email, pass);
             db.LocalDb.Email = email;
             db.LocalDb.Password = pass;
 

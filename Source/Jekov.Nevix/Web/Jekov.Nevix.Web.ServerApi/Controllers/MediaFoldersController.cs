@@ -38,7 +38,9 @@
 
             IList<MediaFolderViewModel> currentUserFolders = MediaToList(currentUser.Media);
             currentUserFolders.Add(model);
-            currentUser.Media = JsonConvert.SerializeObject(currentUserFolders);
+            
+            string serializedMedia = JsonConvert.SerializeObject(currentUserFolders.ToArray());
+            currentUser.Media = serializedMedia;
             currentUser.LastFilesUpdate = DateTime.UtcNow;
 
             Data.SaveChanges();

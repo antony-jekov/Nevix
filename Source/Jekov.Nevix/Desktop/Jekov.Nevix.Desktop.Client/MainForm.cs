@@ -48,6 +48,11 @@
                 {
                     MessageBox.Show("BsPlayer could not be found.\n\nPlease choose the location of the bsplayer.exe file manually.");
                 }
+                else
+                {
+                    db.LocalDb.BsPlayerLocation = bsPlayerLocation;
+                    db.SaveChanges();
+                }
             }
 
             playerLocation.Text = bsPlayerLocation;
@@ -58,6 +63,8 @@
             {
                 persister.UpdateChannelName(Environment.MachineName);
             }
+
+
 
             SyncMedia();
         }

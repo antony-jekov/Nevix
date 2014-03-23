@@ -12,8 +12,8 @@
     {
         public MediaFolderViewModel()
         {
-            this.Folders = new HashSet<MediaFolderViewModel>();
-            this.Files = new HashSet<MediaFileViewModel>();
+            this.Folders = new List<MediaFolderViewModel>();
+            this.Files = new List<MediaFileViewModel>();
         }
 
         [Required]
