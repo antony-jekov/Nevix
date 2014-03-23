@@ -38,7 +38,6 @@
             this.email = new System.Windows.Forms.Label();
             this.add = new System.Windows.Forms.Button();
             this.remove = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.syncBtn = new System.Windows.Forms.Button();
             this.mediaDirectories = new System.Windows.Forms.ListBox();
             this.playerLocation = new System.Windows.Forms.Label();
@@ -136,15 +135,6 @@
             this.remove.UseVisualStyleBackColor = true;
             this.remove.Click += new System.EventHandler(this.Remove_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(512, 367);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 13);
-            this.label1.TabIndex = 23;
-            this.label1.Text = "Antony Jekov 2014";
-            // 
             // syncBtn
             // 
             this.syncBtn.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -182,7 +172,6 @@
             this.ClientSize = new System.Drawing.Size(623, 389);
             this.Controls.Add(this.playerLocation);
             this.Controls.Add(this.syncBtn);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.remove);
             this.Controls.Add(this.add);
             this.Controls.Add(this.email);
@@ -214,7 +203,6 @@
         private System.Windows.Forms.Label email;
         private System.Windows.Forms.Button add;
         private System.Windows.Forms.Button remove;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button syncBtn;
         private System.Windows.Forms.ListBox mediaDirectories;
         private System.Windows.Forms.Label playerLocation;

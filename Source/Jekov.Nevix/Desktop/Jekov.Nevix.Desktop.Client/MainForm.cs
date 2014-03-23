@@ -106,15 +106,15 @@
             {
                 if (!db.LocalDb.MediaFolderLocations.Any())
                 {
-                    if (MessageBox.Show("There are no media folders currently set.\n\nWould you like to add them automatically?", "Media folders not set", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        Thread initThread = new Thread(() => InitMedia());
-                        initThread.Start();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Please add folders manually.");
-                    }
+                    //if (MessageBox.Show("There are no media folders currently set.\n\nWould you like to add them automatically?", "Media folders not set", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    //{
+                    //    Thread initThread = new Thread(() => InitMedia());
+                    //    initThread.Start();
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("Please add folders manually.");
+                    //}
                 }
                 else
                 {
