@@ -88,7 +88,7 @@ public class FolderFragment extends ListFragment {
         }
 
         for (MediaFileViewModel file : rootFolder.getFiles()) {
-            contents.add("-->\t" + file.getName().substring(0, 36));
+            contents.add("-->\t" + (file.getName().length() > 36 ? file.getName().substring(0, 35) : file.getName()));
         }
 
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, contents);

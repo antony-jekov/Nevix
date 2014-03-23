@@ -46,9 +46,9 @@
         {
             SetForegroundWindow(player.MainWindowHandle);
             input.Keyboard.KeyPress(VirtualKeyCode.VK_L);
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             input.Keyboard.TextEntry(location);
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             input.Keyboard.KeyPress(VirtualKeyCode.RETURN);
         }
 

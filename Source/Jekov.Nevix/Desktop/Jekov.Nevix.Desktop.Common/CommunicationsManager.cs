@@ -31,19 +31,15 @@
         private void HandleIncomingData(string data)
         {
             string cmd = data.TrimStart('[').Substring(0, data.IndexOf(',') - 1).Trim('\\').Trim('"');
-            Console.WriteLine(cmd);
             executor.ExecuteCommand(cmd);
         }
 
         private void HandleConnection(string data)
         {
-            Console.WriteLine(data);
         }
 
         private void Call(string data)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(data);
         }
     }
 }
