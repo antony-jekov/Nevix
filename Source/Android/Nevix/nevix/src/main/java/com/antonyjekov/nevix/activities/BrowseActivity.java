@@ -1,9 +1,8 @@
 package com.antonyjekov.nevix.activities;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -13,10 +12,6 @@ import com.antonyjekov.nevix.common.ContextManager;
 import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
 import com.antonyjekov.nevix.common.contracts.OnFileSelected;
-import com.antonyjekov.nevix.viewmodels.MediaFolderViewModel;
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
 
 public class BrowseActivity extends ActionBarActivity implements OnFileSelected {
 
@@ -29,9 +24,6 @@ public class BrowseActivity extends ActionBarActivity implements OnFileSelected 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_browse);
-
-        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         db = new ContextManager(this);
         String sessionKey = db.getSessionKey();
@@ -42,11 +34,10 @@ public class BrowseActivity extends ActionBarActivity implements OnFileSelected 
             @Override
             public void onResult(String result) {
                 lastServerUpdate = result;
-                if (result == null || !result.equals(lastLocalUpdate) ) {
-                    pringMessage(getResources().getString(R.string.media_is_outdated));
-                }
-                else{
-
+                if (result == null || !result.equals(lastLocalUpdate)) {
+                    beginMediaSync();
+                } else {
+                    setContentView(R.layout.activity_browse);
                 }
             }
         });
@@ -54,7 +45,7 @@ public class BrowseActivity extends ActionBarActivity implements OnFileSelected 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.browse, menu);
         return true;
@@ -74,7 +65,8 @@ public class BrowseActivity extends ActionBarActivity implements OnFileSelected 
             public void onResult(String result) {
                 db.storeMediaDatabase(result);
                 db.setLastDatabaseUpdate(lastServerUpdate);
-                // TODO: Update UI.
+                pringMessage("Sync completed");
+                setContentView(R.layout.activity_browse);
             }
         });
     }
