@@ -115,8 +115,9 @@
 
         public void ExecuteCommand(string cmd)
         {
-            Thread thread = new Thread(() => ExexuteCmd(cmd));
-            thread.Start();
+            //Thread thread = new Thread(() => ExexuteCmd(cmd));
+            //thread.Start();
+            ExexuteCmd(cmd);
         }
     }
 }
