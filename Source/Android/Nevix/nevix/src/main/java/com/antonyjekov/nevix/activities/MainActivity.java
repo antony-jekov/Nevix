@@ -32,16 +32,13 @@ public class MainActivity extends ActionBarActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         String sessionKey = getIntent().getStringExtra(AuthenticateActivity.SESSION_KEY_EXTRA);
-        String channelName = getIntent().getStringExtra(AuthenticateActivity.CHANNEL_NAME_EXTRA);
-
-        test(sessionKey + "\n" + channelName);
 
         if (sessionKey == null || sessionKey.equals("") || sessionKey.length() == 0) {
             throw new IllegalArgumentException("invalid session key.");
         }
 
         this.persistent = new PersistentManager(sessionKey);
-        this.pusher = new PusherManager(channelName);
+        this.pusher = new PusherManager(sessionKey);
 
         data = new ContextManager(this);
 

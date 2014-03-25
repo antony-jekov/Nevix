@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.ContextManager;
@@ -60,31 +59,12 @@ public class AuthenticateActivity extends ActionBarActivity {
         this.sessionKey = result;
         data.setSessionKey(result);
         this.persistant.setSessionKey(result);
-        getChanelName();
-    }
-
-    private void getChanelName() {
-        HttpAsyncRequest.OnResultCallBack callBack = new HttpAsyncRequest.OnResultCallBack() {
-            @Override
-            public void onResult(String result) {
-
-                if (result != null && result.length() > 0) {
-                    channelName = result;
-                    finishLogin();
-                } else {
-                    Toast.makeText(thisContext, "No channel!\nMake sure you have started the Nevix Desktop Client.", Toast.LENGTH_LONG);
-                }
-
-            }
-        };
-
-        persistant.getChannelName(callBack);
+        finishLogin();
     }
 
     private void finishLogin() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(SESSION_KEY_EXTRA, this.sessionKey);
-        intent.putExtra(CHANNEL_NAME_EXTRA, this.channelName);
 
         startActivity(intent);
         finish();

@@ -86,4 +86,20 @@ public abstract class Player extends View {
         int halfSize = buttonSize >> 1;
         return new Rect(relativeRect.left - (buttonMargin + buttonSize), relativeRect.centerY() - halfSize, relativeRect.left - buttonMargin, relativeRect.centerY() + halfSize);
     }
+
+    protected Rect onTopOf(Rect relativeRect, int buttonSize) {
+        int halfSize = buttonSize >> 1;
+        int centerX = relativeRect.centerX();
+        int centerY = relativeRect.top - (buttonMargin + halfSize);
+
+        return new Rect(centerX - halfSize, centerY - halfSize, centerX + halfSize, centerY + halfSize);
+    }
+
+    protected Rect bellowOf(Rect relativeRect, int buttonSize) {
+        int halfSize = buttonSize >> 1;
+        int centerX = relativeRect.centerX();
+        int centerY = relativeRect.bottom + (buttonMargin + halfSize);
+
+        return new Rect(centerX - halfSize, centerY - halfSize, centerX + halfSize, centerY + halfSize);
+    }
 }

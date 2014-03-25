@@ -1,7 +1,6 @@
 package com.antonyjekov.nevix.common;
 
 import com.antonyjekov.nevix.viewmodels.UserLoginViewModel;
-import com.antonyjekov.nevix.viewmodels.UserRegisterViewModel;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
@@ -38,13 +37,6 @@ public class PersistentManager {
     public void getLastMediaUpdateTime(HttpAsyncRequest.OnResultCallBack callback) {
         HttpAsyncRequest request = new HttpAsyncRequest(callback);
         request.getRequest(ROOT_ADDRESS + "User/LastMediaUpdate", sessionKey);
-
-        request.execute();
-    }
-
-    public void getChannelName(HttpAsyncRequest.OnResultCallBack callBack) {
-        HttpAsyncRequest request = new HttpAsyncRequest(callBack);
-        request.getRequest(ROOT_ADDRESS + "user/getchannel", sessionKey);
 
         request.execute();
     }

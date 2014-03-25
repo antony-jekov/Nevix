@@ -10,6 +10,8 @@ import com.antonyjekov.nevix.player.buttons.NextButton;
 import com.antonyjekov.nevix.player.buttons.PlayButton;
 import com.antonyjekov.nevix.player.buttons.PreviousButton;
 import com.antonyjekov.nevix.player.buttons.RewindButton;
+import com.antonyjekov.nevix.player.buttons.SystemVolumeDownButton;
+import com.antonyjekov.nevix.player.buttons.SystemVolumeUpButton;
 
 /**
  * Created by Antony Jekov on 3/23/2014.
@@ -46,5 +48,11 @@ public class BSPlayer extends Player {
         buttonSize = (int) (width * .08);
         Rect fullBtn = new Rect(width - (buttonSize + buttonMargin), buttonMargin, width - buttonMargin, buttonMargin + buttonSize);
         buttons.add(new FullScreenButton(fullBtn));
+
+        Rect volUpBtn = leftTo(fullBtn, buttonSize);
+        buttons.add(new SystemVolumeUpButton(volUpBtn));
+
+        Rect volumeDownBtn = leftTo(volUpBtn, buttonSize);
+        buttons.add(new SystemVolumeDownButton(volumeDownBtn));
     }
 }

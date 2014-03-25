@@ -3,6 +3,8 @@ package com.antonyjekov.nevix.player.buttons;
 import android.graphics.Path;
 import android.graphics.Rect;
 
+import com.antonyjekov.nevix.constants.PlayerCommand;
+
 /**
  * Created by Antony Jekov on 3/23/2014.
  */
@@ -29,6 +31,6 @@ public class NextButton extends SphericalButton {
 
     @Override
     public String command() {
-        return null;
+        return PlayerCommand.NEXT_CMD;
     }
 }

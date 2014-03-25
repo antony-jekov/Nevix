@@ -295,7 +295,7 @@
             IPlayer player = new BsPlayer(bsPlayerLocation);
 
             CommandExecutor cmdExec = new CommandExecutor(player, db.LocalDb.Files);
-            listener = new CommunicationsManager(Environment.MachineName, cmdExec);
+            listener = new CommunicationsManager(sessionKey, cmdExec);
         }
     }
 }
