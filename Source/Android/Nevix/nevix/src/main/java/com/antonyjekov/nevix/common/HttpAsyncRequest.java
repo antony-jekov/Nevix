@@ -3,6 +3,7 @@ package com.antonyjekov.nevix.common;
 import android.os.AsyncTask;
 
 import org.apache.http.auth.AuthenticationException;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.util.ByteArrayBuffer;
@@ -41,7 +42,7 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
             //Uses URL and HttpURLConnection for server connection.
             URL targetURL = new URL(requestAddress);
             HttpURLConnection httpCon = (HttpURLConnection) targetURL.openConnection();
-            httpCon.setDoOutput(true);
+
             httpCon.setDoInput(true);
             httpCon.setUseCaches(false);
             httpCon.setChunkedStreamingMode(0);
@@ -67,7 +68,8 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
                 writer.write(requestBody);
                 writer.flush();
                 writer.close();
-            }
+            } else
+                httpCon.setRequestMethod(HttpGet.METHOD_NAME);
 
             //getting the response from the server
             InputStream inputStream = httpCon.getInputStream();
@@ -76,7 +78,7 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
 
             int intResponse = httpCon.getResponseCode();
 
-            if (intResponse == 401){
+            if (intResponse == 401) {
                 throw new AuthenticationException("User is not logged in.");
             } else if (intResponse >= 400) {
                 throw new IllegalArgumentException("Bad request.");

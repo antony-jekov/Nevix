@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
-import com.antonyjekov.nevix.common.ContextManager;
-import com.antonyjekov.nevix.common.PersistentManager;
 import com.antonyjekov.nevix.common.PusherManager;
 import com.antonyjekov.nevix.player.BSPlayer;
 import com.antonyjekov.nevix.player.Player;
@@ -20,8 +18,6 @@ public class MainActivity extends ActionBarActivity {
 
     public static final int BROWSE_RESULT = 1001;
 
-    private PersistentManager persistent;
-    private ContextManager data;
     private PusherManager pusher;
 
     @Override
@@ -37,10 +33,7 @@ public class MainActivity extends ActionBarActivity {
             throw new IllegalArgumentException("invalid session key.");
         }
 
-        this.persistent = new PersistentManager(sessionKey);
         this.pusher = new PusherManager(sessionKey);
-
-        data = new ContextManager(this);
 
         Player player = new BSPlayer(this, pusher);
         ((ViewGroup) findViewById(R.id.player_container)).addView(player);
@@ -65,7 +58,6 @@ public class MainActivity extends ActionBarActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == BROWSE_RESULT) {
                 int requestedFile = data.getIntExtra(BrowseActivity.BROWSED_FILE, 0);
-                test(requestedFile + "");
                 if (requestedFile != 0) {
                     pusher.pushCommand("open" + requestedFile);
                 }

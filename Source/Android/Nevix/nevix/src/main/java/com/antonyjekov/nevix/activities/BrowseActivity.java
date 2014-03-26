@@ -15,9 +15,9 @@ import com.antonyjekov.nevix.common.contracts.OnFileSelected;
 
 public class BrowseActivity extends ActionBarActivity implements OnFileSelected {
 
-    String lastServerUpdate;
-    ContextManager db;
-    PersistentManager persistentManager;
+    private String lastServerUpdate;
+    private ContextManager db;
+    private PersistentManager persistentManager;
 
     public static final String BROWSED_FILE = "com.antonyjekov.nevix.browse.browsedFile";
 
