@@ -8,10 +8,13 @@ import com.antonyjekov.nevix.player.buttons.FastForwardButton;
 import com.antonyjekov.nevix.player.buttons.FullScreenButton;
 import com.antonyjekov.nevix.player.buttons.NextButton;
 import com.antonyjekov.nevix.player.buttons.PlayButton;
+import com.antonyjekov.nevix.player.buttons.PowerDownButton;
 import com.antonyjekov.nevix.player.buttons.PreviousButton;
 import com.antonyjekov.nevix.player.buttons.RewindButton;
 import com.antonyjekov.nevix.player.buttons.SystemVolumeDownButton;
 import com.antonyjekov.nevix.player.buttons.SystemVolumeUpButton;
+import com.antonyjekov.nevix.player.buttons.VolumeDownButton;
+import com.antonyjekov.nevix.player.buttons.VolumeUpButton;
 
 /**
  * Created by Antony Jekov on 3/23/2014.
@@ -46,13 +49,23 @@ public class BSPlayer extends Player {
         buttons.add(new PreviousButton(prevBtn));
 
         buttonSize = (int) (width * .08);
+
+        Rect powerBtn = new Rect(buttonMargin, buttonMargin, buttonMargin + buttonSize, buttonMargin + buttonSize);
+        buttons.add(new PowerDownButton(powerBtn));
+
         Rect fullBtn = new Rect(width - (buttonSize + buttonMargin), buttonMargin, width - buttonMargin, buttonMargin + buttonSize);
         buttons.add(new FullScreenButton(fullBtn));
 
-        Rect volUpBtn = leftTo(fullBtn, buttonSize);
-        buttons.add(new SystemVolumeUpButton(volUpBtn));
+        Rect volUpBtn = bellowOf(fullBtn, buttonSize);
+        buttons.add(new VolumeUpButton(volUpBtn));
 
-        Rect volumeDownBtn = leftTo(volUpBtn, buttonSize);
-        buttons.add(new SystemVolumeDownButton(volumeDownBtn));
+        Rect volumeDownBtn = bellowOf(volUpBtn, buttonSize);
+        buttons.add(new VolumeDownButton(volumeDownBtn));
+
+        Rect sysVolUp = bellowOf(powerBtn, buttonSize);//new Rect(buttonMargin, buttonMargin, buttonMargin + buttonSize, buttonMargin + buttonSize);
+        buttons.add(new SystemVolumeUpButton(sysVolUp));
+
+        Rect sysVolDown = bellowOf(sysVolUp, buttonSize);
+        buttons.add(new SystemVolumeDownButton(sysVolDown));
     }
 }

@@ -8,7 +8,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
 /**
  * Created by Antony Jekov on 3/25/2014.
  */
-public class PowerDownButton extends SphericalButton {
+public class PowerDownButton extends FullScreenButton {
+
     public PowerDownButton(Rect button) {
         super(button);
     }
@@ -17,7 +18,8 @@ public class PowerDownButton extends SphericalButton {
     protected void prepareShape(Path shape) {
         super.prepareShape(shape);
 
-
+        shape.moveTo(button.centerX(), (float) (button.centerY() - ((button.height() >> 2) + padding * .3)));
+        shape.lineTo(button.centerX(), button.centerY());
     }
 
     @Override
