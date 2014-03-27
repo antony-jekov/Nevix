@@ -7,7 +7,9 @@ import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.antonyjekov.nevix.activities.MainActivity;
 import com.antonyjekov.nevix.common.PusherManager;
+import com.antonyjekov.nevix.constants.PlayerCommand;
 import com.antonyjekov.nevix.player.buttons.Button;
 
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ public abstract class Player extends View {
 
     private final PusherManager pusher;
     protected int buttonMargin;
+
+    MainActivity owner;
 
     protected List<Button> buttons;
 
@@ -67,17 +71,25 @@ public abstract class Player extends View {
 
     private void onClick(float x, float y) {
         for (Button btn : buttons) {
-            if (btn.isPointInButton(x, y))
+            if (btn.isPointInButton(x, y)) {
                 vibrator.vibrate(100);
-                pusher.pushCommand(btn.command());
+                String cmd = btn.command();
+                if (cmd.equals(PlayerCommand.BROWSE_CMD))
+                    owner.browseMedia();
+                else
+                    pusher.pushCommand(btn.command());
+
+                break;
+            }
         }
     }
 
-    public Player(Context context, PusherManager pusher) {
+    public Player(Context context, PusherManager pusher, MainActivity owner) {
         super(context);
         this.pusher = pusher;
         buttons = new ArrayList<Button>();
         this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        this.owner = owner;
     }
 
     protected Rect rightTo(Rect relativeRect, int buttonSize) {

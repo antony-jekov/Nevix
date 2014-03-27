@@ -3,7 +3,10 @@ package com.antonyjekov.nevix.player;
 import android.content.Context;
 import android.graphics.Rect;
 
+import com.antonyjekov.nevix.activities.BaseActivity;
+import com.antonyjekov.nevix.activities.MainActivity;
 import com.antonyjekov.nevix.common.PusherManager;
+import com.antonyjekov.nevix.player.buttons.BrowseButton;
 import com.antonyjekov.nevix.player.buttons.FastForwardButton;
 import com.antonyjekov.nevix.player.buttons.FullScreenButton;
 import com.antonyjekov.nevix.player.buttons.NextButton;
@@ -21,8 +24,8 @@ import com.antonyjekov.nevix.player.buttons.VolumeUpButton;
  */
 public class BSPlayer extends Player {
 
-    public BSPlayer(Context context, PusherManager pusher) {
-        super(context, pusher);
+    public BSPlayer(Context context, PusherManager pusher, MainActivity owner) {
+        super(context, pusher, owner);
     }
 
     @Override
@@ -67,5 +70,8 @@ public class BSPlayer extends Player {
 
         Rect sysVolDown = bellowOf(sysVolUp, buttonSize);
         buttons.add(new SystemVolumeDownButton(sysVolDown));
+
+        Rect browseBtn = leftTo(fullBtn, buttonSize);
+        buttons.add(new BrowseButton(browseBtn));
     }
 }

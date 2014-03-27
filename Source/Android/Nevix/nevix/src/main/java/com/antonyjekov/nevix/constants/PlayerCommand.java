@@ -3,6 +3,7 @@ package com.antonyjekov.nevix.constants;
 public class PlayerCommand {
     public static final String PLAY_CMD = "play";
     public static final String PAUSE_CMD = "pause";
+    public static final String STOP_CMD = "stop";
     public static final String NEXT_CMD = "next";
     public static final String PREV_CMD = "prev";
     public static final String VOLUME_UP_CMD = "volume_up";
@@ -15,5 +16,6 @@ public class PlayerCommand {
     public static final String SYS_VOLUME_DOWN_CMD = "sys_volume_down";
     public static final String SYS_VOLUME_UP_CMD = "sys_volume_up";
     public static final String POWER_CMD = "power";
+    public static final String BROWSE_CMD = "browse";
 
 }

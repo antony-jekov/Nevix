@@ -10,6 +10,7 @@ import android.graphics.Rect;
  * Created by Antony Jekov on 3/23/2014.
  */
 public abstract class Button {
+
     protected final Rect button;
     private Path shape;
     private Paint paint;

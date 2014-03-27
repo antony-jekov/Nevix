@@ -25,6 +25,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().hide();
+
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         String sessionKey = getIntent().getStringExtra(AuthenticateActivity.SESSION_KEY_EXTRA);
@@ -35,22 +37,13 @@ public class MainActivity extends BaseActivity {
 
         this.pusher = new PusherManager(sessionKey);
 
-        Player player = new BSPlayer(this, pusher);
+        Player player = new BSPlayer(this, pusher, this);
         ((ViewGroup) findViewById(R.id.player_container)).addView(player);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public void browseMedia() {
         Intent browse = new Intent(this, BrowseActivity.class);
         startActivityForResult(browse, BROWSE_RESULT);
-
-        return true;
     }
 
     @Override
