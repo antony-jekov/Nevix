@@ -14,7 +14,7 @@ import com.antonyjekov.nevix.common.PusherManager;
 import com.antonyjekov.nevix.player.BSPlayer;
 import com.antonyjekov.nevix.player.Player;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends BaseActivity {
 
     public static final int BROWSE_RESULT = 1001;
 
@@ -63,9 +63,5 @@ public class MainActivity extends ActionBarActivity {
                 }
             }
         }
-    }
-
-    private void test(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 }

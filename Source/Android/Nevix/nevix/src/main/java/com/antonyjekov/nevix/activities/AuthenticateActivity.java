@@ -11,16 +11,14 @@ import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
 import com.antonyjekov.nevix.fragments.AuthorizationFragment;
 
-public class AuthenticateActivity extends ActionBarActivity {
+public class AuthenticateActivity extends BaseActivity {
 
     private PersistentManager persistant;
     public static final String SESSION_KEY_EXTRA = "com.antonyjekov.nevix.auth.sessionKey";
-    public static final String CHANNEL_NAME_EXTRA = "com.antonyjekov.nevix.auth.channelName";
     private ContextManager data;
-    private String channelName;
     private String sessionKey;
 
-    Context thisContext;
+    private Context thisContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

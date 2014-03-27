@@ -3,6 +3,7 @@ package com.antonyjekov.nevix.player;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,6 +17,8 @@ import java.util.List;
  * Created by Antony Jekov on 3/23/2014.
  */
 public abstract class Player extends View {
+
+    protected Vibrator vibrator;
 
     protected int width;
     protected int height;
@@ -65,15 +68,16 @@ public abstract class Player extends View {
     private void onClick(float x, float y) {
         for (Button btn : buttons) {
             if (btn.isPointInButton(x, y))
+                vibrator.vibrate(100);
                 pusher.pushCommand(btn.command());
         }
     }
 
     public Player(Context context, PusherManager pusher) {
         super(context);
-        this.width = width;
         this.pusher = pusher;
         buttons = new ArrayList<Button>();
+        this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     protected Rect rightTo(Rect relativeRect, int buttonSize) {

@@ -13,7 +13,7 @@ import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
 import com.antonyjekov.nevix.common.contracts.OnFileSelected;
 
-public class BrowseActivity extends ActionBarActivity implements OnFileSelected {
+public class BrowseActivity extends BaseActivity implements OnFileSelected {
 
     private String lastServerUpdate;
     private ContextManager db;
