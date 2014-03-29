@@ -144,9 +144,9 @@ namespace Jekov.Nevix.Desktop.Client
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            db = new NevixLocalDbContext();
+            db = NevixLocalDbContext.Instance();
 
-            persister = new PersisterManager();
+            persister = PersisterManager.Instance();
             password.KeyPress += new KeyPressEventHandler(CheckEnterKeyPressLogin);
             confirm.KeyPress += new KeyPressEventHandler(CheckEnterKeyPressRegister);
 

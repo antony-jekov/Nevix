@@ -17,13 +17,20 @@
         private const string HttpGet = "GET";
         private readonly static char[] trimCharsForRequest = { '"', '\\', ' ' };
 
+        private static readonly PersisterManager instance = new PersisterManager();
+
+        public static PersisterManager Instance()
+        {
+            return instance;
+        }
+
         public string SessionKey { get; set; }
 
-        public PersisterManager () : this (string.Empty)
+        private PersisterManager () : this (string.Empty)
         {
         }
 
-        public PersisterManager(string sessionKey)
+        private PersisterManager(string sessionKey)
         {
             this.SessionKey = sessionKey;
         }

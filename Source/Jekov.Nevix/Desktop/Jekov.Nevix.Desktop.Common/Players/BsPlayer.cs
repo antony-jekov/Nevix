@@ -1,4 +1,4 @@
-﻿namespace Jekov.Nevix.Desktop.Common
+﻿namespace Jekov.Nevix.Desktop.Common.Players
 {
     using System;
     using System.Threading;
@@ -16,69 +16,70 @@
 
         public override void StepForward()
         {
-            SetForegroundWindow(player.MainWindowHandle);
+            SetForegroundWindow(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.RIGHT);
         }
 
         public override void StepBackward()
         {
-            SetForegroundWindow(player.MainWindowHandle);
+            SetForegroundWindow(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.LEFT);
         }
 
         public override void FastForward()
         {
-            SetForegroundWindow(player.MainWindowHandle);
+            SetForegroundWindow(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.LCONTROL, VirtualKeyCode.F5);
         }
 
         public override void Rewind()
         {
-            SetForegroundWindow(player.MainWindowHandle);
+            SetForegroundWindow(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.LCONTROL, VirtualKeyCode.F6);
         }
 
         public override void OpenFile(string location)
         {
-            Thread.Sleep(2000);
-            SetForegroundWindow(player.MainWindowHandle);
-            
+            SetForegroundWindow(PlayerProcess.MainWindowHandle);
+            Thread.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.VK_L);
+            Thread.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.DELETE);
-            Thread.Sleep(2000);
+            Thread.Sleep(DELAY_TIME << 4);
             input.Keyboard.TextEntry(location);
-            Thread.Sleep(2000);
+            input.Keyboard.Sleep(DELAY_TIME << 4);
+            Thread.Sleep(DELAY_TIME << 4);
             input.Keyboard.KeyPress(VirtualKeyCode.RETURN);
         }
 
         public override void VolumeUp()
         {
-            SetForegroundWindow(player.MainWindowHandle);
+            SetForegroundWindow(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.UP);
         }
 
         public override void VolumeDown()
         {
-            SetForegroundWindow(player.MainWindowHandle);
+            SetForegroundWindow(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.DOWN);
         }
 
         public override void FullScreen()
         {
-            SetForegroundWindow(player.MainWindowHandle);
+            SetForegroundWindow(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.VK_F);
         }
 
         public override void Play()
         {
-            SetForegroundWindow(player.MainWindowHandle);
+            SetForegroundWindow(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.VK_X);
         }

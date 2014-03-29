@@ -10,7 +10,14 @@
 
     public class FileManager
     {
-        public FileManager()
+        private static readonly FileManager instance = new FileManager();
+
+        public static FileManager Instance()
+        {
+            return instance;
+        }
+
+        private FileManager()
         {
             directoriesWithMediaInside = new HashSet<string>();
         }

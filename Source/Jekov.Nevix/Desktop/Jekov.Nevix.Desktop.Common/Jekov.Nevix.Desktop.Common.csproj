@@ -59,8 +59,9 @@
     <Compile Include="NevixLocalDbContext.cs" />
     <Compile Include="Models\UserConfigurationsModel.cs" />
     <Compile Include="PersisterManager.cs" />
-    <Compile Include="BsPlayer.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Players\BsPlayer.cs" />
+    <Compile Include="Players\Player.cs" />
+    <Compile Include="Players\SystemPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pubnub.cs" />
   </ItemGroup>

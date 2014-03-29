@@ -12,7 +12,14 @@
         private const string ConfigFileName = "NevixConfig.dat";
         private string configFilePath;
 
-        public NevixLocalDbContext()
+        private static readonly NevixLocalDbContext instance = new NevixLocalDbContext();
+
+        public static NevixLocalDbContext Instance()
+        {
+            return instance;
+        }
+
+        private NevixLocalDbContext()
         {
             string personalFolder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             configFilePath = string.Format("{0}\\{1}", personalFolder, ConfigFileName);

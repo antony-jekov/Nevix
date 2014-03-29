@@ -3,6 +3,7 @@
     using Jekov.Nevix.Common.ViewModels;
     using Jekov.Nevix.Desktop.Common;
     using Jekov.Nevix.Desktop.Common.Contracts;
+    using Jekov.Nevix.Desktop.Common.Players;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -14,9 +15,9 @@
             string userEmail = "troty@abv.bg";
             string userPass = "pass";
 
-            NevixLocalDbContext db = new NevixLocalDbContext();
-            PersisterManager persister = new PersisterManager();
-            FileManager fileManager = new FileManager();
+            NevixLocalDbContext db = NevixLocalDbContext.Instance();
+            PersisterManager persister = PersisterManager.Instance();
+            FileManager fileManager = FileManager.Instance();
 
             if (!string.IsNullOrEmpty(db.LocalDb.SessionKey))
             {

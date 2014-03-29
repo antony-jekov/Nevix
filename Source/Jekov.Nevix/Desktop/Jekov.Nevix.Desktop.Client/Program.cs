@@ -16,7 +16,15 @@ namespace Jekov.Nevix.Desktop.Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoginForm());
+
+            Form main;
+            var db = Nevix.Desktop.Common.NevixLocalDbContext.Instance();
+            if (!string.IsNullOrEmpty(db.LocalDb.SessionKey))
+                main = new MainForm(db.LocalDb.Email, db.LocalDb.SessionKey);
+            else
+                main = new LoginForm();
+
+            Application.Run(main);
         }
     }
 }

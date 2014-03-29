@@ -3,6 +3,7 @@
     using Jekov.Nevix.Common.ViewModels;
     using Jekov.Nevix.Desktop.Common;
     using Jekov.Nevix.Desktop.Common.Contracts;
+    using Jekov.Nevix.Desktop.Common.Players;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -25,9 +26,10 @@
         {
             this.userEmail = email;
             this.sessionKey = sessionKey;
-            this.db = new NevixLocalDbContext();
-            this.fileManager = new FileManager();
-            this.persister = new PersisterManager(sessionKey);
+            this.db = NevixLocalDbContext.Instance();
+            this.fileManager = FileManager.Instance();
+            this.persister = PersisterManager.Instance();
+            this.persister.SessionKey = sessionKey;
 
             InitializeComponent();
         }
@@ -157,7 +159,6 @@
         private string RemoveIdFromFiles(string serverFolders)
         {
             StringBuilder sb = new StringBuilder();
-            bool inId = false;
             for (int i = 0, len = serverFolders.Length; i < len; i++)
             {
                 if (serverFolders[i] == 'I' && serverFolders[i + 1] == 'd' &&
@@ -292,7 +293,7 @@
 
         private void Connect_Click(object sender, EventArgs e)
         {
-            IPlayer player = new BsPlayer(bsPlayerLocation);
+            IPlayer player = new SystemPlayer();
 
             CommandExecutor cmdExec = new CommandExecutor(player, db.LocalDb.Files);
             listener = new CommunicationsManager(sessionKey, cmdExec);
