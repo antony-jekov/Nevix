@@ -42,7 +42,7 @@ public class HttpAsyncRequest implements Callable<String> {
         HttpURLConnection httpCon = null;
 
         try {
-            //Uses URL and HttpURLConnection for server connection.
+            //Uses URL and HttpURLConnection for server asyncOperationsManager.
             URL url = new URL(targetURL);
             httpCon = (HttpURLConnection) url.openConnection();
 

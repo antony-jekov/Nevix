@@ -18,7 +18,14 @@ public class AsyncOperationsManager {
         this.executorService.submit(request);
     }
 
-    public void performHttpPost() {
+    public void performHttpPost(String url, String sessionKey, String requestBody, CallBack callBack) {
+        HttpAsyncRequest request = new HttpAsyncRequest(callBack);
+        request.prepareCall(url, POST, sessionKey, requestBody);
+        this.executorService.submit(request);
+    }
 
+    public void performHttpPut(String url, String sessionKey, String requestBody, CallBack callBack) {
+        HttpAsyncRequest request = new HttpAsyncRequest(callBack);
+        request.prepareCall(url, PUT, sessionKey, requestBody);
     }
 }

@@ -11,7 +11,7 @@ import java.net.URL;
  * Created by Antony Jekov on 3/28/2014.
  */
 public class Persister {
-    private static final String ROOT_ADDRESS = "http://nevix.apphb.com/";
+    private static final String ROOT_ADDRESS = "http://nevix.apphb.com/api/";
 
     private static Persister instance = new Persister();
 
@@ -19,30 +19,30 @@ public class Persister {
         return instance;
     }
 
-    AsyncOperationsManager connection;
+    AsyncOperationsManager asyncOperationsManager;
 
     public Persister() {
-        this.connection = new AsyncOperationsManager();
+        this.asyncOperationsManager = new AsyncOperationsManager();
     }
 
-    private void getRequest(String address, final CallBack callBack) {
-
+    private void getRequest(String address, String sessionKey, final CallBack callBack) {
+        asyncOperationsManager.performHttpGet(address, sessionKey, callBack);
     }
 
-    private void postRequest(CallBack callBack) {
-
+    private void postRequest(String url, String sessionKey, String requestBody, CallBack callBack) {
+        this.asyncOperationsManager.performHttpPost(url, sessionKey, requestBody, callBack);
     }
 
     private void putRequest(CallBack callBack) {
 
     }
-    
+
     public String excutePost(String targetURL, String urlParameters)
     {
         URL url;
         HttpURLConnection connection = null;
         try {
-            //Create connection
+            //Create asyncOperationsManager
             url = new URL(targetURL);
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
