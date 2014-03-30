@@ -22,6 +22,8 @@
 
         public IDictionary<int, string> Files { get; set; }
 
+        public bool StartWithWindows { get; set; }
+
         public UserConfigurationsModel()
         {
             ClearMedia();

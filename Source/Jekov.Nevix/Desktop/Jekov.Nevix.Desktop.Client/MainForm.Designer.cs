@@ -180,7 +180,6 @@ namespace Jekov.Nevix.Desktop.Client
             this.startWithWindows.TabIndex = 29;
             this.startWithWindows.Text = "Start with Windows";
             this.startWithWindows.UseVisualStyleBackColor = true;
-            this.startWithWindows.Visible = false;
             this.startWithWindows.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // mediaDirectories

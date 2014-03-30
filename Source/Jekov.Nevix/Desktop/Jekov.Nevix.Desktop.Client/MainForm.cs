@@ -39,6 +39,8 @@
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            startWithWindows.Checked = db.LocalDb.StartWithWindows;
+
             this.notifyIcon1.ContextMenu = new System.Windows.Forms.ContextMenu(new MenuItem[] {
             new MenuItem("Exit", (s, d) => {Application.Exit();})
             });
@@ -378,13 +380,16 @@
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            //RegistryKey rk = Registry.CurrentUser.OpenSubKey
-            //("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey
+            ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-            //if (startWithWindows.Checked)
-            //    rk.SetValue("Nevix Desktop Client", Application.ExecutablePath.ToString());
-            //else
-            //    rk.DeleteValue("Nevix Desktop Client", false);
+            if (startWithWindows.Checked)
+                rk.SetValue("Nevix Desktop Client", Application.ExecutablePath.ToString());
+            else
+                rk.DeleteValue("Nevix Desktop Client", false);
+
+            db.LocalDb.StartWithWindows = startWithWindows.Checked;
+            db.SaveChanges();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
