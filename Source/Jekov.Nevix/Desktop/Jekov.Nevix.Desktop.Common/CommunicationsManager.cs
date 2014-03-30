@@ -26,7 +26,7 @@
         }
 
         private readonly Pubnub push;
-        private CommandExecutor executor;
+        public CommandExecutor executor;
 
         private void HandleIncomingData(string data)
         {

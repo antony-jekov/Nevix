@@ -188,5 +188,11 @@ namespace Jekov.Nevix.Desktop.Client
                 register.PerformClick();
             }
         }
+
+        private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
+        }
     }
 }

@@ -6,7 +6,7 @@
 
     public class CommandExecutor
     {
-        private readonly IPlayer player;
+        public IPlayer player;
         private readonly IDictionary<int, string> files;
 
         private const string PLAY_CMD = "play";

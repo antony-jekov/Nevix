@@ -58,7 +58,7 @@
                 DateTime lastDatabaseUpdate = persister.LastMediaUpdate();
             }
 
-            if (string.IsNullOrEmpty(db.LocalDb.BsPlayerLocation))
+            if (string.IsNullOrEmpty(db.LocalDb.PreferredPlayerLocation))
             {
                 string playerLocation = fileManager.FindBsPlayerLocation();
                 if (string.IsNullOrEmpty(playerLocation))
@@ -70,11 +70,11 @@
                     throw new ArgumentNullException("bsplayer", "Make sure BSPlayer is installed on this system and restart the application!");
                 }
 
-                db.LocalDb.BsPlayerLocation = playerLocation;
+                db.LocalDb.PreferredPlayerLocation = playerLocation;
                 db.SaveChanges();
             }
 
-            IPlayer player = new BsPlayer(db.LocalDb.BsPlayerLocation);
+            IPlayer player = new BsPlayer(db.LocalDb.PreferredPlayerLocation);
 
             CommunicationsManager listener = new CommunicationsManager(Environment.MachineName, new CommandExecutor(player, db.LocalDb.Files));
 

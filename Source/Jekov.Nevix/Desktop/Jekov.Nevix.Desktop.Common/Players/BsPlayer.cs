@@ -16,35 +16,35 @@
 
         public override void StepForward()
         {
-            SetForegroundWindow(PlayerProcess.MainWindowHandle);
+            BringPlayerToFront(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.RIGHT);
         }
 
         public override void StepBackward()
         {
-            SetForegroundWindow(PlayerProcess.MainWindowHandle);
+            BringPlayerToFront(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.LEFT);
         }
 
         public override void FastForward()
         {
-            SetForegroundWindow(PlayerProcess.MainWindowHandle);
+            BringPlayerToFront(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.LCONTROL, VirtualKeyCode.F5);
         }
 
         public override void Rewind()
         {
-            SetForegroundWindow(PlayerProcess.MainWindowHandle);
+            BringPlayerToFront(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.LCONTROL, VirtualKeyCode.F6);
         }
 
         public override void OpenFile(string location)
         {
-            SetForegroundWindow(PlayerProcess.MainWindowHandle);
+            BringPlayerToFront(PlayerProcess.MainWindowHandle);
             Thread.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.VK_L);
             Thread.Sleep(DELAY_TIME);
@@ -58,28 +58,28 @@
 
         public override void VolumeUp()
         {
-            SetForegroundWindow(PlayerProcess.MainWindowHandle);
+            BringPlayerToFront(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.UP);
         }
 
         public override void VolumeDown()
         {
-            SetForegroundWindow(PlayerProcess.MainWindowHandle);
+            BringPlayerToFront(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.DOWN);
         }
 
         public override void FullScreen()
         {
-            SetForegroundWindow(PlayerProcess.MainWindowHandle);
+            BringPlayerToFront(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.VK_F);
         }
 
         public override void Play()
         {
-            SetForegroundWindow(PlayerProcess.MainWindowHandle);
+            BringPlayerToFront(PlayerProcess.MainWindowHandle);
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.VK_X);
         }

@@ -4,6 +4,7 @@
     using Jekov.Nevix.Desktop.Common;
     using Jekov.Nevix.Desktop.Common.Contracts;
     using Jekov.Nevix.Desktop.Common.Players;
+    using Microsoft.Win32;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -20,7 +21,9 @@
         private PersisterManager persister;
         private CommunicationsManager listener;
         private FileManager fileManager;
-        private string bsPlayerLocation;
+        private string preferredPlayerLocation;
+        private ICollection<PlayerEntry> playerEntries;
+        private bool minimized = false;
 
         public MainForm(string email, string sessionKey)
         {
@@ -36,39 +39,84 @@
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            connect.Select();
+            this.notifyIcon1.ContextMenu = new System.Windows.Forms.ContextMenu(new MenuItem[] {
+            new MenuItem("Exit", (s, d) => {Application.Exit();})
+            });
+
             email.Text = this.userEmail;
+            RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"Software");
+            playerEntries = new List<PlayerEntry>();
+            playerEntries.Add(new PlayerEntry("System Player", string.Empty));
 
-            if (!string.IsNullOrEmpty(db.LocalDb.BsPlayerLocation))
+            UpdatePlayerEntries(regKey, playerEntries);
+
+            foreach (var playerEntry in playerEntries)
             {
-                bsPlayerLocation = db.LocalDb.BsPlayerLocation;
-            }
-            else
-            {
-                bsPlayerLocation = fileManager.FindBsPlayerLocation();
-                if (string.IsNullOrEmpty(bsPlayerLocation))
-                {
-                    MessageBox.Show("BsPlayer could not be found.\n\nPlease choose the location of the bsplayer.exe file manually.");
-                }
-                else
-                {
-                    db.LocalDb.BsPlayerLocation = bsPlayerLocation;
-                    db.SaveChanges();
-                }
+                playerSelect.Items.Add(playerEntry.Name);
             }
 
-            playerLocation.Text = bsPlayerLocation;
-
-            string channelName = persister.GetChannelName();
-
-            if (channelName != Environment.MachineName)
+            if (!string.IsNullOrEmpty(db.LocalDb.PreferredPlayerLocation))
             {
-                persister.UpdateChannelName(Environment.MachineName);
+                preferredPlayerLocation = db.LocalDb.PreferredPlayerLocation;
             }
 
-
+            UpdatePlayerComboBox();
 
             SyncMedia();
+
+            Connect();
+        }
+
+        private void UpdatePlayerEntries(RegistryKey parentKey, ICollection<PlayerEntry> entries)
+        {
+            string[] nameList = parentKey.GetSubKeyNames();
+            string[] subNameList;
+            RegistryKey subKey;
+            string location;
+            if (nameList.Contains("BST"))
+            {
+                subKey = parentKey.OpenSubKey("BST");
+                subNameList = subKey.GetSubKeyNames();
+                if (subNameList.Contains("bsplayer"))
+                {
+                    subKey = subKey.OpenSubKey("bsplayer");
+                    location = subKey.GetValue("AppPath").ToString();
+
+                    entries.Add(new PlayerEntry("BSPlayer", location));
+                }
+                if (subNameList.Contains("bsplayerv1"))
+                {
+                    subKey = parentKey.OpenSubKey("BST");
+                    subKey = subKey.OpenSubKey("bsplayerv1");
+                    location = subKey.GetValue("AppPath").ToString();
+
+                    entries.Add(new PlayerEntry("BSPlayer Pro", location));
+                }
+            }
+        }
+
+        private void UpdatePlayerComboBox()
+        {
+            bool foundIt = false;
+            if (!string.IsNullOrEmpty(preferredPlayerLocation))
+            {
+                byte i = 0;
+                foreach (var item in playerEntries)
+                {
+                    if (item.Location == preferredPlayerLocation)
+                    {
+                        playerSelect.SelectedIndex = i;
+                        foundIt = true;
+                    }
+
+                    i++;
+                }
+            }
+
+            if (!foundIt)
+            {
+                playerSelect.SelectedIndex = 0;
+            }
         }
 
         protected string CalculateMd5HashCode(string text)
@@ -125,7 +173,7 @@
                     mediaDirectories.Items.Clear();
 
                     IEnumerable<MediaFolderViewModel> locals = LoadMediaFolders();
-                                        
+
                     foreach (var folder in locals)
                     {
                         persister.AddMediaFolderToDatabase(folder);
@@ -206,7 +254,7 @@
 
             persister.ClearAllMedia();
             db.LocalDb.ClearMedia();
-            
+
             foreach (var folder in foldersConverted)
             {
                 persister.AddMediaFolderToDatabase(folder);
@@ -283,20 +331,115 @@
             }
             else
             {
-                bsPlayerLocation = newLocation;
-                db.LocalDb.BsPlayerLocation = bsPlayerLocation;
+                preferredPlayerLocation = newLocation;
+                db.LocalDb.PreferredPlayerLocation = preferredPlayerLocation;
                 db.SaveChanges();
-
-                playerLocation.Text = bsPlayerLocation;
             }
         }
 
-        private void Connect_Click(object sender, EventArgs e)
+        private void Connect()
         {
-            IPlayer player = new SystemPlayer();
-
-            CommandExecutor cmdExec = new CommandExecutor(player, db.LocalDb.Files);
+            CommandExecutor cmdExec = new CommandExecutor(GetPlayer(), db.LocalDb.Files);
             listener = new CommunicationsManager(sessionKey, cmdExec);
+        }
+
+        private IPlayer GetPlayer()
+        {
+            string player = playerEntries.ElementAt(playerSelect.SelectedIndex).Name;
+            if (player == "BSPlayer" || player == "BSPlayer Pro")
+            {
+                return new BsPlayer(preferredPlayerLocation);
+            }
+
+            return new SystemPlayer();
+        }
+
+        private void playerSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string newLocation = playerEntries.ElementAt(playerSelect.SelectedIndex).Location;
+            db.LocalDb.PreferredPlayerLocation = newLocation;
+            db.SaveChanges();
+
+            preferredPlayerLocation = newLocation;
+
+            if (listener != null)
+                listener.executor.player = GetPlayer();
+        }
+
+        private void logoff_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            db.LocalDb.SessionKey = string.Empty;
+            db.SaveChanges();
+            minimized = true;
+            Close();
+            Application.Exit();
+            Application.Restart();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            //RegistryKey rk = Registry.CurrentUser.OpenSubKey
+            //("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+            //if (startWithWindows.Checked)
+            //    rk.SetValue("Nevix Desktop Client", Application.ExecutablePath.ToString());
+            //else
+            //    rk.DeleteValue("Nevix Desktop Client", false);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!minimized)
+            {
+                Minimize(e);
+            }
+        }
+
+        private void Minimize(FormClosingEventArgs e)
+        {
+            if (e != null)
+                e.Cancel = true;
+            Hide();
+            notifyIcon1.Visible = true;
+            notifyIcon1.ShowBalloonTip(3000, "Nevix", "Nevix Desktop Client is working in the background.", ToolTipIcon.Info);
+
+            minimized = true;
+        }
+
+
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            notifyIcon1.Visible = false;
+            minimized = false;
+        }
+
+        private void MainForm_FormClosing_1(object sender, FormClosingEventArgs e)
+        {
+            if (!minimized)
+            {
+                e.Cancel = true;
+                Hide();
+                notifyIcon1.Visible = true;
+                notifyIcon1.ShowBalloonTip(
+                    3000, "Nevix Desktop Client", "Nevix is working in background mode.", ToolTipIcon.Info);
+                minimized = true;
+            }
+        }
+
+        private void notifyIcon1_MouseDoubleClick_1(object sender, MouseEventArgs e)
+        {
+            minimized = false;
+            notifyIcon1.Visible = false;
+            Show();
+        }
+
+        private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
+        {
+            minimized = false;
+            notifyIcon1.Visible = false;
+            Show();
         }
     }
 }

@@ -77,12 +77,20 @@
             }
 
             bool hasFiles = false;
-            
-            if (subDir.GetFiles().Any(f => MediaTypes.Contains(f.Extension.ToLower())))
+            try
             {
-                directoriesWithMediaInside.Add(subDir.FullName);
-                return true;
+                if (subDir.GetFiles().Any(f => MediaTypes.Contains(f.Extension.ToLower())))
+                {
+                    directoriesWithMediaInside.Add(subDir.FullName);
+                    return true;
+                }
             }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You don't have access to one or more folders inside the selected location!", "Restricted Access", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            
 
             var subDirs = subDir.GetDirectories();
 

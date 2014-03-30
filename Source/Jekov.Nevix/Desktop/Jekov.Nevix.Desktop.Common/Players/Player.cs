@@ -13,6 +13,11 @@
     {
         [DllImport("user32.dll")]
         public static extern int SetForegroundWindow(IntPtr handleWindow);
+
+        public void BringPlayerToFront(IntPtr handleWindow) {
+            SetForegroundWindow(handleWindow);
+            Thread.Sleep(500);
+        }
         
         private Process playerProcess;
 

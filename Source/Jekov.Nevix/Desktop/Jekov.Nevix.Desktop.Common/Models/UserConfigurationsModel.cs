@@ -10,7 +10,7 @@
 
         public string Email { get; set; }
 
-        public string BsPlayerLocation { get; set; }
+        public string PreferredPlayerLocation { get; set; }
 
         public bool Remember { get; set; }
 
