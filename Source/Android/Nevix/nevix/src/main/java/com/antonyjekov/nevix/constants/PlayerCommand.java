@@ -17,5 +17,5 @@ public class PlayerCommand {
     public static final String SYS_VOLUME_UP_CMD = "sys_volume_up";
     public static final String POWER_CMD = "power";
     public static final String BROWSE_CMD = "browse";
-
+    public static final String MUTE_CMD = "mute";
 }

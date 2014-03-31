@@ -19,18 +19,16 @@ public class BrowseButton extends SphericalButton {
 
         int x = button.centerX();
         int y = button.top + padding;
-        int halfWidth = button.width() >> 1;
-        int left = x - (halfWidth - padding);
-        int right = x + (button.width() - (padding << 2));
+
+        int halfLen = (button.width() - (padding << 1)) >> 1;
 
         shape.moveTo(x, y);
-        shape.lineTo(left, button.centerY());
-        shape.lineTo(right, button.centerY());
+        shape.lineTo(x - halfLen, button.centerY());
+        shape.lineTo(x + halfLen, button.centerY());
         shape.lineTo(x, y);
 
-        y = button.centerY() + (strokeWidth << 1);
-        shape.moveTo(left, y);
-        shape.lineTo(right, y);
+        shape.moveTo(x - halfLen, button.centerY() + (strokeWidth << 1));
+        shape.lineTo(x + halfLen, button.centerY() + (strokeWidth << 1));
     }
 
     @Override

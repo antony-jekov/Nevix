@@ -3,17 +3,19 @@ package com.antonyjekov.nevix.player;
 import android.content.Context;
 import android.graphics.Rect;
 
-import com.antonyjekov.nevix.activities.BaseActivity;
 import com.antonyjekov.nevix.activities.MainActivity;
 import com.antonyjekov.nevix.common.PusherManager;
 import com.antonyjekov.nevix.player.buttons.BrowseButton;
 import com.antonyjekov.nevix.player.buttons.FastForwardButton;
 import com.antonyjekov.nevix.player.buttons.FullScreenButton;
+import com.antonyjekov.nevix.player.buttons.MuteButton;
 import com.antonyjekov.nevix.player.buttons.NextButton;
+import com.antonyjekov.nevix.player.buttons.PauseButton;
 import com.antonyjekov.nevix.player.buttons.PlayButton;
 import com.antonyjekov.nevix.player.buttons.PowerDownButton;
 import com.antonyjekov.nevix.player.buttons.PreviousButton;
 import com.antonyjekov.nevix.player.buttons.RewindButton;
+import com.antonyjekov.nevix.player.buttons.StopButton;
 import com.antonyjekov.nevix.player.buttons.SystemVolumeDownButton;
 import com.antonyjekov.nevix.player.buttons.SystemVolumeUpButton;
 import com.antonyjekov.nevix.player.buttons.VolumeDownButton;
@@ -51,6 +53,12 @@ public class BSPlayer extends Player {
         Rect prevBtn = leftTo(rwBtn, buttonSize);
         buttons.add(new PreviousButton(prevBtn));
 
+        Rect pauseBtn = onTopOf(playBtn, buttonSize);
+        buttons.add(new PauseButton(pauseBtn));
+
+        Rect stopBtn = bellowOf(playBtn, buttonSize);
+        buttons.add(new StopButton(stopBtn));
+
         buttonSize = (int) (width * .08);
 
         Rect powerBtn = new Rect(buttonMargin, buttonMargin, buttonMargin + buttonSize, buttonMargin + buttonSize);
@@ -73,5 +81,8 @@ public class BSPlayer extends Player {
 
         Rect browseBtn = leftTo(fullBtn, buttonSize);
         buttons.add(new BrowseButton(browseBtn));
+
+        Rect muteBtn = rightTo(powerBtn, buttonSize);
+        buttons.add(new MuteButton(muteBtn));
     }
 }
