@@ -1,11 +1,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <fragment
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.antonyjekov.nevix.fragments.FolderFragment" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
+        <Button
+            android:id="@+id/forward_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forward" />
+
+        <Button
+            android:id="@+id/sync_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Sync" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/media_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/jekozo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

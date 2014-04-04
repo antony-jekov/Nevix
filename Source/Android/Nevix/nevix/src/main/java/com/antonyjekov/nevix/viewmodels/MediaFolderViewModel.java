@@ -35,4 +35,14 @@ public class MediaFolderViewModel {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        MediaFolderViewModel clone = new MediaFolderViewModel();
+        clone.files = (ArrayList<MediaFileViewModel>) files.clone();
+        clone.folders = (ArrayList<MediaFolderViewModel>) folders.clone();
+        clone.name = name;
+
+        return clone;
+    }
 }
