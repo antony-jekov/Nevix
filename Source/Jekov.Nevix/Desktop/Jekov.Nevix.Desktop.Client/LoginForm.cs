@@ -204,5 +204,10 @@ namespace Jekov.Nevix.Desktop.Client
             Program.MainForm("", "").Dispose();
             Program.logOutScheduled = false;
         }
+
+        private void LoginForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

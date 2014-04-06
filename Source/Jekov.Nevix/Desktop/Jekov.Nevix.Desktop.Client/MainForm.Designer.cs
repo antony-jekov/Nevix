@@ -219,6 +219,7 @@ namespace Jekov.Nevix.Desktop.Client
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Nevix Desktop Client";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.progressIndicator)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

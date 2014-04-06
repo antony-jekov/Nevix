@@ -20,8 +20,6 @@
         [StringLength(36)]
         public string SessionKey { get; set; }
 
-        public bool Confirmed { get; set; }
-
         public DateTime? LastFilesUpdate { get; set; }
 
         public string Media { get; set; }

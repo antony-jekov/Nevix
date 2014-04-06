@@ -382,6 +382,14 @@
             Program.LoginForm().Show();
         }
 
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!Program.logOutScheduled)
+            {
+                Application.Exit();
+            }
+        }
+
         //private void checkBox1_CheckedChanged(object sender, EventArgs e)
         //{
         //    RegistryKey rk = Registry.CurrentUser.OpenSubKey

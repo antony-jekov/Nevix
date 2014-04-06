@@ -224,6 +224,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoginForm";
             this.Text = "Login";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LoginForm_FormClosed);
             this.Load += new System.EventHandler(this.LoginForm_Load);
             this.VisibleChanged += new System.EventHandler(this.LoginForm_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.progressIndicator)).EndInit();
