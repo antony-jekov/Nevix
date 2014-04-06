@@ -20,14 +20,12 @@
         {
             if (Data.Users.All().Any(u => u.Email.ToLower().Equals(model.Email.ToLower())))
             {
-                var error = new ArgumentException("Email", "There is already a user with that email!");
-                return Request.CreateErrorResponse(HttpStatusCode.Conflict, error);
+                return Request.CreateResponse(HttpStatusCode.Conflict, "There is already a user with that email!");
             }
 
             if (!model.Password.Equals(model.ConfirmPassword))
             {
-                var error = new ArgumentException("confirmPassword", "Passwords do not match!");
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Passwords do not match!");
             }
 
             NevixUser newUser = new NevixUser
@@ -50,8 +48,7 @@
 
             if (user == null)
             {
-                var error = new ArgumentException("Wrong email or password!");
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Wrong email or password!");
             }
 
             if (user.SessionKey == null)
@@ -62,23 +59,7 @@
 
             return Request.CreateResponse(HttpStatusCode.OK, user.SessionKey);
         }
-
-        [HttpPut]
-        public HttpResponseMessage LogOff()
-        {
-            NevixUser user = GetCurrentUser();
-
-            if (user == null)
-            {
-                return UnauthorizedErrorMessage();
-            }
-
-            user.SessionKey = null;
-            Data.SaveChanges();
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
+        
         [HttpGet]
         public HttpResponseMessage LastMediaUpdate()
         {
@@ -90,40 +71,6 @@
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, currentUser.LastFilesUpdate);
-        }
-
-        [HttpPut]
-        public HttpResponseMessage UpdateChannel(ChannelViewModel model)
-        {
-            if (model == null)
-            {
-                return NullModelErrorMessage();
-            }
-
-            NevixUser currentUser = GetCurrentUser();
-
-            if (currentUser == null)
-            {
-                return UnauthorizedErrorMessage();
-            }
-
-            currentUser.ChannelName = model.Name;
-            Data.SaveChanges();
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [HttpGet]
-        public string GetChannel()
-        {
-            NevixUser currentUser = GetCurrentUser();
-
-            if (currentUser != null)
-            {
-                return currentUser.ChannelName;
-            }
-
-            return string.Empty;
         }
     }
 }

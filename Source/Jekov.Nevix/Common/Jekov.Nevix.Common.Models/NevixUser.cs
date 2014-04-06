@@ -10,18 +10,17 @@
         public int Id { get; set; }
 
         [Required]
-        [StringLength(ModelConstants.EmailLength)]
+        [StringLength(ModelConstants.EmailLength, MinimumLength=ModelConstants.EmailMinLength)]
         public string Email { get; set; }
         
         [Required]
-        [StringLength(ModelConstants.PasswordLength)]
+        [StringLength(ModelConstants.PasswordLength, MinimumLength = ModelConstants.PasswordMinLength)]
         public string Password { get; set; }
 
-        [StringLength(40)]
+        [StringLength(36)]
         public string SessionKey { get; set; }
 
-        [StringLength(ModelConstants.ChannelNameLength)]
-        public string ChannelName { get; set; }
+        public bool Confirmed { get; set; }
 
         public DateTime? LastFilesUpdate { get; set; }
 

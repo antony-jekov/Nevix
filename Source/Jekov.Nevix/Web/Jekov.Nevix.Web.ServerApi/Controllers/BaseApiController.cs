@@ -46,8 +46,7 @@
 
         protected HttpResponseMessage NullModelErrorMessage()
         {
-            var error = new ArgumentNullException("model", "Model cannot be null!");
-            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
+            return Request.CreateResponse(HttpStatusCode.BadRequest, "Model cannot be null!");
         }
 
         protected INevixData Data { get; set; }
@@ -82,8 +81,7 @@
 
         protected HttpResponseMessage UnauthorizedErrorMessage()
         {
-            var error = new UnauthorizedAccessException("You must login to perform this operation!");
-            return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, error);
+            return Request.CreateResponse(HttpStatusCode.Unauthorized, "You must login to perform this operation!");
         }
     }
 }
