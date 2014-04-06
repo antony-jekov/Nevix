@@ -102,9 +102,8 @@
                     if (hasFiles)
                     {
                         directoriesWithMediaInside.Add(subDir.FullName);
+                        return hasFiles;
                     }
-
-                    return hasFiles;
                 }
             }
 

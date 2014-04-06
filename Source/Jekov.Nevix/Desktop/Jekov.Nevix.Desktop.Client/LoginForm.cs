@@ -2,6 +2,7 @@
 using System;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Jekov.Nevix.Desktop.Client
@@ -26,6 +27,7 @@ namespace Jekov.Nevix.Desktop.Client
                 return;
             }
 
+            progressIndicator.Visible = true;
             Login(email, pass);
         }
 
@@ -56,7 +58,7 @@ namespace Jekov.Nevix.Desktop.Client
             return true;
         }
 
-        private void Register_Click(object sender, EventArgs e)
+        private async void Register_Click(object sender, EventArgs e)
         {
             string email = this.email.Text.Trim();
             string pass = this.password.Text.Trim();
@@ -78,26 +80,27 @@ namespace Jekov.Nevix.Desktop.Client
                 MessageBox.Show("Passwords do not match!");
                 return;
             }
-
+            progressIndicator.Visible = true;
             register.Enabled = false;
             Register(email, pass, confirm);
         }
 
-        private void Login(string email, string pass)
+        private async void Login(string email, string pass)
         {
             string sessionKey = string.Empty;
             try
             {
                 ToggleControlsEnabled(false);
-                sessionKey = persister.Login(email, pass);
+                sessionKey = await persister.Login(email, pass);
             }
             catch (ArgumentException)
             {
-                MessageBox.Show("Wrong email or password.");
+                MessageBox.Show("Wrong email or password.", "Login Error");
                 ToggleControlsEnabled(true);
+                progressIndicator.Visible = false;
                 return;
             }
-
+            progressIndicator.Visible = false;
             db.LocalDb.SessionKey = sessionKey;
             db.LocalDb.Email = email;
             db.LocalDb.Password = pass;
@@ -108,21 +111,22 @@ namespace Jekov.Nevix.Desktop.Client
             SwitchToMain(email, sessionKey);
         }
 
-        private void Register(string email, string pass, string confirm)
+        private async void Register(string email, string pass, string confirm)
         {
             string sessionKey = string.Empty;
             try
             {
                 ToggleControlsEnabled(false);
-                sessionKey = persister.Register(email, pass, confirm);
+                sessionKey = await persister.Register(email, pass, confirm);
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("There is already an user with that email.");
+                MessageBox.Show("There is already an user with that email.", "Registration Error");
                 ToggleControlsEnabled(true);
+                progressIndicator.Visible = false;
                 return;
             }
-
+            progressIndicator.Visible = false;
             db.LocalDb.SessionKey = sessionKey;
 
             db.LocalDb.Email = email;
@@ -136,10 +140,11 @@ namespace Jekov.Nevix.Desktop.Client
 
         private void SwitchToMain(string email, string sessionKey)
         {
-            var frm = new MainForm(email, sessionKey);
-            frm.FormClosed += delegate { this.Close(); };
+            var frm = Program.MainForm(email, sessionKey);
+            
             frm.Show();
             this.Hide();
+            ToggleControlsEnabled(true);
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -187,12 +192,6 @@ namespace Jekov.Nevix.Desktop.Client
             {
                 register.PerformClick();
             }
-        }
-
-        private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = true;
-            Hide();
         }
     }
 }

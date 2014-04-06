@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,12 +14,35 @@ namespace Jekov.Nevix.Desktop.Client
         private static Form mainForm;
         private static Form loginForm;
 
+        public static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (var stream = client.OpenRead("http://www.google.com"))
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            if (!CheckForInternetConnection())
+            {
+                MessageBox.Show("Nevix needs internet connection to work properly!", "No internet connection!");
+                Application.Exit();
+                return;
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var db = NevixLocalDbContext.Instance();
@@ -70,18 +94,22 @@ namespace Jekov.Nevix.Desktop.Client
                 return LoginForm();
         }
 
-        private static Form MainForm(string email, string sessionKey)
+        public static Form MainForm(string email, string sessionKey)
         {
-            if (mainForm == null)
+            if (mainForm == null || mainForm.IsDisposed)
+            {
                 mainForm = new MainForm(email, sessionKey);
+            }
 
             return mainForm;
         }
 
-        private static Form LoginForm()
+        public static Form LoginForm()
         {
-            if(loginForm == null)
+            if (loginForm == null)
+            {
                 loginForm = new LoginForm();
+            }
 
             return loginForm;
         }

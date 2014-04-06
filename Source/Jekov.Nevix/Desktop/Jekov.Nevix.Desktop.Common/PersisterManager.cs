@@ -7,6 +7,7 @@
     using System.IO;
     using System.Net;
     using System.Security.Cryptography;
+    using System.Threading.Tasks;
 
     public class PersisterManager
     {
@@ -35,13 +36,13 @@
             this.SessionKey = sessionKey;
         }
 
-        public DateTime LastMediaUpdate()
+        public async Task<DateTime> LastMediaUpdate()
         {
-            string time = GetRequest(RootAddress + "User/LastMediaUpdate");
+            string time = await GetRequest(RootAddress + "User/LastMediaUpdate");
             return DateTime.Parse(time);
         }
 
-        public string Login(string email, string password)
+        public async Task<string> Login(string email, string password)
         {
             UserLoginViewModel loginData = new UserLoginViewModel
             {
@@ -51,17 +52,17 @@
 
             string serializedRequestBody = JsonConvert.SerializeObject(loginData);
 
-            SessionKey = HttpRequest(RootAddress + "user/login", HttpPut, serializedRequestBody);
+            SessionKey = await HttpRequest(RootAddress + "user/login", HttpPut, serializedRequestBody);
 
             return SessionKey;
         }
 
-        public void LogOff()
+        public async void LogOff()
         {
-            HttpRequest(RootAddress + "user/logoff", HttpPut);
+            await HttpRequest(RootAddress + "user/logoff", HttpPut);
         }
 
-        public string Register(string email, string password, string confirmPassword)
+        public async Task<string> Register(string email, string password, string confirmPassword)
         {
             UserRegisterViewModel registerData = new UserRegisterViewModel
             {
@@ -72,17 +73,17 @@
 
             string serializedRequestBody = JsonConvert.SerializeObject(registerData);
 
-            SessionKey = HttpRequest(RootAddress + "user/register", HttpPost, serializedRequestBody);
+            SessionKey = await HttpRequest(RootAddress + "user/register", HttpPost, serializedRequestBody);
             return SessionKey;
         }
 
-        public void AddMediaFolderToDatabase(MediaFolderViewModel rootFolder)
+        public async void AddMediaFolderToDatabase(MediaFolderViewModel rootFolder)
         {
             string requestBody = JsonConvert.SerializeObject(rootFolder);
-            HttpRequest(RootAddress + "mediafolders/addfolder", HttpPost, requestBody);
+            await HttpRequest(RootAddress + "mediafolders/addfolder", HttpPost, requestBody);
         }
 
-        protected string HttpRequest(string url, string method, string Parameters = "")
+        protected async Task<string> HttpRequest(string url, string method, string Parameters = "")
         {
             WebRequest req = System.Net.WebRequest.Create(url);
             req.ContentType = "application/json";
@@ -96,7 +97,7 @@
             WebResponse resp = null;
             try
             {
-                resp = req.GetResponse();
+                resp = await req.GetResponseAsync();
             }
             catch (WebException e)
             {
@@ -121,11 +122,11 @@
             return sr.ReadToEnd().Trim(trimCharsForRequest);
         }
 
-        protected string GetRequest(string url)
+        protected async Task<string> GetRequest(string url)
         {
             WebRequest req = System.Net.WebRequest.Create(url);
             req.Headers.Add(string.Format("X-SessionKey:{0}", SessionKey));
-            WebResponse resp = req.GetResponse();
+            WebResponse resp = await req.GetResponseAsync();
             StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
             return sr.ReadToEnd().Trim(trimCharsForRequest);
         }
@@ -141,34 +142,24 @@
             return hash;
         }
 
-        public void UpdateChannelName(string computerName)
+        public async void ClearAllMedia()
         {
-            HttpRequest(RootAddress + "User/UpdateChannel", HttpPut, JsonConvert.SerializeObject(new ChannelViewModel { Name = computerName }));
+            await HttpRequest(RootAddress + "mediafolders/clear", HttpPut);
         }
 
-        public string GetChannelName()
+        public async void DeleteFolder(string folderName)
         {
-            return GetRequest(RootAddress + "User/GetChannel");
+            await HttpRequest(RootAddress + "mediafolders/remove?location=" + folderName, HttpPut);
         }
 
-        public void ClearAllMedia()
+        public async Task<string> GetAllFolders()
         {
-            HttpRequest(RootAddress + "mediafolders/clear", HttpPut);
+            return await GetRequest(RootAddress + "mediafolders/getfolders");
         }
 
-        public void DeleteFolder(string folderName)
+        public async Task<string> GetMediaHash()
         {
-            HttpRequest(RootAddress + "mediafolders/remove?location=" + folderName, HttpPut);
-        }
-
-        public string GetAllFolders()
-        {
-            return GetRequest(RootAddress + "mediafolders/getfolders");
-        }
-
-        public string GetMediaHash()
-        {
-            return GetRequest(RootAddress + "mediafolders/GetMediaHash");
+            return await GetRequest(RootAddress + "mediafolders/GetMediaHash");
         }
     }
 }

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Jekov.Nevix.Desktop.Client")]
-[assembly: AssemblyDescription("Nevix is a desktop client ment to operate on media players controlled remotely.")]
+[assembly: AssemblyTitle("Nevix Desktop Client")]
+[assembly: AssemblyDescription("Nevix Desktop Client is a simple lightweight program used to integrate with windows enviroments and to listen for commands that are being sent over from your Android device. Nevix is aiming to support all major media players to give you the comfort of commanding your computer media player from your Android device wherever you are.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Jekov.Nevix.Desktop.Client")]
+[assembly: AssemblyProduct("Nevix Desktop Client")]
 [assembly: AssemblyCopyright("Copyright © Antony Jekov 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
