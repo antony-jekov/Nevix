@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 
 import com.antonyjekov.nevix.common.contracts.FailCallback;
 
-import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -21,7 +20,10 @@ import java.net.URL;
 
 public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
 
-    private OnResultCallBack callBack;
+    private boolean transactionSucceeded = true;
+
+    private final OnResultCallBack callBack;
+    private final FailCallback error;
 
     public static interface OnResultCallBack {
         void onResult(String result);
@@ -32,8 +34,9 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
     private String requestAddress;
     private String requestBody;
 
-    public HttpAsyncRequest(OnResultCallBack callBack) {
+    public HttpAsyncRequest(OnResultCallBack callBack, FailCallback error) {
         this.callBack = callBack;
+        this.error = error;
     }
 
     @Override
@@ -78,13 +81,7 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             ByteArrayBuffer byteArrayBuffer = new ByteArrayBuffer(50);
 
-            int intResponse = httpCon.getResponseCode();
-
-            if (intResponse == 401) {
-                throw new AuthenticationException("User is not logged in.");
-            } else if (intResponse >= 500) {
-                throw new IllegalArgumentException("Bad request.");
-            }
+            int intResponse;
 
             while ((intResponse = bufferedReader.read()) != -1) {
                 byteArrayBuffer.append(intResponse);
@@ -94,6 +91,7 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
 
         } catch (Exception aException) {
             responseStorage = aException.getMessage();
+            this.transactionSucceeded = false;
         }
 
         return responseStorage;
@@ -121,8 +119,12 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        result = trimString(result);
-        callBack.onResult(result);
+        if (transactionSucceeded) {
+            result = trimString(result);
+            callBack.onResult(result);
+        } else {
+            error.onFail();
+        }
     }
 
     private String trimString(String result) {

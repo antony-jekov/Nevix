@@ -26,16 +26,16 @@ public class PersistentManager {
         return !sessionKey.equals(ContextManager.EMPTY_SESSION_KEY);
     }
 
-    public void login(String email, String pass, HttpAsyncRequest.OnResultCallBack callBack) {
+    public void login(String email, String pass, HttpAsyncRequest.OnResultCallBack callBack, FailCallback error) {
         UserLoginViewModel model = new UserLoginViewModel(email.toLowerCase(), stringToSha1(pass));
         String json = new Gson().toJson(model, UserLoginViewModel.class);
-        HttpAsyncRequest request = new HttpAsyncRequest(callBack);
+        HttpAsyncRequest request = new HttpAsyncRequest(callBack, error);
         request.putRequest(ROOT_ADDRESS + "user/login", json, null);
         request.execute();
     }
 
-    public void getLastMediaUpdateTime(HttpAsyncRequest.OnResultCallBack callback) {
-        HttpAsyncRequest request = new HttpAsyncRequest(callback);
+    public void getLastMediaUpdateTime(HttpAsyncRequest.OnResultCallBack callback, FailCallback error) {
+        HttpAsyncRequest request = new HttpAsyncRequest(callback, error);
         request.getRequest(ROOT_ADDRESS + "User/LastMediaUpdate", sessionKey);
 
         request.execute();
@@ -72,8 +72,8 @@ public class PersistentManager {
         this.sessionKey = sessionKey;
     }
 
-    public void getMedia(HttpAsyncRequest.OnResultCallBack callback) {
-        HttpAsyncRequest request = new HttpAsyncRequest(callback);
+    public void getMedia(HttpAsyncRequest.OnResultCallBack callback, FailCallback error) {
+        HttpAsyncRequest request = new HttpAsyncRequest(callback, error);
         request.getRequest(ROOT_ADDRESS + "mediafoldersmobile/getfolders", sessionKey);
 
         request.execute();

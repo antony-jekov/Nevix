@@ -1,5 +1,6 @@
 package com.antonyjekov.nevix.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.antonyjekov.nevix.common.FolderAdapter;
 import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.MediaItem;
 import com.antonyjekov.nevix.common.PersistentManager;
+import com.antonyjekov.nevix.common.contracts.FailCallback;
 import com.antonyjekov.nevix.common.contracts.OnFileSelected;
 import com.antonyjekov.nevix.viewmodels.MediaFileViewModel;
 import com.antonyjekov.nevix.viewmodels.MediaFolderViewModel;
@@ -38,10 +40,16 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     private ScrollView mediaList;
     private MediaFolderViewModel rootFolder;
 
+    ProgressDialog progressDialog;
+
     public static final String BROWSED_FILE = "com.antonyjekov.nevix.browse.browsedFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Connecting to server");
+        progressDialog.setMessage("Syncing media database...");
+
         backQueue = new Stack<MediaFolderViewModel>();
         forwardQueue = new Stack<MediaFolderViewModel>();
         super.onCreate(savedInstanceState);
@@ -67,6 +75,11 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
                 if (result == null || !result.equals(lastLocalUpdate)) {
                     beginMediaSync();
                 }
+            }
+        }, new FailCallback() {
+            @Override
+            public void onFail() {
+                showMessage("Could not retrieve last media update.");
             }
         });
 
@@ -111,15 +124,13 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     }
 
     private void beginMediaSync() {
-
-        printMessage(getResources().getString(R.string.beginning_media_sync));
-
+        progressDialog.show();
         persistentManager.getMedia(new HttpAsyncRequest.OnResultCallBack() {
             @Override
             public void onResult(String result) {
+                progressDialog.hide();
                 db.storeMediaDatabase(result);
                 db.setLastDatabaseUpdate(lastServerUpdate);
-                printMessage("Sync completed");
                 rootFolder = loadMedia(result);
                 openRootFolder();
                 backQueue.clear();
@@ -127,11 +138,13 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
                 backBtn.setEnabled(false);
                 forwardBtn.setEnabled(false);
             }
+        }, new FailCallback() {
+            @Override
+            public void onFail() {
+                progressDialog.hide();
+                showMessage("Media sync failed!");
+            }
         });
-    }
-
-    private void printMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -236,5 +249,9 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
             openRootFolder();
         }
         updateButtons();
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

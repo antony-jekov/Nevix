@@ -1,5 +1,6 @@
 package com.antonyjekov.nevix.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,14 +16,16 @@ import com.antonyjekov.nevix.common.PersistentManager;
 import com.antonyjekov.nevix.common.contracts.FailCallback;
 
 public class AuthorizationFragment extends Fragment implements FailCallback {
-    Button loginBtn;
+    private Button loginBtn;
+    private EditText email;
+    private EditText pass;
 
-    EditText email;
-    EditText pass;
+    ProgressDialog progress;
 
     @Override
-    public void onFail(String message) {
-        warnUser(message);
+    public void onFail() {
+        progress.hide();
+        warnUser("Bad username or password!");
     }
 
     HttpAsyncRequest.OnResultCallBack callBack;
@@ -34,19 +37,18 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
     public static final String SESSION_KEY = "com.antonyjekov.nevix.login.sessionKey";
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View loginView = inflater.inflate(R.layout.fragment_authenticate, container, false);
+
+        progress = new ProgressDialog(getActivity());
+        progress.setTitle("Logging in");
+        progress.setMessage("Connecting to server, please wait...");
 
         final PersistentManager persistent = new PersistentManager();
 
         email = (EditText) loginView.findViewById(R.id.auth_email);
         pass = (EditText) loginView.findViewById(R.id.auth_pass);
-
+        final FailCallback error = this;
         loginBtn = (Button) loginView.findViewById(R.id.auth_login_btn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,8 +56,9 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
                 String emailText = email.getText().toString();
                 String passwordText = pass.getText().toString();
 
+                progress.show();
                 if (emailText.length() > 0 && passwordText.length() > 0) {
-                    persistent.login(emailText, passwordText, callBack);
+                    persistent.login(emailText, passwordText, callBack, error);
                 } else {
                     warnUser("Please fill in all fields!");
                 }

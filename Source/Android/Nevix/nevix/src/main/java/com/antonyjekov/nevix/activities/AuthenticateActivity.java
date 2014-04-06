@@ -3,7 +3,6 @@ package com.antonyjekov.nevix.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
@@ -35,13 +34,11 @@ public class AuthenticateActivity extends BaseActivity {
                     .add(R.id.container_auth, new AuthorizationFragment(new HttpAsyncRequest.OnResultCallBack() {
                         @Override
                         public void onResult(String result) {
-                            warnUser(result);
-                            if (validateSessionKey(result))
-                                warnUser("Login successful");
-                            else {
+                            if (!validateSessionKey(result)) {
                                 warnUser("Wrong username or password!");
                                 return;
                             }
+
                             handleLogin(result);
                             data.setSessionKey(result);
                         }
