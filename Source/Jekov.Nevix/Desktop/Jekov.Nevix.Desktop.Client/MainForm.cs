@@ -15,6 +15,7 @@
 
     public partial class MainForm : Form
     {
+        private bool playerChangeScheduled;
         private readonly string userEmail;
         private readonly string sessionKey;
         private NevixLocalDbContext db;
@@ -41,7 +42,7 @@
             //this.notifyIcon1.ContextMenu = new System.Windows.Forms.ContextMenu(new MenuItem[] {
             //new MenuItem("Exit", (s, d) => {Application.Exit();})
             //});
-
+            playerChangeScheduled = false;
             email.Text = this.userEmail;
             RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"Software", false);
             playerEntries = new List<PlayerEntry>();
@@ -63,6 +64,7 @@
 
             SyncMedia();
             Connect();
+            playerChangeScheduled = true;
         }
 
         private void UpdatePlayerEntries(RegistryKey parentKey, ICollection<PlayerEntry> entries)
@@ -358,6 +360,10 @@
 
         private void playerSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (!playerChangeScheduled)
+            {
+                return;
+            }
             string newLocation = playerEntries.ElementAt(playerSelect.SelectedIndex).Location;
             db.LocalDb.PreferredPlayerLocation = newLocation;
             db.SaveChanges();
@@ -372,9 +378,8 @@
         {
             db.LocalDb.SessionKey = string.Empty;
             db.SaveChanges();
+            Program.logOutScheduled = true;
             Program.LoginForm().Show();
-            Close();
-            Dispose();
         }
 
         //private void checkBox1_CheckedChanged(object sender, EventArgs e)

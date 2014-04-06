@@ -193,5 +193,16 @@ namespace Jekov.Nevix.Desktop.Client
                 register.PerformClick();
             }
         }
+
+        private void LoginForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!Program.logOutScheduled)
+            {
+                return;
+            }
+
+            Program.MainForm("", "").Dispose();
+            Program.logOutScheduled = false;
+        }
     }
 }

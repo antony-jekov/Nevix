@@ -13,6 +13,7 @@ namespace Jekov.Nevix.Desktop.Client
     {
         private static Form mainForm;
         private static Form loginForm;
+        public static bool logOutScheduled;
 
         public static bool CheckForInternetConnection()
         {
