@@ -9,8 +9,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
  * Created by Antony Jekov on 4/1/2014.
  */
 public class MuteButton extends SphericalButton {
-    public MuteButton(Rect button) {
-        super(button);
+    public MuteButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override

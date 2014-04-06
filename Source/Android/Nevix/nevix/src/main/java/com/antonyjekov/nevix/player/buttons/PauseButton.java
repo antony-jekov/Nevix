@@ -9,8 +9,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
  * Created by Antony Jekov on 4/1/2014.
  */
 public class PauseButton extends SphericalButton {
-    public PauseButton(Rect button) {
-        super(button);
+    public PauseButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override

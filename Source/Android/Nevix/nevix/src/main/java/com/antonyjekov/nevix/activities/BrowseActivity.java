@@ -1,6 +1,9 @@
 package com.antonyjekov.nevix.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -94,7 +97,6 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
             }
         });
 
-
         forwardBtn = (Button) findViewById(R.id.forward_btn);
         forwardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +118,32 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
 
         backBtn.setEnabled(false);
         forwardBtn.setEnabled(false);
+        final Context thisContext = this;
+
+        View logOffBtn = findViewById(R.id.logoff_btn);
+        logOffBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(thisContext)
+                        .setTitle("Log off")
+                        .setMessage("Do you really want to log off?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                logoff(thisContext);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).show();
+            }
+        });
+    }
+
+    private void logoff(Context thisContext) {
+        db.setSessionKey(ContextManager.EMPTY_SESSION_KEY);
+        Intent logoff = new Intent(thisContext, AuthenticateActivity.class);
+        startActivity(logoff);
+        finish();
     }
 
     private void updateButtons() {

@@ -56,9 +56,9 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
                 String emailText = email.getText().toString();
                 String passwordText = pass.getText().toString();
 
-                progress.show();
                 if (emailText.length() > 0 && passwordText.length() > 0) {
                     persistent.login(emailText, passwordText, callBack, error);
+                    progress.show();
                 } else {
                     warnUser("Please fill in all fields!");
                 }

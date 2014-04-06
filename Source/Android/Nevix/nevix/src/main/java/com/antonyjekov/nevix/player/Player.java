@@ -1,6 +1,8 @@
 package com.antonyjekov.nevix.player;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Vibrator;
@@ -73,10 +75,22 @@ public abstract class Player extends View {
         for (Button btn : buttons) {
             if (btn.isPointInButton(x, y)) {
                 vibrator.vibrate(100);
-                String cmd = btn.command();
+                final String cmd = btn.command();
                 if (cmd.equals(PlayerCommand.BROWSE_CMD))
                     owner.browseMedia();
-                else
+                else if (cmd.equals(PlayerCommand.POWER_CMD)) {
+                    new AlertDialog.Builder(owner)
+                            .setTitle("Power off")
+                            .setMessage("Do you really want to power off your computer?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    owner.shutDownComputer(cmd);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null).show();
+                } else
                     pusher.pushCommand(btn.command());
 
                 break;

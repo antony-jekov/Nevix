@@ -10,8 +10,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
  */
 public class PowerDownButton extends FullScreenButton {
 
-    public PowerDownButton(Rect button) {
-        super(button);
+    public PowerDownButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override

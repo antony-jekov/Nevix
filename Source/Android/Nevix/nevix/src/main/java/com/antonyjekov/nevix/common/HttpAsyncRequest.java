@@ -47,8 +47,8 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
             //Uses URL and HttpURLConnection for server connection.
             URL targetURL = new URL(requestAddress);
             HttpURLConnection httpCon = (HttpURLConnection) targetURL.openConnection();
-/*
-            httpCon.setDoInput(true);*/
+
+            httpCon.setDoInput(true);
             httpCon.setUseCaches(false);
             httpCon.setChunkedStreamingMode(0);
 
@@ -57,6 +57,7 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
             httpCon.addRequestProperty(PersistentManager.SESSION_KEY_HEADER, "" + sessionKey);
 
             if (requestType != HttpRequestType.GET) {
+                httpCon.setDoOutput(true);
                 httpCon.addRequestProperty("Content-Length", "" + requestBody.length());
                 switch (requestType) {
                     case PUT:

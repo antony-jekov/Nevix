@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -18,15 +18,23 @@
             android:id="@+id/forward_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Forward" />
+            android:text="Forward"
+            android:layout_toRightOf="@id/back_btn" />
 
         <Button
             android:id="@+id/sync_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_alignParentRight="true"
             android:text="Sync" />
-    </LinearLayout>
+
+        <Button
+            android:id="@+id/logoff_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/sync_btn"
+            android:text="Log Off" />
+    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/media_list"

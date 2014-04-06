@@ -9,8 +9,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
  * Created by Antony Jekov on 4/1/2014.
  */
 public class StopButton extends SphericalButton {
-    public StopButton(Rect button) {
-        super(button);
+    public StopButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override
@@ -26,6 +26,7 @@ public class StopButton extends SphericalButton {
         shape.lineTo(x + len, y + len);
         shape.lineTo(x, y + len);
         shape.lineTo(x, y);
+        shape.close();
     }
 
     @Override

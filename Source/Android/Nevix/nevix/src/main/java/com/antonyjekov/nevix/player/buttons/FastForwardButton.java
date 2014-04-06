@@ -10,8 +10,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
  */
 public class FastForwardButton extends SphericalButton {
 
-    public FastForwardButton(Rect button) {
-        super(button);
+    public FastForwardButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override
@@ -27,12 +27,14 @@ public class FastForwardButton extends SphericalButton {
         shape.lineTo(startX, startY + size);
         shape.lineTo(startX + (size >> 1), button.centerY());
         shape.lineTo(startX, startY);
+        shape.close();
 
         startX = startX + ((size >> 1) + strokeWidth);
         shape.moveTo(startX, startY);
         shape.lineTo(startX, startY + size);
         shape.lineTo(startX + (size >> 1), button.centerY());
         shape.lineTo(startX, startY);
+        shape.close();
     }
 
     @Override

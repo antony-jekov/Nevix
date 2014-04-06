@@ -9,8 +9,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
  * Created by Antony Jekov on 3/27/2014.
  */
 public class BrowseButton extends SphericalButton {
-    public BrowseButton(Rect button) {
-        super(button);
+    public BrowseButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override
@@ -26,6 +26,7 @@ public class BrowseButton extends SphericalButton {
         shape.lineTo(x - halfLen, button.centerY());
         shape.lineTo(x + halfLen, button.centerY());
         shape.lineTo(x, y);
+        shape.close();
 
         shape.moveTo(x - halfLen, button.centerY() + (strokeWidth << 1));
         shape.lineTo(x + halfLen, button.centerY() + (strokeWidth << 1));

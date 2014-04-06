@@ -20,16 +20,16 @@ public class PusherManager {
 
         callback = new Callback() {
             public void successCallback(String channel, Object response) {
-                Log.d("PUBNUB",response.toString());
+                Log.d("PUBNUB", response.toString());
             }
+
             public void errorCallback(String channel, PubnubError error) {
-                Log.d("PUBNUB", error.toString());
+                Log.e("PUBNUB", error.getErrorString());
             }
         };
     }
 
-    public void pushCommand(String cmd)
-    {
-        pusher.publish(channel, cmd, callback );
+    public void pushCommand(String cmd) {
+        pusher.publish(channel, cmd, callback);
     }
 }

@@ -8,8 +8,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
  * Created by Antony Jekov on 3/25/2014.
  */
 public class VolumeUpButton extends SystemVolumeUpButton {
-    public VolumeUpButton(Rect button) {
-        super(button);
+    public VolumeUpButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override

@@ -9,8 +9,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
  * Created by Antony Jekov on 3/25/2014.
  */
 public class SystemVolumeDownButton extends SphericalButton {
-    public SystemVolumeDownButton(Rect button) {
-        super(button);
+    public SystemVolumeDownButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override

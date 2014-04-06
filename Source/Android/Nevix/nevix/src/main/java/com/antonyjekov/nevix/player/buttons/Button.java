@@ -14,16 +14,18 @@ public abstract class Button {
     protected final Rect button;
     private Path shape;
     private Paint paint;
-    protected int strokeWidth = 5;
-    protected int padding = 20;
+    protected int strokeWidth;
+    protected int padding;
 
-    public Button(Rect button) {
+    public Button(Rect button, int strokeWidth, int padding) {
         this.button = button;
         shape = new Path();
-        paint = new Paint();
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(strokeWidth);
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.RED);
+        this.padding = padding;
+        this.strokeWidth = strokeWidth;
     }
 
     public void renderSelf(Canvas canvas) {

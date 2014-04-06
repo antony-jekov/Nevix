@@ -9,8 +9,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
  * Created by Antony Jekov on 3/23/2014.
  */
 public class RewindButton extends SphericalButton {
-    public RewindButton(Rect button) {
-        super(button);
+    public RewindButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override
@@ -26,12 +26,13 @@ public class RewindButton extends SphericalButton {
         shape.lineTo(startX, startY + size);
         shape.lineTo(startX - (size >> 1), button.centerY());
         shape.lineTo(startX, startY);
-
+        shape.close();
         startX = startX - ((size >> 1) + strokeWidth);
         shape.moveTo(startX, startY);
         shape.lineTo(startX, startY + size);
         shape.lineTo(startX - (size >> 1), button.centerY());
         shape.lineTo(startX, startY);
+        shape.close();
     }
 
     @Override

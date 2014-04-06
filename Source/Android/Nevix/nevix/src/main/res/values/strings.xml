@@ -8,7 +8,7 @@
     <string name="auth_email">email:</string>
     <string name="auth_pass">pass:</string>
     <string name="auth_confirm">confirm:</string>
-    <string name="auth_login_btn">Login</string>
+    <string name="auth_login_btn">NeviX</string>
     <string name="auth_register_btn">Register</string>
     <string name="title_activity_authenticate">Login</string>
     <string name="play_btn">Play</string>

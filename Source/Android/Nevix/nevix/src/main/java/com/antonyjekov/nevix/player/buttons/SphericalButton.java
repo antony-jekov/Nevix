@@ -7,8 +7,8 @@ import android.graphics.Rect;
  * Created by Antony Jekov on 3/23/2014.
  */
 public abstract class SphericalButton extends Button {
-    public SphericalButton(Rect button) {
-        super(button);
+    public SphericalButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override

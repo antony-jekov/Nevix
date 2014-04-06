@@ -9,8 +9,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
  * Created by Antony Jekov on 3/23/2014.
  */
 public class FullScreenButton extends SphericalButton {
-    public FullScreenButton(Rect button) {
-        super(button);
+    public FullScreenButton(Rect button, int strokeWidth, int padding) {
+        super(button, strokeWidth, padding);
     }
 
     @Override
