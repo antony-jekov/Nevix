@@ -12,12 +12,18 @@ import android.widget.Toast;
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
+import com.antonyjekov.nevix.common.contracts.FailCallback;
 
-public class AuthorizationFragment extends Fragment {
+public class AuthorizationFragment extends Fragment implements FailCallback {
     Button loginBtn;
 
     EditText email;
     EditText pass;
+
+    @Override
+    public void onFail(String message) {
+        warnUser(message);
+    }
 
     HttpAsyncRequest.OnResultCallBack callBack;
 
@@ -45,7 +51,6 @@ public class AuthorizationFragment extends Fragment {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((Button) view).setEnabled(false);
                 String emailText = email.getText().toString();
                 String passwordText = pass.getText().toString();
 

@@ -111,6 +111,7 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     }
 
     private void beginMediaSync() {
+
         printMessage(getResources().getString(R.string.beginning_media_sync));
 
         persistentManager.getMedia(new HttpAsyncRequest.OnResultCallBack() {
@@ -121,6 +122,10 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
                 printMessage("Sync completed");
                 rootFolder = loadMedia(result);
                 openRootFolder();
+                backQueue.clear();
+                forwardQueue.clear();
+                backBtn.setEnabled(false);
+                forwardBtn.setEnabled(false);
             }
         });
     }

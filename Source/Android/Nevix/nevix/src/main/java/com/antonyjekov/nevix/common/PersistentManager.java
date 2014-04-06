@@ -1,5 +1,6 @@
 package com.antonyjekov.nevix.common;
 
+import com.antonyjekov.nevix.common.contracts.FailCallback;
 import com.antonyjekov.nevix.viewmodels.UserLoginViewModel;
 import com.google.gson.Gson;
 
@@ -30,7 +31,6 @@ public class PersistentManager {
         String json = new Gson().toJson(model, UserLoginViewModel.class);
         HttpAsyncRequest request = new HttpAsyncRequest(callBack);
         request.putRequest(ROOT_ADDRESS + "user/login", json, null);
-
         request.execute();
     }
 

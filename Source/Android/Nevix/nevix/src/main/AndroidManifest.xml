@@ -19,6 +19,7 @@
             android:label="@string/title_activity_main" >
         </activity>
         <activity
+            android:screenOrientation="landscape"
             android:name="com.antonyjekov.nevix.activities.AuthenticateActivity"
             android:label="@string/title_activity_authenticate" >
             <intent-filter>

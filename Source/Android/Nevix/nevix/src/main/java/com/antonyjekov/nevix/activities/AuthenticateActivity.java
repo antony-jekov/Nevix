@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.ContextManager;
@@ -34,12 +35,27 @@ public class AuthenticateActivity extends BaseActivity {
                     .add(R.id.container_auth, new AuthorizationFragment(new HttpAsyncRequest.OnResultCallBack() {
                         @Override
                         public void onResult(String result) {
+                            warnUser(result);
+                            if (validateSessionKey(result))
+                                warnUser("Login successful");
+                            else {
+                                warnUser("Wrong username or password!");
+                                return;
+                            }
                             handleLogin(result);
                             data.setSessionKey(result);
                         }
                     }))
                     .commit();
         }
+    }
+
+    private boolean validateSessionKey(String result) {
+        return !result.startsWith("ttp:") && result.length() == 36;
+    }
+
+    private void warnUser(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
