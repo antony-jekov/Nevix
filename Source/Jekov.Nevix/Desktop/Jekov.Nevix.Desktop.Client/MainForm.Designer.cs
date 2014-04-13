@@ -148,7 +148,7 @@ namespace Jekov.Nevix.Desktop.Client
             // syncBtn
             // 
             this.syncBtn.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.syncBtn.Image = global::Jekov.Nevix.Desktop.Client.Properties.Resources.autosync16;
+            this.syncBtn.Image = global::Jekov.Nevix.Desktop.Client.Properties.Resources.Sync;
             this.syncBtn.Location = new System.Drawing.Point(29, 234);
             this.syncBtn.Name = "syncBtn";
             this.syncBtn.Size = new System.Drawing.Size(75, 26);
@@ -161,8 +161,8 @@ namespace Jekov.Nevix.Desktop.Client
             // 
             // remove
             // 
-            this.remove.BackgroundImage = global::Jekov.Nevix.Desktop.Client.Properties.Resources.remove;
-            this.remove.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.remove.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("remove.BackgroundImage")));
+            this.remove.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.remove.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.remove.Location = new System.Drawing.Point(426, 166);
             this.remove.Name = "remove";
@@ -173,8 +173,8 @@ namespace Jekov.Nevix.Desktop.Client
             // 
             // add
             // 
-            this.add.BackgroundImage = global::Jekov.Nevix.Desktop.Client.Properties.Resources.add;
-            this.add.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.add.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("add.BackgroundImage")));
+            this.add.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.add.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.add.Location = new System.Drawing.Point(426, 133);
             this.add.Name = "add";

@@ -83,16 +83,6 @@ namespace Jekov.Nevix.Desktop.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap autosync16 {
-            get {
-                object obj = ResourceManager.GetObject("autosync16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap launcher_icon {
             get {
                 object obj = ResourceManager.GetObject("launcher_icon", resourceCulture);
@@ -113,9 +103,9 @@ namespace Jekov.Nevix.Desktop.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap synchronize_256_small {
+        internal static System.Drawing.Bitmap Sync {
             get {
-                object obj = ResourceManager.GetObject("synchronize_256_small", resourceCulture);
+                object obj = ResourceManager.GetObject("Sync", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

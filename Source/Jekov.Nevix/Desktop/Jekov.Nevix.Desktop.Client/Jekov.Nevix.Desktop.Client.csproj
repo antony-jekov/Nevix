@@ -145,9 +145,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ic_launcher.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Common\Jekov.Nevix.Common.ViewModels\Jekov.Nevix.Common.ViewModels.csproj">
       <Project>{c04ed361-2475-4753-bf54-66b072959863}</Project>
       <Name>Jekov.Nevix.Common.ViewModels</Name>
@@ -181,16 +178,12 @@
     <None Include="Resources\synchronize_256_small.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\remove.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="logo.ico" />
+    <None Include="Resources\Sync.png" />
+    <None Include="Resources\Remove.png" />
+    <None Include="Resources\Add.png" />
     <None Include="Resources\launcher_icon.png" />
     <None Include="Resources\autosync16.png" />
-    <None Include="Resources\Nevix-Logo-64.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
