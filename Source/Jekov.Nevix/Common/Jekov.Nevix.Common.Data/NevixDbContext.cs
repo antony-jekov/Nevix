@@ -18,6 +18,10 @@
 
         public IDbSet<NevixUser> Users { get; set; }
 
+        public IDbSet<ConfirmUser> ConfirmUser { get; set; }
+
+        public IDbSet<ForgottenPasswordRequest> ForgottenPassword { get; set; }
+
         public DbContext DbContext
         {
             get

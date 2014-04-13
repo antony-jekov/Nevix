@@ -8,6 +8,10 @@
     {
         IRepository<NevixUser> Users { get; }
 
+        IRepository<ForgottenPasswordRequest> ForgottenPasswordRequests { get; }
+
+        IRepository<ConfirmUser> ConfirmUser { get; }
+
         int SaveChanges();
     }
 }

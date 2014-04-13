@@ -54,7 +54,10 @@ namespace Jekov.Nevix.Desktop.Client
 
             Match match = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*@((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$").Match(email);
             if (!match.Success)
+            {
                 MessageBox.Show("Invalid email!");
+                return false;
+            }
 
             return true;
         }
@@ -82,11 +85,11 @@ namespace Jekov.Nevix.Desktop.Client
                 return;
             }
 
-            if (!pass.Any(c => char.IsDigit(c)))
-            {
-                MessageBox.Show("Password must have at least one digit in it!", "Weak password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            //if (!pass.Any(c => char.IsDigit(c)))
+            //{
+            //    MessageBox.Show("Password must have at least one digit in it!", "Weak password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
             if (email.Length < 8)
             {
@@ -132,6 +135,13 @@ namespace Jekov.Nevix.Desktop.Client
                 progressIndicator.Visible = false;
                 return;
             }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("Your email needs to be confirmed.\nPlease visit your email inbox and follow the activation link.\n\nIf you can't see the activation email make sure to check the 'Spam' folder.", "Confirm Email", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ToggleControlsEnabled(true);
+                progressIndicator.Visible = false;
+                return;
+            }
 
             progressIndicator.Visible = false;
             db.LocalDb.SessionKey = sessionKey;
@@ -146,11 +156,10 @@ namespace Jekov.Nevix.Desktop.Client
 
         private async void Register(string email, string pass, string confirm)
         {
-            string sessionKey = string.Empty;
             try
             {
                 ToggleControlsEnabled(false);
-                sessionKey = await persister.Register(email, pass, confirm);
+                await persister.Register(email, pass, confirm);
             }
             catch (InvalidOperationException)
             {
@@ -159,8 +168,13 @@ namespace Jekov.Nevix.Desktop.Client
                 progressIndicator.Visible = false;
                 return;
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Server Down", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Application.Exit();
+            }
+
             progressIndicator.Visible = false;
-            db.LocalDb.SessionKey = sessionKey;
 
             db.LocalDb.Email = email;
             db.LocalDb.Password = pass;
@@ -168,16 +182,23 @@ namespace Jekov.Nevix.Desktop.Client
             db.LocalDb.Remember = remember.Checked;
             db.SaveChanges();
 
-            SwitchToMain(email, sessionKey);
+            MessageBox.Show("Please check your email in order to activate your account.\n\nIf you cannot see the activation email, please check your 'Spam' folder.\nFeel free to contact nevix@antonyjekov.com if you encounter any problems regarding the activation of your account or any other issues that you might encounter.", "Check email to Activate Account", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ToggleControlsEnabled(true);
         }
 
         private void SwitchToMain(string email, string sessionKey)
         {
+            ToggleControlsEnabled(true);
+
+            if (string.IsNullOrEmpty(sessionKey))
+            {
+                MessageBox.Show("There was an error trying to open your session.\nIf the problem appears again please free to contact the administrator at nevix@antonyjekov.com\nWe appologize for any inconvinience that this might have cost you!");
+            }
+
             var frm = Program.MainForm(email, sessionKey);
             
             frm.Show();
             this.Hide();
-            ToggleControlsEnabled(true);
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -241,6 +262,27 @@ namespace Jekov.Nevix.Desktop.Client
         private void LoginForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private async void resetPass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string email = this.email.Text.ToLower();
+
+            if (string.IsNullOrEmpty(email))
+            {
+                MessageBox.Show("Email is empty!");
+                return;
+            }
+
+            Match match = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*@((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$").Match(email);
+            if (!match.Success)
+            {
+                MessageBox.Show("Invalid email!");
+                return;
+            }
+
+            await persister.ResetPassword(email);
+            MessageBox.Show("Check your email inbox and follow the link to change your password.\nIf you cannot find the email make sure to check the 'Spam' folder as well.", "Password Reset Sent", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

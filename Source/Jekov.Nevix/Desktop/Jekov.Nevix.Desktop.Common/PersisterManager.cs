@@ -62,7 +62,7 @@
             await HttpRequest(RootAddress + "user/logoff", HttpPut);
         }
 
-        public async Task<string> Register(string email, string password, string confirmPassword)
+        public async Task Register(string email, string password, string confirmPassword)
         {
             UserRegisterViewModel registerData = new UserRegisterViewModel
             {
@@ -73,8 +73,7 @@
 
             string serializedRequestBody = JsonConvert.SerializeObject(registerData);
 
-            SessionKey = await HttpRequest(RootAddress + "user/register", HttpPost, serializedRequestBody);
-            return SessionKey;
+            await HttpRequest(RootAddress + "user/register", HttpPost, serializedRequestBody);
         }
 
         public async void AddMediaFolderToDatabase(MediaFolderViewModel rootFolder)
@@ -182,6 +181,11 @@
         public async Task<string> GetMediaHash()
         {
             return await GetRequest(RootAddress + "mediafolders/GetMediaHash");
+        }
+
+        public async Task ResetPassword(string email)
+        {
+            await HttpRequest(RootAddress + "user/ForgottenPassword?email=" + email, HttpPut);
         }
     }
 }

@@ -13,6 +13,10 @@
     {
         IDbSet<NevixUser> Users { get; set; }
 
+        IDbSet<ConfirmUser> ConfirmUser { get; set; }
+
+        IDbSet<ForgottenPasswordRequest> ForgottenPassword { get; set; }
+
         DbContext DbContext { get; }
 
         int SaveChanges();

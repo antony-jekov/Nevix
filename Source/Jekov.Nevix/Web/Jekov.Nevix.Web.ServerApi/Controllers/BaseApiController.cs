@@ -12,7 +12,7 @@
     using System.Text;
     using System.Web.Http;
 
-    public class BaseApiController : ApiController
+    public abstract class BaseApiController : ApiController
     {
         private const string SessionKeyName = "X-SessionKey";
 

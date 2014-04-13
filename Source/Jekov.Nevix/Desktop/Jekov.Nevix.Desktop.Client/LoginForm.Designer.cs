@@ -43,6 +43,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.progressIndicator = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.resetPass = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.progressIndicator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -198,6 +199,20 @@
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
             // 
+            // resetPass
+            // 
+            this.resetPass.ActiveLinkColor = System.Drawing.Color.Gray;
+            this.resetPass.AutoSize = true;
+            this.resetPass.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.resetPass.Location = new System.Drawing.Point(293, 9);
+            this.resetPass.Name = "resetPass";
+            this.resetPass.Size = new System.Drawing.Size(61, 13);
+            this.resetPass.TabIndex = 30;
+            this.resetPass.TabStop = true;
+            this.resetPass.Text = "Reset Pass";
+            this.resetPass.VisitedLinkColor = System.Drawing.Color.Teal;
+            this.resetPass.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.resetPass_LinkClicked);
+            // 
             // LoginForm
             // 
             this.AcceptButton = this.login;
@@ -205,6 +220,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(366, 261);
+            this.Controls.Add(this.resetPass);
             this.Controls.Add(this.progressIndicator);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.pictureBox1);
@@ -250,5 +266,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox progressIndicator;
+        private System.Windows.Forms.LinkLabel resetPass;
     }
 }

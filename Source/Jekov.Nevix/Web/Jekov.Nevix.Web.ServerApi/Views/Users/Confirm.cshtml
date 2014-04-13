@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Confirm";
+}
+
+<h2>Confirm email address</h2>
+
+<h1>@ViewBag.ex</h1>
+
+@if (ViewBag.confirmed == true)
+{
+    <h1>
+        Congrats! Your account is now activated and you can log in and start using our services!
+    </h1>
+}
+else
+{
+    <h2>
+        Bad activation link...
+    </h2>
+    <p>
+        Please make sure you made yourregistration using the NeviX Desktop Client and that you followed the link in your activation email. The link provided seems to be invalid.
+    </p>
+    <p>Please feel free to contact the administrator at nevix@@antonyjekov.com if you have any issues with the process of registering and activating your account.</p>
+}
+

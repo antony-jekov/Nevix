@@ -1,0 +1,60 @@
+﻿@model Jekov.Nevix.Web.ServerApi.ViewModels.ResetPassViewModel
+
+@{
+    ViewBag.Title = "ResetPass";
+}
+
+<h2>Reset your password</h2>
+@if (ViewBag.valid == true)
+{
+    using (Html.BeginForm("Edit", "Users", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Chose a new password (5 - 40 Characters)</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+            <div class="form-group" style="display:none">
+                @Html.LabelFor(model => model.SecretKey, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SecretKey)
+                    @Html.ValidationMessageFor(model => model.SecretKey)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Password)
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ConfirmPassword)
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h2>
+        Could not find your password reset request.
+    </h2>
+    <p>If you are trying to reset your password, please make sure that you request a password reset using the login screen of the NeviX Desktop Client and follow the link in your email inbox.</p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

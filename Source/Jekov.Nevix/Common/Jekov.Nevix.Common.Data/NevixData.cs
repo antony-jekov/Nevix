@@ -28,6 +28,16 @@
             get { return this.GetRepository<NevixUser>(); }
         }
 
+        public IRepository<ForgottenPasswordRequest> ForgottenPasswordRequests
+        {
+            get { return this.GetRepository<ForgottenPasswordRequest>(); }
+        }
+
+        public IRepository<ConfirmUser> ConfirmUser
+        {
+            get { return this.GetRepository<ConfirmUser>(); }
+        }
+
         public INevixDbContext Context
         {
             get { return this.context; }
