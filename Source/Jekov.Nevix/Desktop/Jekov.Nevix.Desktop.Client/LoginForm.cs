@@ -19,8 +19,8 @@ namespace Jekov.Nevix.Desktop.Client
 
         private void Login_Click(object sender, EventArgs e)
         {
-            string email = this.email.Text;
-            string pass = this.password.Text;
+            string email = this.email.Text.Trim();
+            string pass = this.password.Text.Trim();
 
             if (!ValidateLoginData(email, pass))
             {
@@ -93,9 +93,9 @@ namespace Jekov.Nevix.Desktop.Client
                 ToggleControlsEnabled(false);
                 sessionKey = await persister.Login(email, pass);
             }
-            catch (UnauthorizedAccessException)
+            catch (ArgumentException)
             {
-                MessageBox.Show("Wrong email or password.", "Login Error");
+                MessageBox.Show("Wrong email or password.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ToggleControlsEnabled(true);
                 progressIndicator.Visible = false;
                 return;

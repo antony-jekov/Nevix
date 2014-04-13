@@ -110,9 +110,13 @@
                 {
                     throw new InvalidOperationException("There is already an user with that email.");
                 }
-                else if (err.EndsWith("Unauthorized.") || err.EndsWith("Not Allowed."))
+                else if (err.EndsWith("Unauthorized."))
                 {
                     throw new UnauthorizedAccessException();
+                }
+                else if (err.EndsWith("Server Error."))
+                {
+                    throw new ApplicationException("The server appears to be down... Sorry for the inconvenience!");
                 }
 
                 throw e;
@@ -136,6 +140,14 @@
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                if (e is WebException)
+                {
+                    WebException ex = e as WebException;
+                    if (true)
+                    {
+                        throw new UnauthorizedAccessException("Your session is not valid! Please log in again to renew it!");
+                    }
+                }
             }
             StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
             return sr.ReadToEnd().Trim(trimCharsForRequest);

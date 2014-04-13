@@ -64,6 +64,7 @@
 
             SyncMedia();
             Connect();
+
             playerChangeScheduled = true;
         }
 
@@ -131,7 +132,25 @@
 
         private async void SyncMedia()
         {
-            string serverHash = await persister.GetMediaHash();
+            string serverHash = string.Empty;
+
+            try
+            {
+                serverHash = await persister.GetMediaHash();
+            }
+            catch (Exception ex)
+            {
+                if (ex is UnauthorizedAccessException)
+                {
+                    AbortSession(ex);
+                }
+                else if (ex is ApplicationException)
+                {
+                    MessageBox.Show(ex.Message, "Server down", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Application.Exit();
+                }
+            }
+            
             var localFolders = LoadMediaFolders();
 
             StringBuilder sb = new StringBuilder();
@@ -174,6 +193,14 @@
             }
 
             progressIndicator.Visible = false;
+        }
+
+        private void AbortSession(Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Unauthorized error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            db.LocalDb.SessionKey = string.Empty;
+            db.SaveChanges();
+            Application.Restart();
         }
 
         private void UpdateFileIndexes(MediaFolderViewModel folder)

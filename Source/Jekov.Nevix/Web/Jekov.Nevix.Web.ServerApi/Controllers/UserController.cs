@@ -19,11 +19,9 @@
         [HttpPost]
         public HttpResponseMessage Register([FromBody]UserRegisterViewModel model)
         {
-            try
-            {
                 if (Data.Users.All().Any(u => u.Email.ToLower().Equals(model.Email.ToLower())))
                 {
-                    return Request.CreateResponse(HttpStatusCode.Conflict, "There is already a user with that email!");
+                    return Request.CreateResponse(HttpStatusCode.Conflict, "There is already an user with that email!");
                 }
 
                 if (!model.Password.Equals(model.ConfirmPassword))
@@ -42,11 +40,6 @@
                 Data.SaveChanges();
 
                 return Request.CreateResponse(HttpStatusCode.Created, newUser.SessionKey);
-            }
-            catch (Exception e)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.Message);
-            }
         }
 
         //[HttpGet]
