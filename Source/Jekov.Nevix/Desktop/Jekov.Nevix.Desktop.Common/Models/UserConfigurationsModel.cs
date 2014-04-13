@@ -27,11 +27,11 @@
         public UserConfigurationsModel()
         {
             ClearMedia();
+            this.MediaFolderLocations = new List<string>();
         }
 
         public void ClearMedia()
         {
-            this.MediaFolderLocations = new List<String>();
             this.MediaFolders = new List<MediaFolderViewModel>();
             this.Files = new Dictionary<int, string>();
         }

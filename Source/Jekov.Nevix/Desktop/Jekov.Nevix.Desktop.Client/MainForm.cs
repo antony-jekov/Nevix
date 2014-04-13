@@ -149,6 +149,10 @@
             }
             else
             {
+                persister.ClearAllMedia();
+                db.LocalDb.ClearMedia();
+                mediaDirectories.Items.Clear();
+
                 if (!db.LocalDb.MediaFolderLocations.Any())
                 {
                     //Thread initThread = new Thread(() => InitMedia());
@@ -156,18 +160,11 @@
                 }
                 else
                 {
-                    persister.ClearAllMedia();
-                    db.LocalDb.ClearMedia();
-                    mediaDirectories.Items.Clear();
-                    db.LocalDb.Files.Clear();
-
                     IEnumerable<MediaFolderViewModel> locals = LoadMediaFolders();
 
                     foreach (var folder in locals)
                     {
                         persister.AddMediaFolderToDatabase(folder);
-
-                        db.LocalDb.MediaFolderLocations.Add(folder.Location);
                         db.LocalDb.MediaFolders.Add(folder);
                         mediaDirectories.Items.Add(folder.Location);
                     }
@@ -309,7 +306,6 @@
                 db.SaveChanges();
 
                 mediaDirectories.Items.Add(path);
-
             }
 
             progressIndicator.Visible = false;
