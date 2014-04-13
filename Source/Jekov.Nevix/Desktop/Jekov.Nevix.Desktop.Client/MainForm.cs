@@ -150,7 +150,7 @@
                     Application.Exit();
                 }
             }
-            
+
             var localFolders = LoadMediaFolders();
 
             StringBuilder sb = new StringBuilder();
@@ -169,28 +169,18 @@
             else
             {
                 persister.ClearAllMedia();
+                var locals = db.LocalDb.MediaFolderLocations.ToArray();
                 db.LocalDb.ClearMedia();
                 mediaDirectories.Items.Clear();
 
-                if (!db.LocalDb.MediaFolderLocations.Any())
+                foreach (var folder in locals)
                 {
-                    //Thread initThread = new Thread(() => InitMedia());
-                    //initThread.Start();
+                    AddFolder(folder);
                 }
-                else
-                {
-                    IEnumerable<MediaFolderViewModel> locals = LoadMediaFolders();
 
-                    foreach (var folder in locals)
-                    {
-                        persister.AddMediaFolderToDatabase(folder);
-                        db.LocalDb.MediaFolders.Add(folder);
-                        mediaDirectories.Items.Add(folder.Location);
-                    }
-
-                    db.SaveChanges();
-                }
+                db.SaveChanges();
             }
+
 
             progressIndicator.Visible = false;
         }
