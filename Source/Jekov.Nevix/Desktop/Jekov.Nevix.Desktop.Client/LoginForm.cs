@@ -1,5 +1,6 @@
 ﻿using Jekov.Nevix.Desktop.Common;
 using System;
+using System.Linq;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -19,7 +20,7 @@ namespace Jekov.Nevix.Desktop.Client
 
         private void Login_Click(object sender, EventArgs e)
         {
-            string email = this.email.Text.Trim();
+            string email = this.email.Text.ToLower().Trim();
             string pass = this.password.Text.Trim();
 
             if (!ValidateLoginData(email, pass))
@@ -60,7 +61,7 @@ namespace Jekov.Nevix.Desktop.Client
 
         private async void Register_Click(object sender, EventArgs e)
         {
-            string email = this.email.Text.Trim();
+            string email = this.email.Text.ToLower().Trim();
             string pass = this.password.Text.Trim();
             string confirm = this.confirm.Text.Trim();
 
@@ -69,17 +70,48 @@ namespace Jekov.Nevix.Desktop.Client
                 return;
             }
 
+            if (pass.Length < 5)
+            {
+                MessageBox.Show("Password must be at least 5 characters long!", "Password too short", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (pass.Length > 40)
+            {
+                MessageBox.Show("Password must not be more than 40 characters long!", "Password too long", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!pass.Any(c => char.IsDigit(c)))
+            {
+                MessageBox.Show("Password must have at least one digit in it!", "Weak password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (email.Length < 8)
+            {
+                MessageBox.Show("The email is too short to be valid!", "Invalid email", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (email.Length > 300)
+            {
+                MessageBox.Show("The email must not be more than 300 character long!", "Invalid email", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (string.IsNullOrEmpty(confirm))
             {
-                MessageBox.Show("Confirm is empty!");
+                MessageBox.Show("Please fill in the confirm field", "Confirm is empty!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (!pass.Equals(confirm))
             {
-                MessageBox.Show("Passwords do not match!");
+                MessageBox.Show("Passwords do not match!", "Password missmatch", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             progressIndicator.Visible = true;
             register.Enabled = false;
             Register(email, pass, confirm);
