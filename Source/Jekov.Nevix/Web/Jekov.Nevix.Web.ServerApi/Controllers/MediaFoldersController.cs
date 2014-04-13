@@ -94,19 +94,6 @@
             return Request.CreateResponse(HttpStatusCode.OK, hash);
         }
 
-        [HttpGet]
-        public HttpResponseMessage GetFolders()
-        {
-            NevixUser currentUser = GetCurrentUser();
-
-            if (currentUser == null)
-            {
-                return UnauthorizedErrorMessage();
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, MediaToList(currentUser.Media));
-        }
-
         [HttpPut]
         public HttpResponseMessage Clear()
         {

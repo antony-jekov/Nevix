@@ -159,6 +159,7 @@
                     persister.ClearAllMedia();
                     db.LocalDb.ClearMedia();
                     mediaDirectories.Items.Clear();
+                    db.LocalDb.Files.Clear();
 
                     IEnumerable<MediaFolderViewModel> locals = LoadMediaFolders();
 
@@ -178,41 +179,41 @@
             progressIndicator.Visible = false;
         }
 
-        private void updateFileIndexes(MediaFolderViewModel folder)
+        private void UpdateFileIndexes(MediaFolderViewModel folder)
         {
-            int id;
+            int id = db.LocalDb.Files.Count;
             foreach (var file in folder.Files)
             {
-                id = db.LocalDb.Files.Count;
                 file.Id = id;
                 db.LocalDb.Files.Add(id, file.Location);
+                id++;
             }
 
             foreach (var subFolder in folder.Folders)
             {
-                updateFileIndexes(subFolder);
+                UpdateFileIndexes(subFolder);
             }
         }
 
-        private string RemoveIdFromFiles(string serverFolders)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0, len = serverFolders.Length; i < len; i++)
-            {
-                if (serverFolders[i] == 'I' && serverFolders[i + 1] == 'd' &&
-                    serverFolders[i + 2] == '"' && serverFolders[i + 3] == ':')
-                {
-                    i = serverFolders.IndexOf(',', i + 3) + 1;
-                    sb.Append("Id\":0,\"");
-                }
-                else
-                {
-                    sb.Append(serverFolders[i]);
-                }
-            }
+        //private string RemoveIdFromFiles(string serverFolders)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    for (int i = 0, len = serverFolders.Length; i < len; i++)
+        //    {
+        //        if (serverFolders[i] == 'I' && serverFolders[i + 1] == 'd' &&
+        //            serverFolders[i + 2] == '"' && serverFolders[i + 3] == ':')
+        //        {
+        //            i = serverFolders.IndexOf(',', i + 3) + 1;
+        //            sb.Append("Id\":0,\"");
+        //        }
+        //        else
+        //        {
+        //            sb.Append(serverFolders[i]);
+        //        }
+        //    }
 
-            return sb.ToString();
-        }
+        //    return sb.ToString();
+        //}
 
         private IEnumerable<MediaFolderViewModel> LoadMediaFolders()
         {
@@ -301,7 +302,7 @@
             else
             {
                 MediaFolderViewModel folder = fileManager.GetFolder(path);
-                updateFileIndexes(folder);
+                UpdateFileIndexes(folder);
                 persister.AddMediaFolderToDatabase(folder);
                 db.LocalDb.MediaFolderLocations.Add(folder.Location);
                 db.LocalDb.MediaFolders.Add(folder);

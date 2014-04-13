@@ -93,13 +93,14 @@ namespace Jekov.Nevix.Desktop.Client
                 ToggleControlsEnabled(false);
                 sessionKey = await persister.Login(email, pass);
             }
-            catch (ArgumentException)
+            catch (UnauthorizedAccessException)
             {
                 MessageBox.Show("Wrong email or password.", "Login Error");
                 ToggleControlsEnabled(true);
                 progressIndicator.Visible = false;
                 return;
             }
+
             progressIndicator.Visible = false;
             db.LocalDb.SessionKey = sessionKey;
             db.LocalDb.Email = email;

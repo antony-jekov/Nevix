@@ -185,7 +185,7 @@ namespace Jekov.Nevix.Desktop.Client
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackgroundImage = global::Jekov.Nevix.Desktop.Client.Properties.Resources.Nevix_Logo_64;
+            this.pictureBox1.BackgroundImage = global::Jekov.Nevix.Desktop.Client.Properties.Resources.launcher_icon;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";

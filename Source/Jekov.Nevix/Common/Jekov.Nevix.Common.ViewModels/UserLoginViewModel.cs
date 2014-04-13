@@ -8,12 +8,10 @@
     {
         [Required]
         [DataMember(Name = "email")]
-        [StringLength(40)]
         public string Email { get; set; }
 
         [Required]
         [DataMember(Name = "password")]
-        [StringLength(40)]
         public string Password { get; set; }
     }
 }

@@ -14,7 +14,7 @@
         public string Email { get; set; }
         
         [Required]
-        [StringLength(ModelConstants.PasswordLength, MinimumLength = ModelConstants.PasswordMinLength)]
+        [StringLength(ModelConstants.PasswordLength)]
         public string Password { get; set; }
 
         [StringLength(36)]
@@ -23,5 +23,7 @@
         public DateTime? LastFilesUpdate { get; set; }
 
         public string Media { get; set; }
+
+        public DateTime? LastSurveyTaken { get; set; }
     }
 }

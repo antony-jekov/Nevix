@@ -12,7 +12,8 @@
     public class PersisterManager
     {
         //private const string RootAddress = "http://localhost:50906/api/";
-        private const string RootAddress = "http://nevix.apphb.com/api/";
+        //private const string RootAddress = "http://nevix.apphb.com/api/";
+        private const string RootAddress = "http://nevix.antonyjekov.com/api/";
         private const string HttpPost = "POST";
         private const string HttpPut = "PUT";
         private const string HttpGet = "GET";
@@ -56,7 +57,6 @@
 
             return SessionKey;
         }
-
         public async void LogOff()
         {
             await HttpRequest(RootAddress + "user/logoff", HttpPut);
@@ -110,10 +110,12 @@
                 {
                     throw new InvalidOperationException("There is already an user with that email.");
                 }
-                else if (err.EndsWith("Unauthorized."))
+                else if (err.EndsWith("Unauthorized.") || err.EndsWith("Not Allowed."))
                 {
                     throw new UnauthorizedAccessException();
                 }
+
+                throw e;
             }
 
             if (resp == null) return null;
@@ -126,7 +128,15 @@
         {
             WebRequest req = System.Net.WebRequest.Create(url);
             req.Headers.Add(string.Format("X-SessionKey:{0}", SessionKey));
-            WebResponse resp = await req.GetResponseAsync();
+            WebResponse resp = null;
+            try
+            {
+                resp = await req.GetResponseAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
             return sr.ReadToEnd().Trim(trimCharsForRequest);
         }

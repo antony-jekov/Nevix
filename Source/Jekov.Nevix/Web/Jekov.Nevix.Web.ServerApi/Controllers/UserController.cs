@@ -30,7 +30,7 @@
 
             NevixUser newUser = new NevixUser
             {
-                Email = model.Email,
+                Email = model.Email.ToLower(),
                 Password = model.Password,
                 SessionKey = Guid.NewGuid().ToString()
             };
@@ -48,18 +48,18 @@
 
             if (user == null)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "Wrong email or password!");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Wrong email or password!");
             }
 
-            if (user.SessionKey == null)
-            {
-                user.SessionKey = Guid.NewGuid().ToString();
-                Data.SaveChanges();
-            }
+            //if (user.SessionKey == null)
+            //{
+            //    user.SessionKey = Guid.NewGuid().ToString();
+            //    Data.SaveChanges();
+            //}
 
             return Request.CreateResponse(HttpStatusCode.OK, user.SessionKey);
         }
-        
+
         [HttpGet]
         public HttpResponseMessage LastMediaUpdate()
         {
