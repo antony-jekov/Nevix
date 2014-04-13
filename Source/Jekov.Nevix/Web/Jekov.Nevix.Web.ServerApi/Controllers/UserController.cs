@@ -49,24 +49,24 @@
             }
         }
 
-        [HttpGet]
-        public HttpResponseMessage Test()
-        {
-            try
-            {
-                StringBuilder sb = new StringBuilder();
-            foreach (var item in Data.Users.All().ToList())
-            {
-                sb.AppendLine(string.Format("{0} - {1} - {2}", item.Email, item.Password, item.SessionKey));
-            }
+        //[HttpGet]
+        //public HttpResponseMessage Test()
+        //{
+        //    try
+        //    {
+        //        StringBuilder sb = new StringBuilder();
+        //    foreach (var item in Data.Users.All().ToList())
+        //    {
+        //        sb.AppendLine(string.Format("{0} - {1} - {2}", item.Email, item.Password, item.SessionKey));
+        //    }
 
-            return Request.CreateResponse(HttpStatusCode.OK, sb.ToString());
-            }
-            catch (Exception e)
-            {
-                return Request.CreateResponse(HttpStatusCode.OK, e.Message.ToString());
-            }
-        }
+        //    return Request.CreateResponse(HttpStatusCode.OK, sb.ToString());
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.OK, e.Message.ToString());
+        //    }
+        //}
 
         [HttpPut]
         public HttpResponseMessage Login([FromBody]UserLoginViewModel model)
