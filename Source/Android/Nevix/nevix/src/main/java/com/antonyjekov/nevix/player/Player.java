@@ -27,7 +27,7 @@ import java.util.List;
 public abstract class Player extends View  {
 
     protected Vibrator vibrator;
-
+    protected InteractionIndicator indicator;
     protected int width;
     protected int height;
 
@@ -79,6 +79,7 @@ public abstract class Player extends View  {
         for (Button btn : buttons) {
             if (btn.isPointInButton(x, y)) {
                 vibrator.vibrate(100);
+                this.indicator.indicateButtonPress(btn.buttonBounds());
                 final String cmd = btn.command();
                 if (cmd.equals(PlayerCommand.BROWSE_CMD))
                     owner.browseMedia();
@@ -102,12 +103,13 @@ public abstract class Player extends View  {
         }
     }
 
-    public Player(Context context, PusherManager pusher, MainActivity owner) {
+    public Player(Context context, PusherManager pusher, MainActivity owner, InteractionIndicator indicator) {
         super(context);
         this.pusher = pusher;
         buttons = new ArrayList<Button>();
         this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         this.owner = owner;
+        this.indicator = indicator;
     }
 
     protected Rect rightTo(Rect relativeRect, int buttonSize) {

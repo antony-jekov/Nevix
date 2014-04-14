@@ -26,8 +26,8 @@ import com.antonyjekov.nevix.player.buttons.VolumeUpButton;
  */
 public class BSPlayer extends Player {
 
-    public BSPlayer(Context context, PusherManager pusher, MainActivity owner) {
-        super(context, pusher, owner);
+    public BSPlayer(Context context, PusherManager pusher, MainActivity owner, InteractionIndicator indicator) {
+        super(context, pusher, owner, indicator);
     }
 
     @Override

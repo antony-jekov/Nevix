@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.PusherManager;
 import com.antonyjekov.nevix.player.BSPlayer;
+import com.antonyjekov.nevix.player.InteractionIndicator;
 import com.antonyjekov.nevix.player.Player;
 
 public class MainActivity extends BaseActivity {
@@ -34,8 +35,11 @@ public class MainActivity extends BaseActivity {
 
         this.pusher = new PusherManager(sessionKey);
 
-        Player player = new BSPlayer(this, pusher, this);
-        ((ViewGroup) findViewById(R.id.player_container)).addView(player);
+        ViewGroup root = (ViewGroup) findViewById(R.id.player_container);
+        InteractionIndicator indicator = new InteractionIndicator(this);
+        root.addView(indicator);
+        Player player = new BSPlayer(this, pusher, this, indicator);
+        root.addView(player);
     }
 
     public void browseMedia() {

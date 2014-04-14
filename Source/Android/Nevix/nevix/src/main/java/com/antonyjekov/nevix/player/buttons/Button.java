@@ -18,6 +18,10 @@ public abstract class Button {
     protected int strokeWidth;
     protected int padding;
 
+    public Rect buttonBounds() {
+        return new Rect(this.button);
+    }
+
     public Button(Rect button, int strokeWidth, int padding) {
         this.button = button;
         shapeStroke = new Path();
