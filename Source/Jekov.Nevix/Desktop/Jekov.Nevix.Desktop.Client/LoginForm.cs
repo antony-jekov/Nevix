@@ -182,7 +182,7 @@ namespace Jekov.Nevix.Desktop.Client
             db.LocalDb.Remember = remember.Checked;
             db.SaveChanges();
 
-            MessageBox.Show("Please check your email in order to activate your account.\n\nIf you cannot see the activation email, please check your 'Spam' folder.\nFeel free to contact nevix@antonyjekov.com if you encounter any problems regarding the activation of your account or any other issues that you might encounter.", "Check email to Activate Account", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Account {0} was created successfully!\n\nPlease check your email in order to activate your account.\nIf you cannot see the activation email, please check your 'Spam' folder.\nFeel free to contact nevix@antonyjekov.com if you encounter any problems regarding the activation of your account or any other issues that you might encounter.", "Account Created", MessageBoxButtons.OK, MessageBoxIcon.Information);
             ToggleControlsEnabled(true);
         }
 

@@ -303,6 +303,10 @@
             dialog.ShowNewFolderButton = false;
 
             dialog.ShowDialog();
+            if (string.IsNullOrEmpty( dialog.SelectedPath))
+            {
+                return; 
+            }
             progressIndicator.Visible = true;
             AddFolder(dialog.SelectedPath);
         }
