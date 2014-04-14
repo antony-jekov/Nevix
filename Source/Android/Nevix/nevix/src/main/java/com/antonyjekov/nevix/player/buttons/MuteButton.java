@@ -17,7 +17,26 @@ public class MuteButton extends SphericalButton {
     protected void prepareShape(Path shape) {
         super.prepareShape(shape);
 
-        // TODO: draw icon
+        int x = button.right - (padding << 1);
+        int y = button.bottom - (padding);
+
+        shape.moveTo(x, y);
+        shape.lineTo(x, button.top + (padding));
+
+        x -= strokeWidth << 1;
+        y -= padding >> 1;
+
+        shape.moveTo(x, y);
+        shape.lineTo(x, (float) (button.top + (padding * 1.5)));
+
+        x -= strokeWidth << 1;
+        y -= padding >> 1;
+
+        shape.moveTo(x, y);
+        shape.lineTo(x, button.top + (padding << 1));
+
+        shape.moveTo( button.left + (padding), button.bottom - (padding));
+        shape.lineTo(button.right - (padding), button.top + (padding));
     }
 
     @Override

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.antonyjekov.nevix" >
+    package="com.antonyjekov.nevix">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -10,19 +10,20 @@
     <uses-sdk android:minSdkVersion="9" />
 
     <application
+        android:name=".App"
+        android:debuggable="false"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/launcher_icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:screenOrientation="landscape"
             android:name="com.antonyjekov.nevix.activities.MainActivity"
-            android:label="@string/title_activity_main" >
-        </activity>
+            android:label="@string/title_activity_main"
+            android:screenOrientation="landscape" />
         <activity
-            android:screenOrientation="landscape"
             android:name="com.antonyjekov.nevix.activities.AuthenticateActivity"
-            android:label="@string/title_activity_authenticate" >
+            android:label="@string/app_name"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,10 +31,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="landscape"
             android:name="com.antonyjekov.nevix.activities.BrowseActivity"
-            android:label="@string/title_activity_browse" >
-        </activity>
+            android:label="@string/title_activity_browse"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

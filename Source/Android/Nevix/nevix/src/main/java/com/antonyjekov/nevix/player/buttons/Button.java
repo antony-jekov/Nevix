@@ -12,26 +12,31 @@ import android.graphics.Rect;
 public abstract class Button {
 
     protected final Rect button;
-    private Path shape;
-    private Paint paint;
+    private Path shapeStroke;
+    private Paint paintStroke;
+
     protected int strokeWidth;
     protected int padding;
 
     public Button(Rect button, int strokeWidth, int padding) {
         this.button = button;
-        shape = new Path();
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(strokeWidth);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.RED);
+        shapeStroke = new Path();
+
+        paintStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintStroke.setStrokeWidth(strokeWidth);
+        paintStroke.setStyle(Paint.Style.STROKE);
+        paintStroke.setColor(Color.parseColor("#5ebdb8"));
+
         this.padding = padding;
         this.strokeWidth = strokeWidth;
     }
 
     public void renderSelf(Canvas canvas) {
-        shape.reset();
-        prepareShape(shape);
-        canvas.drawPath(shape, paint);
+        shapeStroke.reset();
+        prepareShape(shapeStroke);
+
+        canvas.drawPath(shapeStroke, paintStroke);
+
     }
 
     protected abstract void prepareShape(Path shape);

@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.antonyjekov.nevix.App;
 import com.antonyjekov.nevix.R;
+import com.antonyjekov.nevix.activities.BaseActivity;
 import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.PersistentManager;
 import com.antonyjekov.nevix.common.contracts.FailCallback;
@@ -25,7 +27,15 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
     @Override
     public void onFail() {
         progress.hide();
-        warnUser("Bad username or password!");
+        if (!checkInternetConnection()) {
+            warnUser("No internet connection...");
+        } else {
+            warnUser("Bad username or password!");
+        }
+    }
+
+    private boolean checkInternetConnection() {
+        return ((BaseActivity) getActivity()).application().isNetworkConnected();
     }
 
     HttpAsyncRequest.OnResultCallBack callBack;
@@ -45,6 +55,7 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
         progress.setMessage("Connecting to server, please wait...");
 
         final PersistentManager persistent = new PersistentManager();
+        persistent.wakeUpInternet();
 
         email = (EditText) loginView.findViewById(R.id.auth_email);
         pass = (EditText) loginView.findViewById(R.id.auth_pass);
@@ -53,8 +64,8 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String emailText = email.getText().toString();
-                String passwordText = pass.getText().toString();
+                String emailText = email.getText().toString().trim();
+                String passwordText = pass.getText().toString().trim();
 
                 if (emailText.length() > 0 && passwordText.length() > 0) {
                     persistent.login(emailText, passwordText, callBack, error);

@@ -228,6 +228,7 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     }
 
     private void openRootFolder() {
+        this.mediaList.fullScroll(ScrollView.FOCUS_UP);
         list.removeAllViews();
         final ArrayList<MediaItem> contents = new ArrayList<MediaItem>();
         int folderIcon = R.drawable.media_folder2;

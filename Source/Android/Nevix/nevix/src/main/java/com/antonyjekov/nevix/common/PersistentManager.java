@@ -11,7 +11,8 @@ import java.util.Formatter;
 
 public class PersistentManager {
     private String sessionKey;
-    private final String ROOT_ADDRESS = "http://nevix.apphb.com/api/";
+    //private final String ROOT_ADDRESS = "http://nevix.apphb.com/api/";
+    private final String ROOT_ADDRESS = "http://nevix.antonyjekov.com/api/";
     public static final String SESSION_KEY_HEADER = "X-SessionKey";
 
     public PersistentManager() {
@@ -24,6 +25,23 @@ public class PersistentManager {
 
     public boolean isUserLoggedIn() {
         return !sessionKey.equals(ContextManager.EMPTY_SESSION_KEY);
+    }
+
+    public void wakeUpInternet() {
+        HttpAsyncRequest request = new HttpAsyncRequest(new HttpAsyncRequest.OnResultCallBack() {
+            @Override
+            public void onResult(String result) {
+
+            }
+        }, new FailCallback() {
+            @Override
+            public void onFail() {
+
+            }
+        });
+        request.getRequest("http://google.com", "");
+
+        request.execute();
     }
 
     public void login(String email, String pass, HttpAsyncRequest.OnResultCallBack callBack, FailCallback error) {

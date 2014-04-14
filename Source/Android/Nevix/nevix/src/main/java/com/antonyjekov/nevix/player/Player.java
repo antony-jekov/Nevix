@@ -4,11 +4,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Picture;
 import android.graphics.Rect;
 import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.activities.MainActivity;
 import com.antonyjekov.nevix.common.PusherManager;
 import com.antonyjekov.nevix.constants.PlayerCommand;
@@ -20,7 +24,7 @@ import java.util.List;
 /**
  * Created by Antony Jekov on 3/23/2014.
  */
-public abstract class Player extends View {
+public abstract class Player extends View  {
 
     protected Vibrator vibrator;
 

@@ -18,7 +18,7 @@ public class PowerDownButton extends FullScreenButton {
     protected void prepareShape(Path shape) {
         super.prepareShape(shape);
 
-        shape.moveTo(button.centerX(), (float) (button.centerY() - ((button.height() >> 2) + padding * .3)));
+        shape.moveTo(button.centerX(), (float) (button.centerY() - ((button.height() >> 2) + padding * .4)));
         shape.lineTo(button.centerX(), button.centerY());
     }
 

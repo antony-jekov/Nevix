@@ -14,18 +14,28 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
-
+    buildToolsVersion '19.0.1'
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        rsign {
+            keyAlias 'Nevix'
+            keyPassword 'MeLlOn!@#'
+            storeFile file('C:\\keystores\\nevixKeystore.jks')
+            storePassword 'mellon'
+        }
+    }
     buildTypes {
         release {
+            debuggable false
+            jniDebugBuild false
             runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFile 'proguard-rules.txt'
+            zipAlign true
         }
     }
 }
