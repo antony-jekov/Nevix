@@ -101,7 +101,16 @@ namespace Jekov.Nevix.Desktop.Common.Players
 
         public virtual void FullScreen()
         {
-            
+        }
+
+        public virtual void BringUp()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Exit()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -25,5 +25,9 @@
         void OpenFile(string location);
         void Power();
         void FullScreen();
+
+        void BringUp();
+
+        void Exit();
     }
 }

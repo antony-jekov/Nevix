@@ -26,6 +26,9 @@
         private const string FF_CMD = "ff";
         private const string RW_CMD = "rw";
         private const string OPEN_CMD = "open";
+        private const string EXIT_CMD = "exit";
+        private const string BRING_UP_CMD = "bring_up";
+
 
         public CommandExecutor(IPlayer player, IDictionary<int, string> files)
         {
@@ -100,6 +103,12 @@
                 case RW_CMD:
                     player.Rewind();
                     break;
+                case BRING_UP_CMD:
+                    player.BringUp();
+                    break;
+                case EXIT_CMD:
+                    player.Exit();
+                    break;
 
                 default:
                     if (cmd.Length > 4 && cmd.StartsWith(OPEN_CMD))
@@ -115,8 +124,6 @@
 
         public void ExecuteCommand(string cmd)
         {
-            //Thread thread = new Thread(() => ExexuteCmd(cmd));
-            //thread.Start();
             ExexuteCmd(cmd);
         }
     }
