@@ -5,7 +5,9 @@ import android.graphics.Rect;
 
 import com.antonyjekov.nevix.activities.MainActivity;
 import com.antonyjekov.nevix.common.PusherManager;
+import com.antonyjekov.nevix.player.buttons.BringToFrontButton;
 import com.antonyjekov.nevix.player.buttons.BrowseButton;
+import com.antonyjekov.nevix.player.buttons.ExitPlayerButton;
 import com.antonyjekov.nevix.player.buttons.FastForwardButton;
 import com.antonyjekov.nevix.player.buttons.FullScreenButton;
 import com.antonyjekov.nevix.player.buttons.MuteButton;
@@ -90,5 +92,11 @@ public class BSPlayer extends Player {
 
         Rect muteBtn = rightTo(powerBtn, buttonSize);
         buttons.add(new MuteButton(muteBtn, strokeWidth, buttonPadding));
+
+        Rect bringUpBtn = bellowOf(volumeDownBtn, buttonSize);
+        buttons.add(new BringToFrontButton(bringUpBtn, strokeWidth, buttonPadding));
+
+        Rect exitBtn = bellowOf(sysVolDown, buttonSize);
+        buttons.add(new ExitPlayerButton(exitBtn, strokeWidth, buttonPadding));
     }
 }

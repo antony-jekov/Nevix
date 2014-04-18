@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000">
+    android:background="#111">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -41,7 +41,8 @@
     <ScrollView
         android:id="@+id/media_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/main_bg">
 
         <LinearLayout
             android:id="@+id/jekozo"

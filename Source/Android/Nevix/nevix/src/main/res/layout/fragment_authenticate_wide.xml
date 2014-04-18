@@ -56,5 +56,12 @@
             android:text="@string/auth_login_btn"
             android:layout_gravity="center_horizontal" />
 
+        <Button
+            android:id="@+id/auth_reset_pass"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reset"
+            android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
 </LinearLayout>

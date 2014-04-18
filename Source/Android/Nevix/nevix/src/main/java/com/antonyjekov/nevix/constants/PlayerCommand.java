@@ -18,4 +18,6 @@ public class PlayerCommand {
     public static final String POWER_CMD = "power";
     public static final String BROWSE_CMD = "browse";
     public static final String MUTE_CMD = "mute";
+    public static final String BING_TO_FRONT_CMD = "bring_up";
+    public static final String EXIT_PLAYER = "exit";
 }

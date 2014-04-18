@@ -8,8 +8,8 @@ import com.antonyjekov.nevix.constants.PlayerCommand;
 /**
  * Created by Antony Jekov on 3/27/2014.
  */
-public class BrowseButton extends PointingUpButton {
-    public BrowseButton(Rect button, int strokeWidth, int padding) {
+public class PointingUpButton extends SphericalButton {
+    public PointingUpButton(Rect button, int strokeWidth, int padding) {
         super(button, strokeWidth, padding);
     }
 
@@ -18,11 +18,15 @@ public class BrowseButton extends PointingUpButton {
         super.prepareShape(shape);
 
         int x = button.centerX();
+        int y = button.top + padding;
 
         int halfLen = (button.width() - (padding << 1)) >> 1;
 
-        shape.moveTo(x - halfLen, button.centerY() + (strokeWidth << 1));
-        shape.lineTo(x + halfLen, button.centerY() + (strokeWidth << 1));
+        shape.moveTo(x, y);
+        shape.lineTo(x - halfLen, button.centerY());
+        shape.lineTo(x + halfLen, button.centerY());
+        shape.lineTo(x, y);
+        shape.close();
     }
 
     @Override

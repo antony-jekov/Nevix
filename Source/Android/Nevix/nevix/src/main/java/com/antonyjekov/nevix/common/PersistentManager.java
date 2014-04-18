@@ -96,4 +96,11 @@ public class PersistentManager {
 
         request.execute();
     }
+
+    public void resetPass(String emailText, HttpAsyncRequest.OnResultCallBack onResult, FailCallback onFail) {
+        HttpAsyncRequest request = new HttpAsyncRequest(onResult, onFail);
+        request.putRequest(ROOT_ADDRESS + "user/forgottenpassword?email=" + emailText, "", "");
+
+        request.execute();
+    }
 }

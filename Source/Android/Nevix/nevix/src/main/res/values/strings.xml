@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">NeviX</string>
+    <string name="app_name">NeviX Remote Control</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">Nevix Remote</string>
@@ -11,28 +11,11 @@
     <string name="auth_login_btn">Login</string>
     <string name="auth_register_btn">Register</string>
     <string name="title_activity_authenticate">Login</string>
-    <string name="play_btn">Play</string>
-    <string name="pause_btn">Pause</string>
-    <string name="volume_up_btn">V++</string>
-    <string name="volume_down_btn">V--</string>
-    <string name="sys_volume_down_btn">SysVol--</string>
-    <string name="sys_volume_up_btn">SysVol++</string>
-    <string name="power_btn">Power OFF</string>
-    <string name="next_btn"><![CDATA[>>|]]></string>
-    <string name="prev_btn"><![CDATA[|<<]]></string>
-    <string name="rw_btn"><![CDATA[<<]]></string>
-    <string name="ff_btn"><![CDATA[>>]]></string>
-    <string name="full_btn"><![CDATA[<>]]></string>
-    <string name="step_f_btn"><![CDATA[>|]]></string>
-    <string name="step_b_btn"><![CDATA[|<]]></string>
     <string name="log_off">Log Off</string>
-    <string name="title_activity_test">TestActivity</string>
-    <string name="Open">Open</string>
-    <string name="title_activity_browse">Browse Media</string>
     <string name="Sync">Sync</string>
     <string name="sync_message">Syncing media...</string>
-    <string name="title_activity_base">BaseActivity</string>
     <string name="media_is_outdated">Media is out of date.</string>
     <string name="beginning_media_sync">Beginning media sync...</string>
+    <string name="reset">Reset</string>
 
 </resources>

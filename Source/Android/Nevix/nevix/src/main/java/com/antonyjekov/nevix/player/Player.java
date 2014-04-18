@@ -4,15 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Picture;
 import android.graphics.Rect;
 import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.activities.MainActivity;
 import com.antonyjekov.nevix.common.PusherManager;
 import com.antonyjekov.nevix.constants.PlayerCommand;
@@ -78,7 +74,7 @@ public abstract class Player extends View  {
     private void onClick(float x, float y) {
         for (Button btn : buttons) {
             if (btn.isPointInButton(x, y)) {
-                vibrator.vibrate(100);
+                vibrator.vibrate(50);
                 this.indicator.indicateButtonPress(btn.buttonBounds());
                 final String cmd = btn.command();
                 if (cmd.equals(PlayerCommand.BROWSE_CMD))
