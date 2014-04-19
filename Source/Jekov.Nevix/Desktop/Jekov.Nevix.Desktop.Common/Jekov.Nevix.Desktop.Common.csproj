@@ -59,12 +59,14 @@
     <Compile Include="CommunicationsManager.cs" />
     <Compile Include="Contracts\IPlayer.cs" />
     <Compile Include="FileManager.cs" />
+    <Compile Include="Models\PlayerEntry.cs" />
     <Compile Include="NevixLocalDbContext.cs" />
     <Compile Include="Models\UserConfigurationsModel.cs" />
     <Compile Include="PersisterManager.cs" />
     <Compile Include="Players\BsPlayer.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Players\SystemPlayer.cs" />
+    <Compile Include="Players\VlcMediaPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pubnub.cs" />
   </ItemGroup>

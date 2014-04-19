@@ -13,6 +13,7 @@ namespace Jekov.Nevix.Desktop.Common.Players
     public class SystemPlayer : IPlayer
     {
         protected InputSimulator input;
+        protected Process currentProcess;
 
         public SystemPlayer()
         {
@@ -91,7 +92,7 @@ namespace Jekov.Nevix.Desktop.Common.Players
 
         public virtual void OpenFile(string location)
         {
-            Process.Start(location);
+            this.currentProcess = Process.Start(location);
         }
 
         public virtual void Power()
@@ -105,12 +106,18 @@ namespace Jekov.Nevix.Desktop.Common.Players
 
         public virtual void BringUp()
         {
-            throw new NotImplementedException();
+            if (this.currentProcess != null)
+            {
+                this.currentProcess.Start();
+            }
         }
 
         public virtual void Exit()
         {
-            throw new NotImplementedException();
+            if (this.currentProcess != null)
+            {
+                currentProcess.Kill();
+            }            
         }
     }
 }

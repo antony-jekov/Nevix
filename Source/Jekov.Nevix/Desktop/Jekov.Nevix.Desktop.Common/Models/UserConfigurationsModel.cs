@@ -20,9 +20,11 @@
 
         public ICollection<String> MediaFolderLocations { get; set; }
 
-        public IDictionary<int, string> Files { get; set; }
+        public IDictionary<int, string> Filesz { get; set; }
 
         public bool StartWithWindows { get; set; }
+
+        public ICollection<PlayerEntry> CustomlyAddedPlayers { get; set; }
 
         public UserConfigurationsModel()
         {
@@ -32,8 +34,9 @@
         public void ClearMedia()
         {
             this.MediaFolders = new List<MediaFolderViewModel>();
-            this.Files = new Dictionary<int, string>();
+            this.Filesz = new Dictionary<int, string>();
             this.MediaFolderLocations = new List<string>();
+            this.CustomlyAddedPlayers = new List<PlayerEntry>();
         }
     }
 }

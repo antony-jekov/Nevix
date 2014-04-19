@@ -22,7 +22,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         getSupportActionBar().hide();
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -56,10 +55,16 @@ public class MainActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == BROWSE_RESULT) {
                 int requestedFile = data.getIntExtra(BrowseActivity.BROWSED_FILE, 0);
+                String name = data.getStringExtra(BrowseActivity.BROWSED_FILE_NAME);
                 if (requestedFile != 0) {
                     pusher.pushCommand("open" + requestedFile);
+                    printMessage("Opening: " + name);
                 }
             }
         }
+    }
+
+    private void printMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

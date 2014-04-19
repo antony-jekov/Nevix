@@ -6,16 +6,27 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <uses-sdk android:minSdkVersion="9" />
 
     <application
-        android:name=".App"
-        android:debuggable="true"
+        android:name="com.antonyjekov.nevix.App"
         android:allowBackup="true"
+        android:debuggable="false"
         android:icon="@drawable/launcher_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+        <activity
+            android:name="com.startapp.android.publish.list3d.List3DActivity"
+            android:taskAffinity="com.antonyjekov.nevix.AppWall"
+            android:theme="@android:style/Theme" />
+        <activity
+            android:name="com.startapp.android.publish.AppWallActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:taskAffinity="com.antonyjekov.nevix.AppWall"
+            android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name="com.antonyjekov.nevix.activities.MainActivity"
             android:label="@string/title_activity_main"
@@ -24,15 +35,13 @@
             android:name="com.antonyjekov.nevix.activities.AuthenticateActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape">
-            <intent-filter>
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.antonyjekov.nevix.activities.BrowseActivity"
-            android:screenOrientation="landscape"></activity>
+        <activity android:name="com.antonyjekov.nevix.activities.BrowseActivity" />
     </application>
 
 </manifest>

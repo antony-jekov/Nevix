@@ -54,6 +54,16 @@
             }
         }
 
+        public override void BringUp()
+        {
+            BringPlayerToFront(PlayerProcess.MainWindowHandle);
+        }
+
+        public override void Exit()
+        {
+            PlayerProcess.Kill();
+        }
+
         public Player(string playerProcessName, string playerLocation)
         {
             PlayerLocation = playerLocation;

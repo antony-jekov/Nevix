@@ -43,6 +43,7 @@ namespace Jekov.Nevix.Desktop.Client
             this.remove = new System.Windows.Forms.Button();
             this.add = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.addPlayer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.progressIndicator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -96,7 +97,7 @@ namespace Jekov.Nevix.Desktop.Client
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label1.Location = new System.Drawing.Point(258, 81);
+            this.label1.Location = new System.Drawing.Point(258, 76);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(107, 13);
             this.label1.TabIndex = 26;
@@ -193,12 +194,23 @@ namespace Jekov.Nevix.Desktop.Client
             this.pictureBox1.TabIndex = 13;
             this.pictureBox1.TabStop = false;
             // 
+            // addPlayer
+            // 
+            this.addPlayer.Location = new System.Drawing.Point(396, 71);
+            this.addPlayer.Name = "addPlayer";
+            this.addPlayer.Size = new System.Drawing.Size(75, 23);
+            this.addPlayer.TabIndex = 32;
+            this.addPlayer.Text = "Add Player";
+            this.addPlayer.UseVisualStyleBackColor = true;
+            this.addPlayer.Click += new System.EventHandler(this.addPlayer_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(492, 277);
+            this.Controls.Add(this.addPlayer);
             this.Controls.Add(this.progressIndicator);
             this.Controls.Add(this.mediaDirectories);
             this.Controls.Add(this.logoff);
@@ -243,5 +255,6 @@ namespace Jekov.Nevix.Desktop.Client
         private System.Windows.Forms.LinkLabel logoff;
         private System.Windows.Forms.ListBox mediaDirectories;
         private PictureBox progressIndicator;
+        private Button addPlayer;
     }
 }

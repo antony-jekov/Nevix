@@ -30,10 +30,9 @@
         private const string BRING_UP_CMD = "bring_up";
 
 
-        public CommandExecutor(IPlayer player, IDictionary<int, string> files)
+        public CommandExecutor(IPlayer player)
         {
             this.player = player;
-            this.files = files;
         }
 
         private void ExexuteCmd(string cmd)
@@ -114,7 +113,7 @@
                     if (cmd.Length > 4 && cmd.StartsWith(OPEN_CMD))
                     {
                         string locationStr = cmd.Substring(4);
-                        string location = files[int.Parse(locationStr)];
+                        string location = NevixLocalDbContext.Instance().LocalDb.Filesz[int.Parse(locationStr)];
                         player.OpenFile(location);
                     }
 

@@ -17,5 +17,6 @@
     <string name="media_is_outdated">Media is out of date.</string>
     <string name="beginning_media_sync">Beginning media sync...</string>
     <string name="reset">Reset</string>
+    <string name="title_activity_remove_adds">RemoveAddsActivity</string>
 
 </resources>

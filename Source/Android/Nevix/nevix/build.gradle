@@ -22,12 +22,19 @@ android {
         versionName "1.0"
     }
     signingConfigs {
-        rsign {
-            keyAlias 'Nevix'
-            keyPassword 'MeLlOn!@#'
-            storeFile file('C:\\keystores\\nevixKeystore.jks')
+        debug {
+            storeFile file('keystore.jks');
+        }
+
+        release {
+            keyAlias 'nevix'
+            keyPassword 'mellon123'
+            storeFile file('keystore.jks')
             storePassword 'mellon'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
     buildTypes {
         release {
@@ -36,6 +43,7 @@ android {
             runProguard false
             proguardFile 'proguard-rules.txt'
             zipAlign true
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -49,4 +57,6 @@ dependencies {
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/gson-2.2.4-javadoc.jar')
     compile files('libs/gson-2.2.4-sources.jar')
+    compile files('libs/StartAppInAppPlus-2.3.1.jar')
+    compile files('libs/pollfish.jar')
 }

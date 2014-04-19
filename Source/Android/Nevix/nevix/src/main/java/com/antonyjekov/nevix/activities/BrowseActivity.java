@@ -24,14 +24,18 @@ import com.antonyjekov.nevix.common.contracts.OnFileSelected;
 import com.antonyjekov.nevix.viewmodels.MediaFileViewModel;
 import com.antonyjekov.nevix.viewmodels.MediaFolderViewModel;
 import com.google.gson.Gson;
+import com.startapp.android.publish.StartAppAd;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Stack;
 
 public class BrowseActivity extends BaseActivity implements OnFileSelected {
 
+    public static final String BROWSED_FILE_NAME = "com.antonyjekov.nevix.browse.browsedFile.name";
     Button backBtn;
     Button forwardBtn;
+    Random random;
 
     Stack<MediaFolderViewModel> backQueue;
     Stack<MediaFolderViewModel> forwardQueue;
@@ -44,6 +48,7 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     private MediaFolderViewModel rootFolder;
 
     ProgressDialog progressDialog;
+    private StartAppAd startAppAd = new StartAppAd(this);
 
     public static final String BROWSED_FILE = "com.antonyjekov.nevix.browse.browsedFile";
 
@@ -56,12 +61,13 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
         backQueue = new Stack<MediaFolderViewModel>();
         forwardQueue = new Stack<MediaFolderViewModel>();
         super.onCreate(savedInstanceState);
+        StartAppAd.init(this, "104083607", "204814165");
         setContentView(R.layout.activity_browse);
         db = new ContextManager(this);
         String media = db.getMediaDatabase();
         getSupportActionBar().hide();
         rootFolder = loadMedia(media);
-
+        final Context cont = this;
         this.mediaList = (ScrollView) findViewById(R.id.media_list);
         list = (LinearLayout) findViewById(R.id.jekozo);
 
@@ -137,6 +143,8 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
                         .setNegativeButton(android.R.string.no, null).show();
             }
         });
+
+        this.random = new Random();
     }
 
     private void logoff(Context thisContext) {
@@ -176,9 +184,18 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     }
 
     @Override
-    public void onFileSelected(int fileId) {
+    public void onFileSelected(int fileId, String fileName) {
+
+        int randomNumber = this.random.nextInt(101);
+
+        if (randomNumber <= 40) {
+            startAppAd.showAd();
+            startAppAd.loadAd();
+        }
+
         Intent data = new Intent();
         data.putExtra(BROWSED_FILE, fileId);
+        data.putExtra(BROWSED_FILE_NAME, fileName);
         setResult(RESULT_OK, data);
         finish();
     }
@@ -266,7 +283,7 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
 
         if (index >= foldersCount) {
             index -= foldersCount;
-            this.onFileSelected(rootFolder.getFiles().get(index).getId());
+            this.onFileSelected(rootFolder.getFiles().get(index).getId(), rootFolder.getFiles().get(index).getName());
         } else {
             MediaFolderViewModel selectedFolder = rootFolder.getFolders().get(index);
             try {
@@ -278,6 +295,12 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
             openRootFolder();
         }
         updateButtons();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.startAppAd.onResume();
     }
 
     private void showMessage(String message) {

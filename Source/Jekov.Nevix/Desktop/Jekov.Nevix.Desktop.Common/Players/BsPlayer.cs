@@ -45,8 +45,8 @@
             Thread.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.DELETE);
             Thread.Sleep(DELAY_TIME << 4);
-            input.Keyboard.TextEntry(location);
             input.Keyboard.Sleep(DELAY_TIME << 4);
+            input.Keyboard.TextEntry(location);            
             Thread.Sleep(DELAY_TIME << 4);
             input.Keyboard.KeyPress(VirtualKeyCode.RETURN);
         }
@@ -73,16 +73,6 @@
         {
             input.Keyboard.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.VK_X);
-        }
-
-        public override void BringUp()
-        {
-            BringPlayerToFront(PlayerProcess.MainWindowHandle);
-        }
-
-        public override void Exit()
-        {
-            PlayerProcess.Kill();
         }
     }
 }

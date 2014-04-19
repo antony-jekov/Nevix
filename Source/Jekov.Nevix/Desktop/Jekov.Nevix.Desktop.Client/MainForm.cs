@@ -3,6 +3,7 @@
     using Jekov.Nevix.Common.ViewModels;
     using Jekov.Nevix.Desktop.Common;
     using Jekov.Nevix.Desktop.Common.Contracts;
+    using Jekov.Nevix.Desktop.Common.Models;
     using Jekov.Nevix.Desktop.Common.Players;
     using Microsoft.Win32;
     using System;
@@ -48,7 +49,18 @@
             playerEntries = new List<PlayerEntry>();
             playerEntries.Add(new PlayerEntry("System Player", string.Empty));
 
-            UpdatePlayerEntries(regKey, playerEntries);
+            UpdateBsPlayerEntry(regKey, playerEntries);
+
+            regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall", false);
+            if (regKey != null)
+            {
+                UpdateVlcPlayer(regKey, playerEntries);
+            }
+
+            foreach (var item in db.LocalDb.CustomlyAddedPlayers)
+            {
+                playerEntries.Add(item);
+            }
 
             foreach (var playerEntry in playerEntries)
             {
@@ -68,7 +80,22 @@
             playerChangeScheduled = true;
         }
 
-        private void UpdatePlayerEntries(RegistryKey parentKey, ICollection<PlayerEntry> entries)
+        private void UpdateVlcPlayer(RegistryKey regKey, ICollection<PlayerEntry> entries)
+        {
+            string[] names = regKey.GetSubKeyNames();
+            if (names.Contains("VLC media player"))
+            {
+                RegistryKey subKey = regKey.OpenSubKey("VLC media player", false);
+
+                string location = subKey.GetValue("InstallLocation", string.Empty).ToString();
+                if (location != string.Empty)
+                {
+                    entries.Add(new PlayerEntry("VLC Media Player", location + @"\vlc.exe"));
+                }
+            }
+        }
+
+        private void UpdateBsPlayerEntry(RegistryKey parentKey, ICollection<PlayerEntry> entries)
         {
             string[] nameList = parentKey.GetSubKeyNames();
             string[] subNameList;
@@ -91,7 +118,7 @@
                     subKey = subKey.OpenSubKey("bsplayerv1", false);
                     location = subKey.GetValue("AppPath").ToString();
 
-                    entries.Add(new PlayerEntry("BSPlayer Pro", location));
+                    entries.Add(new PlayerEntry("BS Player", location));
                 }
             }
         }
@@ -195,11 +222,20 @@
 
         private void UpdateFileIndexes(MediaFolderViewModel folder)
         {
-            int id = db.LocalDb.Files.Count;
+            int id;
+            if (db.LocalDb.Filesz.Any())
+            {
+                id = db.LocalDb.Filesz.Keys.OrderBy(k => k).Last() + 1;
+            }
+            else
+            {
+                id = 1;
+            }
+
             foreach (var file in folder.Files)
             {
                 file.Id = id;
-                db.LocalDb.Files.Add(id, file.Location);
+                db.LocalDb.Filesz.Add(id, file.Location);
                 id++;
             }
 
@@ -290,23 +326,40 @@
             persister.DeleteFolder(folderName);
 
             db.LocalDb.MediaFolderLocations.Remove(folderName);
-            db.LocalDb.MediaFolders.Remove(db.LocalDb.MediaFolders.FirstOrDefault(f => f.Location == folderName));
+            MediaFolderViewModel folder = db.LocalDb.MediaFolders.FirstOrDefault(f => f.Location == folderName);
+            RemoveFileIndexes(folder);
+            db.LocalDb.MediaFolders.Remove(folder);
+
             db.SaveChanges();
             progressIndicator.Visible = false;
             mediaDirectories.Items.RemoveAt(selectedIndex);
         }
 
+        private void RemoveFileIndexes(MediaFolderViewModel folder)
+        {
+            foreach (var item in folder.Files)
+            {
+                db.LocalDb.Filesz.Remove(item.Id);
+            }
+
+            foreach (var item in folder.Folders)
+            {
+                RemoveFileIndexes(item);
+            }
+        }
+
         private void Add_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            dialog.Description = "Select media folder. All folders inside will be added automatticaly.";
+            dialog.Description = "Select media folder";
             dialog.ShowNewFolderButton = false;
 
             dialog.ShowDialog();
-            if (string.IsNullOrEmpty( dialog.SelectedPath))
+            if (string.IsNullOrEmpty(dialog.SelectedPath))
             {
-                return; 
+                return;
             }
+
             progressIndicator.Visible = true;
             AddFolder(dialog.SelectedPath);
         }
@@ -315,7 +368,7 @@
         {
             if (db.LocalDb.MediaFolders.Any(f => f.Equals(path)))
             {
-                MessageBox.Show("This folder is already included.");
+                MessageBox.Show("This folder is already included");
             }
             else
             {
@@ -338,39 +391,53 @@
             SyncMedia();
         }
 
-        //private void ChangePlayerBtn_Click(object sender, EventArgs e)
-        //{
-        //    string newLocation = string.Empty;
+        private string[] supportedPlayers = { "bsplayer.exe", "vlc.exe" };
 
-        //    OpenFileDialog dialog = new OpenFileDialog();
-        //    dialog.Multiselect = false;
-        //    dialog.Filter = "BSPlayer (bsplayer.exe)|bsplayer.exe";
-        //    dialog.ShowDialog();
-        //    newLocation = dialog.FileName;
-        //    if (!newLocation.EndsWith("bsplayer.exe"))
-        //    {
-        //        MessageBox.Show("The chosen file is not a valid bsplayer.exe file.");
-        //    }
-        //    else
-        //    {
-        //        preferredPlayerLocation = newLocation;
-        //        db.LocalDb.PreferredPlayerLocation = preferredPlayerLocation;
-        //        db.SaveChanges();
-        //    }
-        //}
+        private PlayerEntry GetPlayerFromUser()
+        {
+            PlayerEntry newPlayer = null;
+
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = false;
+            //dialog.Filter = "BSPlayer (bsplayer.exe)|bsplayer.exe";
+            dialog.ShowDialog();
+            string newLocation = dialog.FileName;
+            try
+            {
+                if (newLocation.Length > 0 && !supportedPlayers.Contains(newLocation.Substring(newLocation.LastIndexOf('\\') + 1)))
+                {
+                    MessageBox.Show("The selected file is not a supported media player.\nSee all supported players here http://nevix.antonyjekov.com/supported-players", "Not supported player", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    string name = (newLocation.EndsWith("vlc.exe") ? "VLC Media Player" : "BS Player");
+                    newPlayer = new PlayerEntry(name, newLocation);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("This seems to be an invalid player location.", "Bad player location", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return newPlayer;
+        }
 
         private void Connect()
         {
-            CommandExecutor cmdExec = new CommandExecutor(GetPlayer(), db.LocalDb.Files);
+            CommandExecutor cmdExec = new CommandExecutor(GetPlayer());
             listener = new CommunicationsManager(sessionKey, cmdExec);
         }
 
         private IPlayer GetPlayer()
         {
-            string player = playerEntries.ElementAt(playerSelect.SelectedIndex).Name;
-            if (player == "BSPlayer" || player == "BSPlayer Pro")
+            string player = playerEntries.ElementAt(playerSelect.SelectedIndex).Location;
+            if (player.EndsWith("bsplayer.exe"))
             {
                 return new BsPlayer(preferredPlayerLocation);
+            }
+            else if (player.EndsWith("vlc.exe"))
+            {
+                return new VlcMediaPlayer(preferredPlayerLocation);
             }
 
             return new SystemPlayer();
@@ -408,73 +475,27 @@
             }
         }
 
-        //private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    RegistryKey rk = Registry.CurrentUser.OpenSubKey
-        //    ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        private void addPlayer_Click(object sender, EventArgs e)
+        {
+            PlayerEntry newPlayer = GetPlayerFromUser();
 
-        //    if (startWithWindows.Checked)
-        //        rk.SetValue("Nevix Desktop Client", Application.ExecutablePath.ToString());
-        //    else
-        //        rk.DeleteValue("Nevix Desktop Client", false);
+            if (newPlayer != null)
+            {
+                PlayerEntry possibleDouble = playerEntries.FirstOrDefault(p => p.Name.ToLower().Equals(newPlayer.Name.ToLower()));
+                if (possibleDouble == null)
+                {
+                    playerEntries.Add(newPlayer);
+                    playerSelect.Items.Add(newPlayer.Name);
 
-        //    db.LocalDb.StartWithWindows = startWithWindows.Checked;
-        //    db.SaveChanges();
-        //}
-
-        //private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        //{
-        //    if (!minimized)
-        //    {
-        //        Minimize(e);
-        //    }
-        //}
-
-        //private void Minimize(FormClosingEventArgs e)
-        //{
-        //    if (e != null)
-        //        e.Cancel = true;
-        //    Hide();
-        //    notifyIcon1.Visible = true;
-        //    notifyIcon1.ShowBalloonTip(3000, "Nevix", "Nevix Desktop Client is working in the background.", ToolTipIcon.Info);
-
-        //    minimized = true;
-        //}
-
-
-
-        //private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
-        //{
-        //    Show();
-        //    notifyIcon1.Visible = false;
-        //    minimized = false;
-        //}
-
-        //private void MainForm_FormClosing_1(object sender, FormClosingEventArgs e)
-        //{
-        //    if (!minimized)
-        //    {
-        //        e.Cancel = true;
-        //        Hide();
-        //        notifyIcon1.Visible = true;
-        //        notifyIcon1.ShowBalloonTip(
-        //            3000, "Nevix Desktop Client", "Nevix is working in background mode.", ToolTipIcon.Info);
-        //        minimized = true;
-        //    }
-        //}
-
-        //private void notifyIcon1_MouseDoubleClick_1(object sender, MouseEventArgs e)
-        //{
-        //    minimized = false;
-        //    notifyIcon1.Visible = false;
-        //    Show();
-        //}
-
-        //private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
-        //{
-        //    minimized = false;
-        //    notifyIcon1.Visible = false;
-        //    Show();
-        //}
+                    db.LocalDb.CustomlyAddedPlayers.Add(newPlayer);
+                    db.SaveChanges();    
+                }
+                else
+                {
+                    MessageBox.Show("The selected player is already added under the name '" + possibleDouble.Name + "'", "Player is already added", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                
+            }
+        }
     }
 }
