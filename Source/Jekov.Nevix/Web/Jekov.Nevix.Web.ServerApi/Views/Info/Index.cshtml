@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Info";
+}
+
+@if (ViewData.ContainsKey("confirm-title"))
+{
+    IEnumerable<string> messages = (IEnumerable<string>)ViewData["confirm-message"];
+    string title = ViewData["confirm-title"].ToString();
+    <div class="confirmation">
+        <h2>@title</h2>
+        @foreach (var item in messages)
+        {
+            <p>
+                @item
+            </p>
+        }
+    </div>
+}
+else if (ViewData.ContainsKey("reject-title"))
+{
+    string title = ViewData["reject-title"].ToString();
+    IEnumerable<string> messages = (IEnumerable<string>)ViewData["reject-message"];
+    <div class="rejection">
+        <h3>
+            @title
+        </h3>
+        @foreach (var item in messages)
+        {
+            <p>
+                @item
+            </p>
+        }
+
+    </div>
+}
+
