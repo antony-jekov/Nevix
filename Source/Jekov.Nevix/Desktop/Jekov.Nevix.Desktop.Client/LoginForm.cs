@@ -142,6 +142,13 @@ namespace Jekov.Nevix.Desktop.Client
                 progressIndicator.Visible = false;
                 return;
             }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                progressIndicator.Visible = false;
+                ToggleControlsEnabled(true);
+                return;
+            }
 
             progressIndicator.Visible = false;
             db.LocalDb.SessionKey = sessionKey;
@@ -163,7 +170,7 @@ namespace Jekov.Nevix.Desktop.Client
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("There is already an user with that email.", "Registration Error");
+                MessageBox.Show("There is already an user with that email.", "Registration Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 ToggleControlsEnabled(true);
                 progressIndicator.Visible = false;
                 return;
@@ -182,7 +189,7 @@ namespace Jekov.Nevix.Desktop.Client
             db.LocalDb.Remember = remember.Checked;
             db.SaveChanges();
 
-            MessageBox.Show("Account {0} was created successfully!\n\nPlease check your email in order to activate your account.\nIf you cannot see the activation email, please check your 'Spam' folder.\nFeel free to contact nevix@antonyjekov.com if you encounter any problems regarding the activation of your account or any other issues that you might encounter.", "Account Created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(string.Format("Account '{0}' was created successfully!\n\nPlease check your email inbox and follow the confirmation link we sent you.", email), "Account Created", MessageBoxButtons.OK, MessageBoxIcon.Information);
             ToggleControlsEnabled(true);
         }
 
@@ -192,7 +199,8 @@ namespace Jekov.Nevix.Desktop.Client
 
             if (string.IsNullOrEmpty(sessionKey))
             {
-                MessageBox.Show("There was an error trying to open your session.\nIf the problem appears again please free to contact the administrator at nevix@antonyjekov.com\nWe appologize for any inconvinience that this might have cost you!");
+                MessageBox.Show("There was an error trying to open your session.\n\nIf the problem appears again please contact us at support@nevix-remote.com\nWe appologize for any inconvinience that this might have cost you!");
+                return;
             }
 
             var frm = Program.MainForm(email, sessionKey);

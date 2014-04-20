@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NeviX Remote Control</string>
+    <string name="title_activity_main">Nevix Remote</string>
+    <string name="auth_email">email:</string>
+    <string name="auth_pass">pass:</string>
+    <string name="auth_login_btn">Вход</string>
+    <string name="title_activity_authenticate">Вход</string>
+    <string name="log_off">Изход</string>
+    <string name="Sync">Sync</string>
+    <string name="sync_message">Обновяване...</string>
+    <string name="media_is_outdated">Медията не е актуална...</string>
+    <string name="beginning_media_sync">Започване на обновление...</string>
+    <string name="reset">Промени</string>
+    <string name="wrong_user_pass">Грешни потребител или парола!</string>
+    <string name="connecting_server">Връзка към сървъра</string>
+    <string name="syncing">Обновление на медията...</string>
+    <string name="could_not_last_update">Не можах да намеря последната дата на обновяване.</string>
+    <string name="loggoff">Изход</string>
+    <string name="realy_quit_message">Наистина ли искаш да излезеш?</string>
+    <string name="media_sing_fail">Обновяването се провали!</string>
+    <string name="opening_message">Отварям: </string>
+    <string name="no_internet">Няма връзка с интернет…</string>
+    <string name="login_fail">Входът се провали</string>
+    <string name="login_fail_message">Потребителят или паролата не съвпадат. Желаете ли да сверите паролата, която сте въвели? ВНИМАНИЕ: Тя ще бъде видима!</string>
+    <string name="yes">Да</string>
+    <string name="provided_password">Въведената от вас парола</string>
+    <string name="no">Не</string>
+    <string name="logging_in">Влизане</string>
+    <string name="connecting_wait">Свързвам се със сървъра, моля изчакайте…</string>
+    <string name="fill_all_fields">Моля попълнете всички полета!</string>
+    <string name="reset_pass_title">Промяна на парола</string>
+    <string name="reset_pass_message">Наистина ли желаете да промените паролата си?</string>
+    <string name="reset_pass_completed_title">Промяната изпратена</string>
+    <string name="reset_pass_completed_message">Вашето запитване за промяна беше прието. Моля проверете пощата с която сте се регистрирали и последвайте линка за промяна на вашата парола.</string>
+    <string name="reset_pass_failed_message">Вашето запитване не беше успешно получено.</string>
+    <string name="provide_registration_email">Моля въведете email адреса, с който сте регистрирни.</string>
+    <string name="back_btn">Назад</string>
+    <string name="forward_btn">Напред</string>
+    <string name="logg_off_btn">Изход</string>
+    <string name="sync_btn">Обнови</string>
+
+</resources>

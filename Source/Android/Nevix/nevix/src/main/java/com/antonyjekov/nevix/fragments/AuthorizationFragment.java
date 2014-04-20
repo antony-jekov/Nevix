@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.activities.BaseActivity;
 import com.antonyjekov.nevix.common.HttpAsyncRequest;
-import com.antonyjekov.nevix.common.PersistentManager;
+import com.antonyjekov.nevix.common.PersisterManager;
 import com.antonyjekov.nevix.common.contracts.FailCallback;
 
 public class AuthorizationFragment extends Fragment implements FailCallback {
@@ -30,22 +30,22 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
     public void onFail() {
         progress.hide();
         if (!checkInternetConnection()) {
-            warnUser("No internet connection...");
+            warnUser(getResources().getString(R.string.no_internet));
         } else {
             new AlertDialog.Builder(getActivity())
-                    .setTitle("Login failed")
-                    .setMessage("The email or password do not match. Do you want to review the password you provided?\nWARRNING: It will be visible!")
+                    .setTitle(getResources().getString(R.string.login_fail))
+                    .setMessage(getResources().getString(R.string.login_fail_message))
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             new AlertDialog.Builder(getActivity())
-                                    .setTitle("The password you provided")
+                                    .setTitle(getResources().getString(R.string.provided_password))
                                     .setMessage("'" + pass.getText().toString() + "'")
                                     .show();
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -71,10 +71,10 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
         final View loginView = inflater.inflate(R.layout.fragment_authenticate, container, false);
 
         progress = new ProgressDialog(getActivity());
-        progress.setTitle("Logging in");
-        progress.setMessage("Connecting to server, please wait...");
+        progress.setTitle(getResources().getString(R.string.logging_in));
+        progress.setMessage(getResources().getString(R.string.connecting_wait));
 
-        final PersistentManager persistent = new PersistentManager();
+        final PersisterManager persistent = new PersisterManager();
         persistent.wakeUpInternet();
 
         email = (EditText) loginView.findViewById(R.id.auth_email);
@@ -91,7 +91,7 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
                     persistent.login(emailText, passwordText, callBack, error);
                     progress.show();
                 } else {
-                    warnUser("Please fill in all fields!");
+                    warnUser(getResources().getString(R.string.fill_all_fields));
                 }
             }
         });
@@ -104,8 +104,8 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
 
                 if (emailText != null && emailText.length() > 0) {
                     new AlertDialog.Builder(getActivity())
-                            .setTitle("Reset password")
-                            .setMessage("Do you really want to reset your password?")
+                            .setTitle(getResources().getString(R.string.reset_pass_title))
+                            .setMessage(getResources().getString(R.string.reset_pass_message))
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -114,8 +114,8 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
                                                 @Override
                                                 public void onResult(String result) {
                                                     new AlertDialog.Builder(getActivity())
-                                                            .setTitle("Reset completed")
-                                                            .setMessage("Your reset request was submitted. Please check your inbox and follow the reset password link from there.")
+                                                            .setTitle(getResources().getString(R.string.reset_pass_completed_title))
+                                                            .setMessage(getResources().getString(R.string.reset_pass_completed_message))
                                                             .setIcon(android.R.drawable.ic_dialog_info)
                                                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                                 @Override
@@ -129,7 +129,7 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
                                             new FailCallback() {
                                                 @Override
                                                 public void onFail() {
-                                                    warnUser("Your request could not be granted. Please check your internet connection.");
+                                                    warnUser(getResources().getString(R.string.reset_pass_failed_message));
                                                 }
                                             }
                                     );
@@ -137,7 +137,7 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
                             })
                             .setNegativeButton(android.R.string.no, null).show();
                 } else {
-                    warnUser("Please provide the email you registered with.");
+                    warnUser(getResources().getString(R.string.provide_registration_email));
                 }
             }
         });

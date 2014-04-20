@@ -76,14 +76,14 @@
         {
             string message = String.Format(
 @"{0}
-<h3>Welcome to the NeviX family!</h3>
-<p>We are excited to have you and we will make our best to offer you a problem free service.</p>
-<p>Please take the time to visit this address in order to activate your account and to start using our services: <br /><b>{1}</b><br />
+<h3>Welcome to NeviX!</h3>
+<p>We are excited to have you and will be happy to be of your service.</p>
+<p>Please take the time to visit this address in order to confirm your email address and to start using our services: <br /><b>{1}</b><br />
 Security matters to us, so we need to verify that this email address is real and that it belongs to you.</p>
 <p>Thank you for your time and happy media browsing!</p>
 {2}",
     String.Format(GreetEmail, emailTo.Substring(0, emailTo.IndexOf("@"))),
-    String.Format("http://nevix.antonyjekov.com/users/confirm/{0}", secretKey),
+    String.Format("http://nevix-remote.com/users/confirm/{0}", secretKey),
     SignEmail);
 
             SendEmail(emailTo, "Activate Your Account", message);
@@ -95,7 +95,9 @@ Security matters to us, so we need to verify that this email address is real and
         //    string r = "lainaci";
         //    try
         //    {
-        //        SendForgottenEmail("antony.jekov@gmail.com", "batman");
+        //        //SendForgottenEmail("antony.jekov@gmail.com", "batman");
+        //        int users = Data.Users.All().Count();
+        //        r = users.ToString();
         //    }
         //    catch (Exception ex)
         //    {
@@ -173,9 +175,10 @@ Security matters to us, so we need to verify that this email address is real and
 @"{0}
 <p>You have requested your password to be changed.</p>
 <p>Please follow this link to proceed with the change: <b>{1}</b></p>
+<p>If you are not the person issued the change request, please ignore that message or contact an administrator at support@nevix-remote.com to report this problem.</p>
 {2}",
     String.Format(GreetEmail, emailTo.Substring(0, emailTo.IndexOf("@"))),
-    String.Format("http://nevix.antonyjekov.com/users/resetpass/{0}", secretKey),
+    String.Format("http://nevix-remote.com/users/resetpass/{0}", secretKey),
     SignEmail
     );
 
@@ -185,16 +188,16 @@ Security matters to us, so we need to verify that this email address is real and
         private void SendEmail(string emailTo, string title, string msg)
         {
             MailMessage message = new MailMessage();
-            message.From = new MailAddress("nevix@antonyjekov.com", "NeviX Remote Control");
+            message.From = new MailAddress("noreply@nevix-remote.com", "NeviX Remote Control");
             message.To.Add(new MailAddress(emailTo, "NeviX User"));
             message.Subject = title;
             message.IsBodyHtml = true;
             message.Body = msg;
 
             SmtpClient client = new SmtpClient();
-            client.Host = "antonyjekov.com";
+            client.Host = "nevix-remote.com";
             client.Port = 25;
-            client.Credentials = new System.Net.NetworkCredential("nevix@antonyjekov.com", "MeLlOn!@#");
+            client.Credentials = new System.Net.NetworkCredential("noreply@nevix-remote.com", "MeLlOn!@#");
 
             client.Send(message);
         }

@@ -1,26 +1,25 @@
 ﻿
 @{
-    ViewBag.Title = "Confirm";
+    ViewBag.Title = "Confirm account";
 }
-
-<h2>Confirm email address</h2>
-
-<h1>@ViewBag.ex</h1>
 
 @if (ViewBag.confirmed == true)
 {
-    <h1>
+    <h1 class="confirmation">
         Congrats! Your account is now activated and you can log in and start using our services!
     </h1>
 }
 else
 {
-    <h2>
-        Bad activation link...
-    </h2>
-    <p>
-        Please make sure you made yourregistration using the NeviX Desktop Client and that you followed the link in your activation email. The link provided seems to be invalid.
-    </p>
-    <p>Please feel free to contact the administrator at nevix@@antonyjekov.com if you have any issues with the process of registering and activating your account.</p>
+    <div class="rejection">
+        <h2>
+            Bad activation link...
+        </h2>
+        <p>
+            If you wish to change your password you need to make a reset password request using either the Android app or the desktop application and then follow the provided reset link that is to be sent to your email address.
+        </p>
+        <p>
+            If you happen to have issues with that process please feel free to contact us at <a href="mailto:support@nevix-remote.com">support@@nevix-remote.com</a></p>
+    </div>    
 }
 

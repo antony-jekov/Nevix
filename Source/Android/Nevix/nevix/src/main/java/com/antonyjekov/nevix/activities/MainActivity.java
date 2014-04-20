@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
                 String name = data.getStringExtra(BrowseActivity.BROWSED_FILE_NAME);
                 if (requestedFile != 0) {
                     pusher.pushCommand("open" + requestedFile);
-                    printMessage("Opening: " + name);
+                    printMessage(getResources().getString(R.string.opening_message) + name);
                 }
             }
         }

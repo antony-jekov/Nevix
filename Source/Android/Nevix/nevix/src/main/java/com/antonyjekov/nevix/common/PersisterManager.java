@@ -9,17 +9,17 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 
-public class PersistentManager {
+public class PersisterManager {
     private String sessionKey;
     //private final String ROOT_ADDRESS = "http://nevix.apphb.com/api/";
-    private final String ROOT_ADDRESS = "http://nevix.antonyjekov.com/api/";
+    private final String ROOT_ADDRESS = "http://nevix-remote.com/api/";
     public static final String SESSION_KEY_HEADER = "X-SessionKey";
 
-    public PersistentManager() {
+    public PersisterManager() {
         this(ContextManager.EMPTY_SESSION_KEY);
     }
 
-    public PersistentManager(String sessionKey) {
+    public PersisterManager(String sessionKey) {
         this.sessionKey = sessionKey;
     }
 
@@ -80,6 +80,7 @@ public class PersistentManager {
         for (byte b : hash) {
             formatter.format("%02x", b);
         }
+
         String result = formatter.toString();
         formatter.close();
 

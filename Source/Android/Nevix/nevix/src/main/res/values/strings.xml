@@ -18,5 +18,32 @@
     <string name="beginning_media_sync">Beginning media sync...</string>
     <string name="reset">Reset</string>
     <string name="title_activity_remove_adds">RemoveAddsActivity</string>
+    <string name="wrong_user_pass">Wrong username or password!</string>
+    <string name="connecting_server">Connecting to server</string>
+    <string name="syncing">Syncing media database...</string>
+    <string name="could_not_last_update">Could not retrieve last media update.</string>
+    <string name="loggoff">Log off</string>
+    <string name="realy_quit_message">Do you really want to log off?</string>
+    <string name="media_sing_fail">Media sync failed!</string>
+    <string name="opening_message">Opening:</string>
+    <string name="no_internet">No internet connection...</string>
+    <string name="login_fail">Login failed</string>
+    <string name="login_fail_message">The email or password do not match. Do you want to review the password you provided? WARRNING: It will be visible!</string>
+    <string name="yes">Yes</string>
+    <string name="provided_password">The password you provided</string>
+    <string name="no">No</string>
+    <string name="logging_in">Logging in</string>
+    <string name="connecting_wait">Connecting to server, please wait...</string>
+    <string name="fill_all_fields">Please fill in all fields!</string>
+    <string name="reset_pass_title">Reset password</string>
+    <string name="reset_pass_message">Do you really want to reset your password?</string>
+    <string name="reset_pass_completed_title">Reset completed</string>
+    <string name="reset_pass_completed_message">Your reset request was submitted. Please check your inbox and follow the reset password link from there.</string>
+    <string name="reset_pass_failed_message">Your request could not be granted. Please check your internet connection.</string>
+    <string name="provide_registration_email">Please provide the email you registered with.</string>
+    <string name="back_btn">Back</string>
+    <string name="forward_btn">Forward</string>
+    <string name="logg_off_btn">Log Off</string>
+    <string name="sync_btn">Sync</string>
 
 </resources>

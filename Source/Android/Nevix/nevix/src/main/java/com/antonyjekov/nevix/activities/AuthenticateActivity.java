@@ -8,12 +8,12 @@ import android.widget.Toast;
 import com.antonyjekov.nevix.R;
 import com.antonyjekov.nevix.common.ContextManager;
 import com.antonyjekov.nevix.common.HttpAsyncRequest;
-import com.antonyjekov.nevix.common.PersistentManager;
+import com.antonyjekov.nevix.common.PersisterManager;
 import com.antonyjekov.nevix.fragments.AuthorizationFragment;
 
 public class AuthenticateActivity extends BaseActivity {
 
-    private PersistentManager persistant;
+    private PersisterManager persistant;
     public static final String SESSION_KEY_EXTRA = "com.antonyjekov.nevix.auth.sessionKey";
     private ContextManager data;
     private String sessionKey;
@@ -28,14 +28,14 @@ public class AuthenticateActivity extends BaseActivity {
         data = new ContextManager(this);
 
         if (savedInstanceState == null) {
-            this.persistant = new PersistentManager();
+            this.persistant = new PersisterManager();
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container_auth, new AuthorizationFragment(new HttpAsyncRequest.OnResultCallBack() {
                         @Override
                         public void onResult(String result) {
                             if (!validateSessionKey(result)) {
-                                warnUser("Wrong username or password!");
+                                warnUser(getResources().getString(R.string.wrong_user_pass));
                                 return;
                             }
 

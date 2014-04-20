@@ -18,7 +18,7 @@ import com.antonyjekov.nevix.common.ContextManager;
 import com.antonyjekov.nevix.common.FolderAdapter;
 import com.antonyjekov.nevix.common.HttpAsyncRequest;
 import com.antonyjekov.nevix.common.MediaItem;
-import com.antonyjekov.nevix.common.PersistentManager;
+import com.antonyjekov.nevix.common.PersisterManager;
 import com.antonyjekov.nevix.common.contracts.FailCallback;
 import com.antonyjekov.nevix.common.contracts.OnFileSelected;
 import com.antonyjekov.nevix.viewmodels.MediaFileViewModel;
@@ -43,7 +43,7 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     private LinearLayout list;
     private String lastServerUpdate;
     private ContextManager db;
-    private PersistentManager persistentManager;
+    private PersisterManager persisterManager;
     private ScrollView mediaList;
     private MediaFolderViewModel rootFolder;
 
@@ -55,8 +55,8 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Connecting to server");
-        progressDialog.setMessage("Syncing media database...");
+        progressDialog.setTitle(getResources().getString(R.string.connecting_server));
+        progressDialog.setMessage(getResources().getString(R.string.syncing));
 
         backQueue = new Stack<MediaFolderViewModel>();
         forwardQueue = new Stack<MediaFolderViewModel>();
@@ -72,12 +72,12 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
         list = (LinearLayout) findViewById(R.id.jekozo);
 
         String sessionKey = db.getSessionKey();
-        persistentManager = new PersistentManager(sessionKey);
+        persisterManager = new PersisterManager(sessionKey);
 
         openRootFolder();
 
         final String lastLocalUpdate = db.getLastDatabaseUpdate();
-        persistentManager.getLastMediaUpdateTime(new HttpAsyncRequest.OnResultCallBack() {
+        persisterManager.getLastMediaUpdateTime(new HttpAsyncRequest.OnResultCallBack() {
             @Override
             public void onResult(String result) {
                 lastServerUpdate = result;
@@ -88,7 +88,7 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
         }, new FailCallback() {
             @Override
             public void onFail() {
-                showMessage("Could not retrieve last media update.");
+                showMessage(getResources().getString(R.string.could_not_last_update));
             }
         });
 
@@ -131,8 +131,8 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(thisContext)
-                        .setTitle("Log off")
-                        .setMessage("Do you really want to log off?")
+                        .setTitle(getResources().getString(R.string.loggoff))
+                        .setMessage(getResources().getString(R.string.realy_quit_message))
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -161,7 +161,7 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
 
     private void beginMediaSync() {
         progressDialog.show();
-        persistentManager.getMedia(new HttpAsyncRequest.OnResultCallBack() {
+        persisterManager.getMedia(new HttpAsyncRequest.OnResultCallBack() {
             @Override
             public void onResult(String result) {
                 progressDialog.hide();
@@ -178,7 +178,7 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
             @Override
             public void onFail() {
                 progressDialog.hide();
-                showMessage("Media sync failed!");
+                showMessage(getResources().getString(R.string.media_sing_fail));
             }
         });
     }

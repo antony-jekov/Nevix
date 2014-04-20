@@ -19,13 +19,13 @@
             android:id="@+id/back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Back" />
+            android:text="@string/back_btn" />
 
         <Button
             android:id="@+id/forward_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Forward"
+            android:text="@string/forward_btn"
             android:layout_toRightOf="@id/back_btn" />
 
         <Button
@@ -33,14 +33,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Log Off" />
+            android:text="@string/logg_off_btn" />
 
         <Button
             android:id="@+id/sync_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/logoff_btn"
-            android:text="Sync" />
+            android:text="@string/sync_btn" />
 
     </RelativeLayout>
 

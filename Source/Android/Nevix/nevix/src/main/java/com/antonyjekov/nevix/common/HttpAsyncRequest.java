@@ -54,7 +54,7 @@ public class HttpAsyncRequest extends AsyncTask<Void, Void, String> {
 
             //properties of SOAPAction header
             httpCon.addRequestProperty("Content-Type", "application/json; charset=utf-8");
-            httpCon.addRequestProperty(PersistentManager.SESSION_KEY_HEADER, "" + sessionKey);
+            httpCon.addRequestProperty(PersisterManager.SESSION_KEY_HEADER, "" + sessionKey);
 
             if (requestType != HttpRequestType.GET) {
                 httpCon.setDoOutput(true);

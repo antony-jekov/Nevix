@@ -1,6 +1,9 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #333;
+    color: #ddd;
+    font-family: 'Segoe UI';
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -39,4 +42,30 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-valid {
     display: none;
+}
+
+.jumbotron {
+    margin-top: 30px;
+    color: #333;
+}
+
+.main-jumbotron {
+    background: #eee url(Assets/SiteLogos.png) no-repeat right top;
+}
+
+footer {
+    text-align:center;
+    margin-top: 60px;
+    background-color: #222;
+    padding: 45px 0;
+}
+
+.confirmation {
+    background-color: #45b722;
+    padding: 20px;
+}
+
+.rejection {
+    background-color: #b72222;
+    padding: 20px;
 }
