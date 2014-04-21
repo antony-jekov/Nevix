@@ -69,19 +69,16 @@
             PlayerLocation = playerLocation;
             PlayerProcessName = playerProcessName;
         }
-
+        private const int DELAY_TIME = 50;
         public override void OpenFile(string location)
         {
-            if (!string.IsNullOrEmpty(PlayerLocation))
-            {
-                if(!PlayerProcess.HasExited)
-                    PlayerProcess.Kill();
-                PlayerProcess = Process.Start(PlayerLocation, location);
-            }
-            else
-            {
-                base.OpenFile(location);
-            }
+            Thread.Sleep(DELAY_TIME);
+            input.Keyboard.KeyPress(VirtualKeyCode.DELETE);
+            Thread.Sleep(DELAY_TIME << 4);
+            input.Keyboard.Sleep(DELAY_TIME << 4);
+            input.Keyboard.TextEntry(location);
+            Thread.Sleep(DELAY_TIME << 4);
+            input.Keyboard.KeyPress(VirtualKeyCode.RETURN);
         }
     }
 }

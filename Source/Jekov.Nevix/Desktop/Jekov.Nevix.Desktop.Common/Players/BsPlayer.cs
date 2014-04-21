@@ -42,13 +42,7 @@
         {
             Thread.Sleep(DELAY_TIME);
             input.Keyboard.KeyPress(VirtualKeyCode.VK_L);
-            Thread.Sleep(DELAY_TIME);
-            input.Keyboard.KeyPress(VirtualKeyCode.DELETE);
-            Thread.Sleep(DELAY_TIME << 4);
-            input.Keyboard.Sleep(DELAY_TIME << 4);
-            input.Keyboard.TextEntry(location);            
-            Thread.Sleep(DELAY_TIME << 4);
-            input.Keyboard.KeyPress(VirtualKeyCode.RETURN);
+            base.OpenFile(location);
         }
 
         public override void VolumeUp()

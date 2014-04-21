@@ -19,10 +19,7 @@ namespace Jekov.Nevix.Desktop.Common.Players
         public override void OpenFile(string location)
         {
             input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_O);
-            Thread.Sleep(1000);
-            input.Keyboard.TextEntry(location);
-            Thread.Sleep(1000);
-            input.Keyboard.KeyPress(VirtualKeyCode.RETURN);
+            base.OpenFile(location);
         }
         public override void FullScreen()
         {

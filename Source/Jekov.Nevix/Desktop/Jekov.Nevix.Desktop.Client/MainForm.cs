@@ -45,16 +45,26 @@
             //});
             playerChangeScheduled = false;
             email.Text = this.userEmail;
-            RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"Software", false);
+            RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"Software\BST", false);
             playerEntries = new List<PlayerEntry>();
             playerEntries.Add(new PlayerEntry("System Player", string.Empty));
 
-            UpdateBsPlayerEntry(regKey, playerEntries);
+            if (regKey != null)
+            {
+                UpdateBsPlayerEntry(regKey, playerEntries);
+            }
 
-            regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall", false);
+            regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE", false);
             if (regKey != null)
             {
                 UpdateVlcPlayer(regKey, playerEntries);
+            }
+
+            regKey = Registry.CurrentUser.OpenSubKey(@"Software\GRETECH");
+
+            if (regKey != null)
+            {
+                UpdateGomPlayer(regKey, playerEntries);
             }
 
             foreach (var item in db.LocalDb.CustomlyAddedPlayers)
@@ -80,47 +90,107 @@
             playerChangeScheduled = true;
         }
 
+        public string GetPlayerLocationFromRegistry(string desiredKey, string desiredValue, RegistryKey regKey)
+        {
+            if (regKey.Name.EndsWith(desiredKey))
+            {
+                string[] values = regKey.GetValueNames();
+                if (values.Contains(desiredValue))
+                {
+                    return regKey.GetValue(desiredValue).ToString();
+                }
+            }
+
+            string[] innerKeys = regKey.GetSubKeyNames();
+            foreach (var item in innerKeys)
+            {
+                string path = GetPlayerLocationFromRegistry(desiredKey, desiredValue, regKey.OpenSubKey(item, false));
+                if (!string.IsNullOrEmpty(path))
+                {
+                    return path;
+                }
+            }
+
+            return string.Empty;
+        }
+
         private void UpdateVlcPlayer(RegistryKey regKey, ICollection<PlayerEntry> entries)
         {
-            string[] names = regKey.GetSubKeyNames();
-            if (names.Contains("VLC media player"))
+            RegistryKey regKeySupreme = regKey;
+            string[] innerKeys = regKey.GetSubKeyNames();
+            string key = innerKeys.FirstOrDefault(k => k.ToLower().StartsWith("wow"));
+            if (!string.IsNullOrEmpty(key))
             {
-                RegistryKey subKey = regKey.OpenSubKey("VLC media player", false);
+                regKeySupreme = regKey.OpenSubKey(key + @"\Microsoft\Windows\CurrentVersion\Uninstall", false);
+            }
+            else
+            {
+                regKeySupreme = regKey.OpenSubKey(@"Microsoft\Windows\CurrentVersion\Uninstall", false);
+            }
 
-                string location = subKey.GetValue("InstallLocation", string.Empty).ToString();
-                if (location != string.Empty)
-                {
-                    entries.Add(new PlayerEntry("VLC Media Player", location + @"\vlc.exe"));
-                }
+            string path = GetPlayerLocationFromRegistry("VLC media player", "InstallLocation", regKeySupreme);
+            if (!string.IsNullOrEmpty(path))
+            {
+                entries.Add(new PlayerEntry("VLC Media Player", path + @"\vlc.exe"));
+            }
+            //string[] names = regKey.GetSubKeyNames();
+            //if (names.Contains("VLC media player"))
+            //{
+            //    RegistryKey subKey = regKey.OpenSubKey("VLC media player", false);
+
+            //    string location = subKey.GetValue("InstallLocation", string.Empty).ToString();
+            //    if (location != string.Empty)
+            //    {
+            //        entries.Add(new PlayerEntry("VLC Media Player", location + @"\vlc.exe"));
+            //    }
+            //}
+        }
+
+        private void UpdateGomPlayer(RegistryKey regKey, ICollection<PlayerEntry> entries)
+        {
+            string path = GetPlayerLocationFromRegistry("GomPlayer", "ProgramPath", regKey);
+            //string location = regKey.GetValue("ProgramPath", string.Empty).ToString();
+            if (path != string.Empty)
+            {
+                entries.Add(new PlayerEntry("GOM Media Player", path));
             }
         }
 
         private void UpdateBsPlayerEntry(RegistryKey parentKey, ICollection<PlayerEntry> entries)
         {
-            string[] nameList = parentKey.GetSubKeyNames();
-            string[] subNameList;
-            RegistryKey subKey;
-            string location;
-            if (nameList.Contains("BST"))
+            string bsPlayerLocation = GetPlayerLocationFromRegistry("bsplayerv1", "AppPath", parentKey);
+            if (string.IsNullOrEmpty(bsPlayerLocation))
             {
-                subKey = parentKey.OpenSubKey("BST", false);
-                subNameList = subKey.GetSubKeyNames();
-                if (subNameList.Contains("bsplayer"))
-                {
-                    subKey = subKey.OpenSubKey("bsplayer", false);
-                    location = subKey.GetValue("AppPath").ToString();
-
-                    entries.Add(new PlayerEntry("BSPlayer", location));
-                }
-                if (subNameList.Contains("bsplayerv1"))
-                {
-                    subKey = parentKey.OpenSubKey("BST", false);
-                    subKey = subKey.OpenSubKey("bsplayerv1", false);
-                    location = subKey.GetValue("AppPath").ToString();
-
-                    entries.Add(new PlayerEntry("BS Player", location));
-                }
+                bsPlayerLocation = GetPlayerLocationFromRegistry("bsplayer", "AppPath", parentKey);
             }
+            if (!string.IsNullOrEmpty(bsPlayerLocation))
+            {
+                playerEntries.Add(new PlayerEntry("BS Player", bsPlayerLocation));
+            }
+            //string[] nameList = parentKey.GetSubKeyNames();
+            //string[] subNameList;
+            //RegistryKey subKey;
+            //string location;
+            //if (nameList.Contains("BST"))
+            //{
+            //    subKey = parentKey.OpenSubKey("BST", false);
+            //    subNameList = subKey.GetSubKeyNames();
+            //    if (subNameList.Contains("bsplayer"))
+            //    {
+            //        subKey = subKey.OpenSubKey("bsplayer", false);
+            //        location = subKey.GetValue("AppPath").ToString();
+
+            //        entries.Add(new PlayerEntry("BSPlayer", location));
+            //    }
+            //    if (subNameList.Contains("bsplayerv1"))
+            //    {
+            //        subKey = parentKey.OpenSubKey("BST", false);
+            //        subKey = subKey.OpenSubKey("bsplayerv1", false);
+            //        location = subKey.GetValue("AppPath").ToString();
+
+            //        entries.Add(new PlayerEntry("BS Player", location));
+            //    }
+            //}
         }
 
         private void UpdatePlayerComboBox()
@@ -391,7 +461,7 @@
             SyncMedia();
         }
 
-        private string[] supportedPlayers = { "bsplayer.exe", "vlc.exe" };
+        private string[] supportedPlayers = { "bsplayer.exe", "vlc.exe", "gom.exe" };
 
         private PlayerEntry GetPlayerFromUser()
         {
@@ -401,16 +471,16 @@
             dialog.Multiselect = false;
             //dialog.Filter = "BSPlayer (bsplayer.exe)|bsplayer.exe";
             dialog.ShowDialog();
-            string newLocation = dialog.FileName;
+            string newLocation = dialog.FileName.ToLower();
             try
             {
                 if (newLocation.Length > 0 && !supportedPlayers.Contains(newLocation.Substring(newLocation.LastIndexOf('\\') + 1)))
                 {
-                    MessageBox.Show("The selected file is not a supported media player.\nSee all supported players here http://nevix.antonyjekov.com/supported-players", "Not supported player", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("The selected file is not a supported media player.\nSee all supported players at http://nevix-remote.com/info/features", "Not supported player", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    string name = (newLocation.EndsWith("vlc.exe") ? "VLC Media Player" : "BS Player");
+                    string name = (newLocation.EndsWith("vlc.exe") ? "VLC Media Player" : newLocation.EndsWith("gom.exe") ? "GOM Media Player" : "BS Player");
                     newPlayer = new PlayerEntry(name, newLocation);
                 }
             }
@@ -430,7 +500,7 @@
 
         private IPlayer GetPlayer()
         {
-            string player = playerEntries.ElementAt(playerSelect.SelectedIndex).Location;
+            string player = playerEntries.ElementAt(playerSelect.SelectedIndex).Location.ToLower();
             if (player.EndsWith("bsplayer.exe"))
             {
                 return new BsPlayer(preferredPlayerLocation);
@@ -438,6 +508,10 @@
             else if (player.EndsWith("vlc.exe"))
             {
                 return new VlcMediaPlayer(preferredPlayerLocation);
+            }
+            else if (player.EndsWith("gom.exe"))
+            {
+                return new GomPlayer(preferredPlayerLocation);
             }
 
             return new SystemPlayer();
@@ -488,13 +562,13 @@
                     playerSelect.Items.Add(newPlayer.Name);
 
                     db.LocalDb.CustomlyAddedPlayers.Add(newPlayer);
-                    db.SaveChanges();    
+                    db.SaveChanges();
                 }
                 else
                 {
                     MessageBox.Show("The selected player is already added under the name '" + possibleDouble.Name + "'", "Player is already added", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
-                
+
             }
         }
     }

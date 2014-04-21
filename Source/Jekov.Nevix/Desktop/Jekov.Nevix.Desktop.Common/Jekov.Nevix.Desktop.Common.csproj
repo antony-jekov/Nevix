@@ -64,6 +64,7 @@
     <Compile Include="Models\UserConfigurationsModel.cs" />
     <Compile Include="PersisterManager.cs" />
     <Compile Include="Players\BsPlayer.cs" />
+    <Compile Include="Players\GomPlayer.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Players\SystemPlayer.cs" />
     <Compile Include="Players\VlcMediaPlayer.cs" />
