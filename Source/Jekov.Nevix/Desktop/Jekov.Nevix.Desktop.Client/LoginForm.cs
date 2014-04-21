@@ -189,7 +189,7 @@ namespace Jekov.Nevix.Desktop.Client
             db.LocalDb.Remember = remember.Checked;
             db.SaveChanges();
 
-            MessageBox.Show(string.Format("Account '{0}' was created successfully!\n\nPlease check your email inbox and follow the confirmation link we sent you.", email), "Account Created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(string.Format("Account '{0}' was created successfully!\n\nPlease check your email inbox and follow the confirmation link we sent you.\n\nIf you cannot see the email prease check your 'Spam' folder.", email), "Account Created", MessageBoxButtons.OK, MessageBoxIcon.Information);
             ToggleControlsEnabled(true);
         }
 

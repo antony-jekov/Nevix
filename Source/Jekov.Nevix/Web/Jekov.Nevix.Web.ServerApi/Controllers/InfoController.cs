@@ -8,8 +8,13 @@ namespace Jekov.Nevix.Web.ServerApi.Controllers
 {
     public class InfoController : Controller
     {
-        //[OutputCache(CacheProfile = "Cache1Hour")]
+        [OutputCache(Duration = 3600, VaryByParam = "none")]
         public ActionResult GettingStarted()
+        {
+            return View();
+        }
+
+        public ActionResult Features()
         {
             return View();
         }

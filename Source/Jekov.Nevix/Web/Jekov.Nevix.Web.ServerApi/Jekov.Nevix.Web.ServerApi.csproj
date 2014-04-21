@@ -185,6 +185,7 @@
     <Content Include="Scripts\jquery-2.1.0.min.map" />
     <Content Include="Views\Info\GettingStarted.cshtml" />
     <Content Include="Views\Info\Index.cshtml" />
+    <Content Include="Views\Info\Features.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Jekov.Nevix.Common.Data\Jekov.Nevix.Common.Data.csproj">

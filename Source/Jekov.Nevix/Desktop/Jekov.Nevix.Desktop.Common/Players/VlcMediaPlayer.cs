@@ -46,7 +46,7 @@ namespace Jekov.Nevix.Desktop.Common.Players
 
         public override void FastForward()
         {
-            input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.LSHIFT, VirtualKeyCode.OEM_1);
+            input.Keyboard.KeyPress(VirtualKeyCode.OEM_6);
         }
 
         public override void Rewind()
@@ -66,7 +66,7 @@ namespace Jekov.Nevix.Desktop.Common.Players
 
         public override void Previous()
         {
-            input.Keyboard.KeyPress(VirtualKeyCode.VK_S);
+            input.Keyboard.KeyPress(VirtualKeyCode.VK_P);
         }
 
         public override void VolumeUp()

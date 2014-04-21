@@ -8,11 +8,9 @@ namespace Jekov.Nevix.Web.ServerApi.Controllers
 {
     public class HomeController : Controller
     {
-        //[OutputCache(CacheProfile = "Cache1Hour")]
+        [OutputCache(Duration=3600, VaryByParam="none")]
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
-
             return View();
         }
     }

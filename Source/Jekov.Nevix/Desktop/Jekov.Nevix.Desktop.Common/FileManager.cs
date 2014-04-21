@@ -87,7 +87,7 @@
             }
             catch (UnauthorizedAccessException)
             {
-                MessageBox.Show("You don't have access to one or more folders inside the selected location!", "Restricted Access", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("You don't have access to one or more folders inside the selected location!", "Restricted Access", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             

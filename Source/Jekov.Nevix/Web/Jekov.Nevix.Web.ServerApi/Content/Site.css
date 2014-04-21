@@ -49,7 +49,8 @@ input[type="checkbox"].input-validation-error {
     color: #333;
 }
 
-.main-jumbotron {
+.body-content .main-jumbotron {
+    padding-top: 120px;
     background: #eee url(Assets/SiteLogos.png) no-repeat right top;
 }
 
@@ -68,4 +69,8 @@ footer {
 .rejection {
     background-color: #b72222;
     padding: 20px;
+}
+
+.row .get-started-list li {
+    margin-top: 25px;
 }
