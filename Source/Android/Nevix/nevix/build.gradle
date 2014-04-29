@@ -14,22 +14,22 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.1'
+    buildToolsVersion '19.0.3'
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
     }
     signingConfigs {
         debug {
-            storeFile file('keystore.jks');
+            storeFile file('..\\keystore.jks');
         }
 
         release {
             keyAlias 'nevix'
             keyPassword 'mellon123'
-            storeFile file('keystore.jks')
+            storeFile file('..\\keystore.jks')
             storePassword 'mellon'
         }
     }
@@ -38,8 +38,8 @@ android {
     }
     buildTypes {
         release {
-            debuggable false
-            jniDebugBuild false
+            debuggable true
+            jniDebugBuild true
             runProguard true
             proguardFile 'proguard-rules.txt'
             zipAlign true
@@ -49,13 +49,13 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.0.0'
+    compile 'com.android.support:support-v4:19.1.0'
     compile 'com.android.support:gridlayout-v7:19.0.0'
-    compile 'com.android.support:appcompat-v7:19.0.0'
+    compile 'com.android.support:appcompat-v7:19.1.0'
     compile files('libs/bcprov-jdk15on-1.47.jar')
     compile files('libs/Pubnub-Android-3.5.6.jar')
     compile files('libs/gson-2.2.4.jar')
     /*compile files('libs/gson-2.2.4-javadoc.jar')
-                    compile files('libs/gson-2.2.4-sources.jar')*/
-    compile files('libs/StartAppInAppPlus-2.3.1.jar')
+                            compile files('libs/gson-2.2.4-sources.jar')*/
+    /*compile files('libs/StartAppInAppPlus-2.3.1.jar')*/
 }

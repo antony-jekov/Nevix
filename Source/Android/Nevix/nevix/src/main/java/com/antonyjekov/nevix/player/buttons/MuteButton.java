@@ -35,7 +35,7 @@ public class MuteButton extends SphericalButton {
         shape.moveTo(x, y);
         shape.lineTo(x, button.top + (padding << 1));
 
-        shape.moveTo( button.left + (padding), button.bottom - (padding));
+        shape.moveTo(button.left + (padding), button.bottom - (padding));
         shape.lineTo(button.right - (padding), button.top + (padding));
     }
 

@@ -1,6 +1,6 @@
 # Add project specific ProGuard rules here.
 # By default, the flags in this file are appended to flags specified
-# in C:/Users/Antony Jekov/AppData/Local/Android/android-studio/sdk/tools/proguard/proguard-android.txt
+# in C:/Program Files (x86)/Android/android-studio/sdk/tools/proguard/proguard-android.txt
 # You can edit the include path and order by changing the ProGuard
 # include property in project.properties.
 #
@@ -16,15 +16,8 @@
 #   public *;
 #}
 
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
--verbose
+-dontwarn org.bouncycastle.**
 
--printseeds seeds.txt
--printusage unused.txt
--printmapping mapping.txt
+-keep class com.antonyjekov.nevix.viewmodels** { *; }
+-keep class com.antonyjekov.nevix.activities.browse** { *; }
 
--optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
--optimizationpasses 5
--allowaccessmodification
--dontpreverify

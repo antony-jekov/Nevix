@@ -1,7 +1,5 @@
 package com.antonyjekov.nevix.common;
 
-import android.util.Log;
-
 import com.pubnub.api.Callback;
 import com.pubnub.api.Pubnub;
 import com.pubnub.api.PubnubError;
@@ -20,11 +18,9 @@ public class PusherManager {
 
         callback = new Callback() {
             public void successCallback(String channel, Object response) {
-                Log.d("PUBNUB", response.toString());
             }
 
             public void errorCallback(String channel, PubnubError error) {
-                Log.e("PUBNUB", error.getErrorString());
             }
         };
     }

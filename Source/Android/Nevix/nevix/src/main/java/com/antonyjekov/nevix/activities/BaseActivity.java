@@ -12,7 +12,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     protected App application;
 
-    protected BaseActivity () {
+    protected BaseActivity() {
     }
 
     @Override

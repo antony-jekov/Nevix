@@ -4,7 +4,7 @@ public class UserLoginViewModel {
     private String email;
     private String password;
 
-    public UserLoginViewModel(String email, String pass){
+    public UserLoginViewModel(String email, String pass) {
         this.email = email;
         this.password = pass;
     }

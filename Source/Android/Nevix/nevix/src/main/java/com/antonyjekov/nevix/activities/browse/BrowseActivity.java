@@ -1,4 +1,4 @@
-package com.antonyjekov.nevix.activities;
+package com.antonyjekov.nevix.activities.browse;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,6 +15,8 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
+import com.antonyjekov.nevix.activities.AuthenticateActivity;
+import com.antonyjekov.nevix.activities.BaseActivity;
 import com.antonyjekov.nevix.common.ContextManager;
 import com.antonyjekov.nevix.common.FolderAdapter;
 import com.antonyjekov.nevix.common.HttpAsyncRequest;
@@ -24,18 +27,19 @@ import com.antonyjekov.nevix.common.contracts.OnFileSelected;
 import com.antonyjekov.nevix.viewmodels.MediaFileViewModel;
 import com.antonyjekov.nevix.viewmodels.MediaFolderViewModel;
 import com.google.gson.Gson;
-import com.startapp.android.publish.StartAppAd;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Iterator;
 import java.util.Stack;
+
+//import com.startapp.android.publish.StartAppAd;
 
 public class BrowseActivity extends BaseActivity implements OnFileSelected {
 
     public static final String BROWSED_FILE_NAME = "com.antonyjekov.nevix.browse.browsedFile.name";
-    Button backBtn;
-    Button forwardBtn;
-    Random random;
+    private Button backBtn;
+    private Button forwardBtn;
+    //Random random;
 
     Stack<MediaFolderViewModel> backQueue;
     Stack<MediaFolderViewModel> forwardQueue;
@@ -46,14 +50,18 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     private PersisterManager persisterManager;
     private ScrollView mediaList;
     private MediaFolderViewModel rootFolder;
+    private MediaFileViewModel mediaFile;
 
     ProgressDialog progressDialog;
-    private StartAppAd startAppAd = new StartAppAd(this);
+    //private StartAppAd startAppAd = new StartAppAd(this);
 
     public static final String BROWSED_FILE = "com.antonyjekov.nevix.browse.browsedFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.mediaFile = new MediaFileViewModel();
+        Log.d("CLASS SSS", this.mediaFile.getClass().getName());
+        Log.d("PROGRESS-PRE", "1");
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(getResources().getString(R.string.connecting_server));
         progressDialog.setMessage(getResources().getString(R.string.syncing));
@@ -61,20 +69,26 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
         backQueue = new Stack<MediaFolderViewModel>();
         forwardQueue = new Stack<MediaFolderViewModel>();
         super.onCreate(savedInstanceState);
-        StartAppAd.init(this, "104083607", "204814165");
+        //StartAppAd.init(this, "104083607", "204814165");
         setContentView(R.layout.activity_browse);
         db = new ContextManager(this);
         String media = db.getMediaDatabase();
         getSupportActionBar().hide();
+        Log.d("PROGRESS-PRE", "2");
         rootFolder = loadMedia(media);
+        Log.d("CLASS", this.rootFolder.getClass().getName());
+        Log.d("PROGRESS-PRE", "3");
         final Context cont = this;
         this.mediaList = (ScrollView) findViewById(R.id.media_list);
+        Log.d("PROGRESS-PRE", "4");
         list = (LinearLayout) findViewById(R.id.jekozo);
+        Log.d("PROGRESS-PRE", "5");
 
         String sessionKey = db.getSessionKey();
         persisterManager = new PersisterManager(sessionKey);
-
+        Log.d("PROGRESS-PRE", "6");
         openRootFolder();
+        Log.d("PROGRESS-PRE", "7");
 
         final String lastLocalUpdate = db.getLastDatabaseUpdate();
         persisterManager.getLastMediaUpdateTime(new HttpAsyncRequest.OnResultCallBack() {
@@ -92,6 +106,8 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
             }
         });
 
+        Log.d("PROGRESS-PRE", "8");
+
         backBtn = (Button) findViewById(R.id.back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +118,8 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
                 updateButtons();
             }
         });
+
+        Log.d("PROGRESS-PRE", "9");
 
         forwardBtn = (Button) findViewById(R.id.forward_btn);
         forwardBtn.setOnClickListener(new View.OnClickListener() {
@@ -121,11 +139,11 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
                 beginMediaSync();
             }
         });
-
+        Log.d("PROGRESS-PRE", "10");
         backBtn.setEnabled(false);
         forwardBtn.setEnabled(false);
         final Context thisContext = this;
-
+        Log.d("PROGRESS-PRE", "11");
         View logOffBtn = findViewById(R.id.logoff_btn);
         logOffBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +162,9 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
             }
         });
 
-        this.random = new Random();
+        Log.d("PROGRESS-PRE", "12");
+
+        //this.random = new Random();
     }
 
     private void logoff(Context thisContext) {
@@ -160,14 +180,19 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     }
 
     private void beginMediaSync() {
+        Log.d("PROGRESS", "1");
         progressDialog.show();
         persisterManager.getMedia(new HttpAsyncRequest.OnResultCallBack() {
             @Override
             public void onResult(String result) {
+                Log.d("PROGRESS", "2");
                 progressDialog.hide();
                 db.storeMediaDatabase(result);
+                Log.d("PROGRESS", "3");
                 db.setLastDatabaseUpdate(lastServerUpdate);
+                Log.d("PROGRESS", "4");
                 rootFolder = loadMedia(result);
+                Log.d("PROGRESS", "5");
                 openRootFolder();
                 backQueue.clear();
                 forwardQueue.clear();
@@ -186,12 +211,12 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     @Override
     public void onFileSelected(int fileId, String fileName) {
 
-        int randomNumber = this.random.nextInt(101);
+        /*int randomNumber = this.random.nextInt(101);
 
         if (randomNumber <= 40) {
             startAppAd.showAd();
             startAppAd.loadAd();
-        }
+        }*/
 
         Intent data = new Intent();
         data.putExtra(BROWSED_FILE, fileId);
@@ -245,23 +270,32 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
     }
 
     private void openRootFolder() {
+        Log.d("ORF", "1");
         this.mediaList.fullScroll(ScrollView.FOCUS_UP);
+        Log.d("ORF", "2");
         list.removeAllViews();
+        Log.d("ORF", "3");
         final ArrayList<MediaItem> contents = new ArrayList<MediaItem>();
+        Log.d("ORF", "4");
         int folderIcon = R.drawable.media_folder2;
         int movieIcon = R.drawable.media_icon;
         int count = 0;
 
+        Log.d("ORF", "5");
         for (MediaFolderViewModel folder : rootFolder.getFolders()) {
             contents.add(new MediaItem(folder.getName(), folderIcon, count++));
         }
+        Log.d("ORF", "6");
+        Class<?> cls = rootFolder.getFiles().get(0).getClass();
+        Log.d("CAST", cls.getName());
 
         for (MediaFileViewModel file : rootFolder.getFiles()) {
             contents.add(new MediaItem(file.getName(), movieIcon, count++));
         }
 
+        Log.d("ORF", "7");
         ArrayAdapter adapter = new FolderAdapter(this, R.layout.media_item, contents.toArray());
-
+        Log.d("ORF", "8");
         for (int i = 0; i < count; i++) {
             View mediaItem = adapter.getView(i, null, this.mediaList);
             mediaItem.setOnClickListener(new View.OnClickListener() {
@@ -274,6 +308,7 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
             });
             list.addView(mediaItem);
         }
+        Log.d("ORF", "9");
     }
 
     public void onListItemClick(int position) {
@@ -297,11 +332,11 @@ public class BrowseActivity extends BaseActivity implements OnFileSelected {
         updateButtons();
     }
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
         this.startAppAd.onResume();
-    }
+    }*/
 
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();

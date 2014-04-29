@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.antonyjekov.nevix.R;
+import com.antonyjekov.nevix.activities.browse.BrowseActivity;
 import com.antonyjekov.nevix.common.PusherManager;
 import com.antonyjekov.nevix.player.BSPlayer;
 import com.antonyjekov.nevix.player.InteractionIndicator;

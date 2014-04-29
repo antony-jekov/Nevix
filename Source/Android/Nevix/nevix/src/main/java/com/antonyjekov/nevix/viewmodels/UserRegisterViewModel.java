@@ -3,7 +3,7 @@ package com.antonyjekov.nevix.viewmodels;
 public class UserRegisterViewModel extends UserLoginViewModel {
     private String confirmPassword;
 
-    public UserRegisterViewModel(String email, String pass, String confirmPass){
+    public UserRegisterViewModel(String email, String pass, String confirmPass) {
         super(email, pass);
 
         this.confirmPassword = confirmPass;

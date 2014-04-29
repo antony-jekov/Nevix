@@ -14,7 +14,7 @@ public class ContextManager {
     private static final String MEDIA_DATA = "MediaData";
     private static final String LAST_UPDATE = "LastUpdate";
 
-    public ContextManager (Context context) {
+    public ContextManager(Context context) {
         this.localData = context.getSharedPreferences(NEVIX_DATA, 0);
         this.localEditor = localData.edit();
     }
@@ -43,7 +43,7 @@ public class ContextManager {
         storeData(LAST_UPDATE, time);
     }
 
-    private void storeData (String key, String data) {
+    private void storeData(String key, String data) {
         localEditor.putString(key, data);
 
         localEditor.commit();

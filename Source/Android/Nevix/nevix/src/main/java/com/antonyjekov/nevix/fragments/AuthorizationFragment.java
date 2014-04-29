@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.antonyjekov.nevix.common.PersisterManager;
 import com.antonyjekov.nevix.common.contracts.FailCallback;
 
 public class AuthorizationFragment extends Fragment implements FailCallback {
+
     private Button loginBtn;
     private View resetBtn;
     private EditText email;
@@ -86,7 +88,7 @@ public class AuthorizationFragment extends Fragment implements FailCallback {
             public void onClick(View view) {
                 String emailText = email.getText().toString().trim();
                 String passwordText = pass.getText().toString().trim();
-
+                Log.d("LOGINBTN", "mail: " + emailText + " pass: " + passwordText);
                 if (emailText.length() > 0 && passwordText.length() > 0) {
                     persistent.login(emailText, passwordText, callBack, error);
                     progress.show();

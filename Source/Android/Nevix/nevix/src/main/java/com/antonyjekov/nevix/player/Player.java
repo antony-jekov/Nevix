@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by Antony Jekov on 3/23/2014.
  */
-public abstract class Player extends View  {
+public abstract class Player extends View {
 
     protected Vibrator vibrator;
     protected InteractionIndicator indicator;
